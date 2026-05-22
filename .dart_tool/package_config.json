@@ -164,7 +164,7 @@
       "languageVersion": "3.5"
     },
     {
-      "name": "mobileproject",
+      "name": "profinch_mobile_application",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.11"
