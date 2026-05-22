@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mobileproject/screens/signup_screen.dart';
-import 'package:mobileproject/widgets/background/background_wrapper.dart';
-import 'package:mobileproject/widgets/background/logo.dart';
-import 'package:mobileproject/widgets/sign_in_widgets/signin_header.dart';
-import 'package:mobileproject/widgets/sign_in_widgets/signin_form.dart';
-import 'package:mobileproject/widgets/sign_in_widgets/remember_forgot_row.dart';
-import 'package:mobileproject/widgets/sign_in_widgets/sign_in_button.dart';
-import 'package:mobileproject/widgets/sign_in_widgets/biometric_button.dart';
-import 'package:mobileproject/widgets/background/security_badge.dart';
-import 'package:mobileproject/widgets/sign_in_widgets/sign_up_button.dart';
+import 'package:profinch_mobile_application/screens/signup_screen.dart';
+import 'package:profinch_mobile_application/widgets/background/background_wrapper.dart';
+import 'package:profinch_mobile_application/widgets/background/logo.dart';
+import 'package:profinch_mobile_application/widgets/sign_in_widgets/signin_header.dart';
+import 'package:profinch_mobile_application/widgets/sign_in_widgets/signin_form.dart';
+import 'package:profinch_mobile_application/widgets/sign_in_widgets/remember_forgot_row.dart';
+import 'package:profinch_mobile_application/widgets/sign_in_widgets/sign_in_button.dart';
+import 'package:profinch_mobile_application/widgets/sign_in_widgets/biometric_button.dart';
+import 'package:profinch_mobile_application/widgets/background/security_badge.dart';
+import 'package:profinch_mobile_application/widgets/sign_in_widgets/sign_up_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
