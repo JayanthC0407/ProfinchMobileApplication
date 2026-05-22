@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mobileproject/screens/signup_screen.dart';
+import 'package:mobileproject/widgets/background_wrapper.dart';
 import 'package:mobileproject/widgets/logo.dart';
 import 'package:mobileproject/widgets/login_header.dart';
 import 'package:mobileproject/widgets/login_form.dart';
@@ -66,14 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // ── Build ──────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('images/loginPhoneBg.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
+    return BackgroundWrapper(
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
@@ -112,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SignUpRow(
                       onSignUp: () {
                         // TODO: Navigate to sign-up screen
-                        // Navigator.push(context, MaterialPageRoute(builder: (_) => const SignUpScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const SignUpScreen()));
                       },
                     ),
                     const SizedBox(height: 20),
@@ -124,7 +119,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
