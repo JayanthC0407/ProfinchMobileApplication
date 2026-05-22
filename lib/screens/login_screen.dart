@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mobileproject/screens/signup_screen.dart';
-import 'package:mobileproject/widgets/background_wrapper.dart';
-import 'package:mobileproject/widgets/logo.dart';
-import 'package:mobileproject/widgets/login_header.dart';
-import 'package:mobileproject/widgets/login_form.dart';
-import 'package:mobileproject/widgets/remember_forgot_row.dart';
-import 'package:mobileproject/widgets/sign_in_button.dart';
-import 'package:mobileproject/widgets/biometric_button.dart';
-import 'package:mobileproject/widgets/security_badge.dart';
-import 'package:mobileproject/widgets/sign_up_button.dart';
+import 'package:mobileproject/widgets/background/background_wrapper.dart';
+import 'package:mobileproject/widgets/background/logo.dart';
+import 'package:mobileproject/widgets/sign_in_widgets/signin_header.dart';
+import 'package:mobileproject/widgets/sign_in_widgets/signin_form.dart';
+import 'package:mobileproject/widgets/sign_in_widgets/remember_forgot_row.dart';
+import 'package:mobileproject/widgets/sign_in_widgets/sign_in_button.dart';
+import 'package:mobileproject/widgets/sign_in_widgets/biometric_button.dart';
+import 'package:mobileproject/widgets/background/security_badge.dart';
+import 'package:mobileproject/widgets/sign_in_widgets/sign_up_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -106,8 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     SignUpRow(
                       onSignUp: () {
-                        // TODO: Navigate to sign-up screen
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => const SignUpScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => const SignUpScreen()));
                       },
                     ),
                     const SizedBox(height: 20),
