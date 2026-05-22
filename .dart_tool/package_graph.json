@@ -1,10 +1,10 @@
 {
   "roots": [
-    "mobileproject"
+    "profinch_mobile_application"
   ],
   "packages": [
     {
-      "name": "mobileproject",
+      "name": "profinch_mobile_application",
       "version": "1.0.0+1",
       "dependencies": [
         "cupertino_icons",
