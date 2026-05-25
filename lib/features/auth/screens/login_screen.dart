@@ -9,7 +9,7 @@ import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widget
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/biometric_button.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/background/security_badge.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/sign_up_button.dart';
-
+import 'package:profinch_mobile_application/features/dashboard/screens/dashboard_screen.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -32,7 +32,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // ── Handlers ───────────────────────────────────────────────────
   Future<void> _handleSignIn() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) {
+      Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const DashboardScreen(),
+  ),
+);
+    }
     setState(() => _isLoading = true);
 
     // TODO: Replace with your actual auth API call

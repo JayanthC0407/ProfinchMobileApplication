@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/features/auth/screens/login_screen.dart';
+import 'package:profinch_mobile_application/features/dashboard/provider/dashboard_provider.dart';
+import 'package:profinch_mobile_application/features/dashboard/screens/dashboard_screen.dart';
+import 'package:provider/provider.dart';
 void main() {
-  runApp(const MyApp());
+  runApp(
+     MultiProvider(
+      providers: [
+
+        ChangeNotifierProvider(
+          create: (_) => DashboardProvider(),
+        ),
+      ],
+
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
