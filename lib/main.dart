@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/screens/login_screen.dart';
+import 'package:profinch_mobile_application/features/auth/screens/login_screen.dart';
 void main() {
   runApp(const MyApp());
 }

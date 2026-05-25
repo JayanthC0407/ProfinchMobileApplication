@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 
 class SecurityBadge extends StatelessWidget {
   const SecurityBadge({super.key});
