@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:profinch_mobile_application/widgets/sign_up_widgets/signup_text_field.dart';
+import 'package:profinch_mobile_application/features/auth/widgets/sign_up_widgets/signup_text_field.dart';
 
 class SignUpForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;

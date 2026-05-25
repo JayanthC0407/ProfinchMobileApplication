@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 
-class SignUpButton extends StatelessWidget {
+class SignInButton extends StatelessWidget {
   final bool isLoading;
   final VoidCallback onPressed;
 
-  const SignUpButton({
+  const SignInButton({
     super.key,
     required this.isLoading,
     required this.onPressed,
@@ -43,9 +43,9 @@ class SignUpButton extends StatelessWidget {
             : const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.person_add_rounded, size: 18),
+                  Icon(Icons.login_rounded, size: 18),
                   SizedBox(width: 8),
-                  Text('Create Account'),
+                  Text('Sign in'),
                 ],
               ),
       ),
