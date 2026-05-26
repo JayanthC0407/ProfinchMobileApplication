@@ -1,0 +1,39 @@
+import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/data/models/user_model.dart';
+import 'package:profinch_mobile_application/data/repositories/auth_repository.dart';
+
+class AuthProvider extends ChangeNotifier {
+
+  final AuthRepository _repository = AuthRepository();
+
+  UserModel? currentUser;
+
+  bool isLoading = false;
+
+  Future<bool> login({
+    required String email,
+    required String password,
+  }) async {
+
+    isLoading = true;
+    notifyListeners();
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    final user = _repository.login(
+      email: email,
+      password: password,
+    );
+
+    isLoading = false;
+
+    if (user != null) {
+      currentUser = user;
+      notifyListeners();
+      return true;
+    }
+
+    notifyListeners();
+    return false;
+  }
+}

@@ -1,5 +1,7 @@
-2026/05/25-17:44:21.449 5fa8 Log #3: 13 ops saved to Table #4 OK
-2026/05/25-17:44:21.460 5fa8 Archiving C:\Users\Minakshi.S\AppData\Local\Temp\flutter_tools.9b934ad3\flutter_tools_chrome_device.7aaba456\Default\Site Characteristics Database/000003.log: OK
-2026/05/25-17:44:21.461 5fa8 Table #4: 13 entries OK
-2026/05/25-17:44:21.491 5fa8 Archiving C:\Users\Minakshi.S\AppData\Local\Temp\flutter_tools.9b934ad3\flutter_tools_chrome_device.7aaba456\Default\Site Characteristics Database/MANIFEST-000001: OK
-2026/05/25-17:44:21.573 5fa8 **** Repaired leveldb C:\Users\Minakshi.S\AppData\Local\Temp\flutter_tools.9b934ad3\flutter_tools_chrome_device.7aaba456\Default\Site Characteristics Database; recovered 1 files; 379 bytes. Some data may have been lost. ****
+2026/05/26-16:01:11.486 2654 Reusing MANIFEST C:\Users\Minakshi.S\AppData\Local\Temp\flutter_tools.b2735af9\flutter_tools_chrome_device.68284500\Default\Site Characteristics Database/MANIFEST-000001
+2026/05/26-16:01:11.531 2654 Recovering log #3
+2026/05/26-16:01:11.531 2654 Level-0 table #6: started
+2026/05/26-16:01:11.585 2654 Level-0 table #6: 400 bytes OK
+2026/05/26-16:01:11.626 2654 Recovering log #6
+2026/05/26-16:01:11.632 2654 Reusing old log C:\Users\Minakshi.S\AppData\Local\Temp\flutter_tools.b2735af9\flutter_tools_chrome_device.68284500\Default\Site Characteristics Database/000006.log 
+2026/05/26-16:01:11.637 2654 Delete type=0 #3

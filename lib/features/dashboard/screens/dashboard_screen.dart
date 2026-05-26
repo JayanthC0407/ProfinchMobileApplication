@@ -7,6 +7,8 @@ import '../widgets/bottom_navbar.dart';
 import '../widgets/feature_item.dart';
 import '../widgets/quick_action_item.dart';
 import '../widgets/transaction_tiles.dart';
+import 'package:provider/provider.dart';
+import '../../auth/provider/auth_provider.dart';
 
 class DashboardScreen extends StatelessWidget {
 
@@ -16,6 +18,9 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     final provider = Provider.of<DashboardProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
+
+    final user = authProvider.currentUser;
 
     return Scaffold(
 
@@ -52,21 +57,21 @@ class DashboardScreen extends StatelessWidget {
 
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
 
                           Text(
-                            "Hello, Rahul 👋",
-                            style: TextStyle(
+                            "Hello, ${user?.username ?? 'User'} 👋",
+                            style: const TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
 
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
 
-                          Text(
+                          const Text(
                             "Welcome Back",
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.grey,
                             ),
                           )
