@@ -1,0 +1,43 @@
+import 'package:profinch_mobile_application/data/models/user_model.dart';
+
+class DummyUsers {
+  DummyUsers._();
+
+  static final UserModel currentUser = UserModel(
+    id: 'USR001',
+    username: 'Arjun Sharma',
+    email: 'arjun.sharma@email.com',
+    phoneNumber: '9876543210',
+    panNumber: 'ABCPS1234F',
+    profileImage: 'images/profile.jpg',
+    accountNumber: '1234567890',
+    createdAt: DateTime(2023, 1, 15),
+    isKycVerified: true,
+  );
+
+  static final List<UserModel> allUsers = [
+    currentUser,
+    UserModel(
+      id: 'USR002',
+      username: 'Priya Nair',
+      email: 'priya.nair@email.com',
+      phoneNumber: '9123456780',
+      panNumber: 'BCDPN5678G',
+      profileImage: 'images/profile.jpg',
+      accountNumber: '9876543210',
+      createdAt: DateTime(2023, 3, 20),
+      isKycVerified: true,
+    ),
+    UserModel(
+      id: 'USR003',
+      username: 'Rahul Mehta',
+      email: 'rahul.mehta@email.com',
+      phoneNumber: '9988776655',
+      panNumber: 'CDERМ9012H',
+      profileImage: 'images/profile.jpg',
+      accountNumber: '1122334455',
+      createdAt: DateTime(2023, 5, 10),
+      isKycVerified: false,
+    ),
+  ];
+}
