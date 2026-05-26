@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/features/auth/screens/login_screen.dart';
-import 'package:profinch_mobile_application/features/dashboard/provider/dashboard_provider.dart';
-import 'package:profinch_mobile_application/features/dashboard/screens/dashboard_screen.dart';
 import 'package:provider/provider.dart';
+
+import 'core/themes/app_theme.dart';
+import 'core/routes/app_routes.dart';
+
+import 'features/auth/provider/auth_provider.dart';
+import 'features/dashboard/provider/dashboard_provider.dart';
+
+import 'features/auth/screens/login_screen.dart';
+import 'features/dashboard/screens/dashboard_screen.dart';
 void main() {
   runApp(
      MultiProvider(
       providers: [
-
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(),
+        ),
         ChangeNotifierProvider(
           create: (_) => DashboardProvider(),
         ),
@@ -34,7 +42,11 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'SF Pro Display',
       ),
-      home: const LoginScreen(),
+      initialRoute: AppRoutes.login,
+      routes: {
+        AppRoutes.login: (context) => const LoginScreen(),
+        AppRoutes.dashboard: (context) => const DashboardScreen(),
+      },
     );
   }
 }
