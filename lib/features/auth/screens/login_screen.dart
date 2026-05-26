@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/features/auth/screens/signup_screen.dart';
-import 'package:profinch_mobile_application/features/auth/widgets/background/background_wrapper.dart';
-import 'package:profinch_mobile_application/features/auth/widgets/background/logo.dart';
+import 'package:profinch_mobile_application/shared/widgets/background_wrapper.dart';
+import 'package:profinch_mobile_application/shared/widgets/logo.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/signin_header.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/signin_form.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/remember_forgot_row.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/sign_in_button.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/biometric_button.dart';
-import 'package:profinch_mobile_application/features/auth/widgets/background/security_badge.dart';
+import 'package:profinch_mobile_application/shared/widgets/security_badge.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/sign_up_button.dart';
 import 'package:profinch_mobile_application/features/dashboard/screens/dashboard_screen.dart';
 class LoginScreen extends StatefulWidget {

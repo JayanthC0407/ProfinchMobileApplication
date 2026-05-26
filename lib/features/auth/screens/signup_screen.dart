@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
-import 'package:profinch_mobile_application/features/auth/widgets/background/background_wrapper.dart';
+import 'package:profinch_mobile_application/shared/widgets/background_wrapper.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_up_widgets/signup_button.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_up_widgets/signup_form.dart';
-import 'package:profinch_mobile_application/features/auth/widgets/background/security_badge.dart';
+import 'package:profinch_mobile_application/shared/widgets/security_badge.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
