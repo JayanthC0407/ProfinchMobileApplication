@@ -66,7 +66,7 @@ class BalanceCard extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
-              color: Colors.white.withOpacity(.15),
+              color: Colors.white.withValues(alpha: 0.15),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,

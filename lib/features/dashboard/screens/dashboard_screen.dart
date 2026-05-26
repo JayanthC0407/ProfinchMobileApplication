@@ -7,7 +7,6 @@ import '../widgets/bottom_navbar.dart';
 import '../widgets/feature_item.dart';
 import '../widgets/quick_action_item.dart';
 import '../widgets/transaction_tiles.dart';
-import 'package:provider/provider.dart';
 import '../../auth/provider/auth_provider.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -71,7 +70,7 @@ class DashboardScreen extends StatelessWidget {
 
                           const Text(
                             "Welcome Back",
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.grey,
                             ),
                           )
