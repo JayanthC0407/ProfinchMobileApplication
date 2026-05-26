@@ -2,6 +2,7 @@ class UserModel {
   final String id;
   final String username;
   final String email;
+  final String password;
   final String phoneNumber;
   final String panNumber;
   final String profileImage;
@@ -13,6 +14,7 @@ class UserModel {
     required this.id,
     required this.username,
     required this.email,
+    required this.password,
     required this.phoneNumber,
     required this.panNumber,
     required this.profileImage,

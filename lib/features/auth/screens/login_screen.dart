@@ -10,6 +10,9 @@ import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widget
 import 'package:profinch_mobile_application/shared/widgets/security_badge.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/sign_up_button.dart';
 import 'package:profinch_mobile_application/features/dashboard/screens/dashboard_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:profinch_mobile_application/core/routes/app_routes.dart';
+import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -32,31 +35,45 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // ── Handlers ───────────────────────────────────────────────────
   Future<void> _handleSignIn() async {
-    if (!_formKey.currentState!.validate()) {
-      Navigator.pushReplacement(
+
+  if (!_formKey.currentState!.validate()) {
+    return;
+  }
+
+  final authProvider = Provider.of<AuthProvider>(
+    context,
+    listen: false,
+  );
+
+  final success = await authProvider.login(
+    email: _emailController.text.trim(),
+    password: _passwordController.text.trim(),
+  );
+
+  if (!mounted) return;
+
+  if (success) {
+
+    Navigator.pushReplacementNamed(
       context,
-      MaterialPageRoute(
-        builder: (context) => const DashboardScreen(),
-  ),
-);
-    }
-    setState(() => _isLoading = true);
+      AppRoutes.dashboard,
+    );
 
-    // TODO: Replace with your actual auth API call
-    await Future.delayed(const Duration(seconds: 2));
-
-    setState(() => _isLoading = false);
-    if (!mounted) return;
+  } else {
 
     ScaffoldMessenger.of(context).showSnackBar(
+
       SnackBar(
-        content: const Text('Sign-in successful!'),
-        backgroundColor: const Color(0xFF0F6E56),
+        content: const Text('Invalid email or password'),
+        backgroundColor: Colors.red,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
     );
   }
+}
 
   void _handleForgotPassword() {
     // TODO: Navigate to forgot-password screen
