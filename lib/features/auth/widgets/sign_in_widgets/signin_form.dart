@@ -117,7 +117,7 @@ class _LoginFormState extends State<LoginForm> {
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             validator: _validateEmail,
-            style: const TextStyle(fontSize: 14, color: AppColors.light),
+            style: const TextStyle(fontSize: 14, color: Colors.black),
             decoration: _inputDecoration(
               hint: 'you@example.com',
               prefixIcon: Icons.mail_outline_rounded,
@@ -135,7 +135,7 @@ class _LoginFormState extends State<LoginForm> {
             textInputAction: TextInputAction.done,
             onFieldSubmitted: (_) => widget.onSubmit(),
             validator: _validatePassword,
-            style: const TextStyle(fontSize: 14, color: AppColors.light),
+            style: const TextStyle(fontSize: 14, color: Colors.black),
             decoration: _inputDecoration(
               hint: '••••••••',
               prefixIcon: Icons.lock_outline_rounded,
