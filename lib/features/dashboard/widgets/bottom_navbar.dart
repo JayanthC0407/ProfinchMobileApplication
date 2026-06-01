@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../profile/screens/profile_screen.dart';
+
 class BottomNavBar extends StatelessWidget {
 
   const BottomNavBar({super.key});
@@ -13,6 +15,19 @@ class BottomNavBar extends StatelessWidget {
       unselectedItemColor: Colors.grey,
       currentIndex: 0,
       type: BottomNavigationBarType.fixed,
+
+      onTap: (index) {
+
+        if (index == 4) {
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const ProfileScreen(),
+            ),
+          );
+        }
+      },
 
       items: const [
 
