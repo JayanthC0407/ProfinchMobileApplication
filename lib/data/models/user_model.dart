@@ -22,4 +22,24 @@ class UserModel {
     required this.createdAt,
     required this.isKycVerified,
   });
+
+  UserModel copyWith({
+  String? username,
+  String? email,
+  String? phoneNumber,
+}) {
+
+  return UserModel(
+    id: id,
+    username: username ?? this.username,
+    email: email ?? this.email,
+    password: password,
+    phoneNumber: phoneNumber ?? this.phoneNumber,
+    panNumber: panNumber,
+    profileImage: profileImage,
+    accountNumber: accountNumber,
+    createdAt: createdAt,
+    isKycVerified: isKycVerified,
+  );
+}
 }

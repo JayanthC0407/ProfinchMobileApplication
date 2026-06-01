@@ -10,6 +10,11 @@ class AuthProvider extends ChangeNotifier {
 
   bool isLoading = false;
 
+  void updateUser(UserModel updatedUser) {
+  currentUser = updatedUser;
+  notifyListeners();
+}
+
   Future<bool> login({
     required String email,
     required String password,
@@ -36,4 +41,11 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
     return false;
   }
+void logout() {
+
+  currentUser = null;
+
+  notifyListeners();
+}
+
 }
