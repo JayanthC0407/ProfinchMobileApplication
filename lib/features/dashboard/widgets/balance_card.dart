@@ -18,8 +18,8 @@ class BalanceCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(28),
         gradient: const LinearGradient(
           colors: [
-            Color(0xff001F8B),
-            Color(0xff0052FF),
+            Color.fromARGB(255, 255, 255, 255),
+            Color.fromARGB(255, 205, 211, 233),
           ],
         ),
       ),
@@ -34,7 +34,7 @@ class BalanceCard extends StatelessWidget {
               Text(
                 "Total Balance",
                 style: TextStyle(
-                  color: Colors.white70,
+                  color: Color.fromARGB(179, 4, 27, 107),
                   fontSize: 18,
                 ),
               ),
@@ -51,7 +51,7 @@ class BalanceCard extends StatelessWidget {
           Text(
             "₹${balance.toStringAsFixed(2)}",
             style: const TextStyle(
-              color: Colors.white,
+              color: Color.fromARGB(255, 31, 4, 122),
               fontSize: 34,
               fontWeight: FontWeight.bold,
             ),
@@ -66,7 +66,7 @@ class BalanceCard extends StatelessWidget {
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
-              color: Colors.white.withValues(alpha: 0.15),
+              color: const Color.fromARGB(255, 8, 18, 162).withValues(alpha: 0.15),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -75,7 +75,7 @@ class BalanceCard extends StatelessWidget {
                 Text(
                   "Savings Account",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 51, 3, 141),
                   ),
                 ),
 
@@ -83,7 +83,7 @@ class BalanceCard extends StatelessWidget {
 
                 Icon(
                   Icons.keyboard_arrow_down,
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 18, 3, 101),
                 )
               ],
             ),
@@ -94,7 +94,7 @@ class BalanceCard extends StatelessWidget {
           const Text(
             "Account No. 1234 5678 9012",
             style: TextStyle(
-              color: Colors.white70,
+              color: Color.fromARGB(179, 55, 3, 133),
             ),
           )
         ],
