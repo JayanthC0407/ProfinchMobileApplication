@@ -9,7 +9,6 @@ import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widget
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/biometric_button.dart';
 import 'package:profinch_mobile_application/shared/widgets/security_badge.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/sign_up_button.dart';
-import 'package:profinch_mobile_application/features/dashboard/screens/dashboard_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
@@ -24,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   @override
   void dispose() {
