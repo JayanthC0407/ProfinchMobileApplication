@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/features/auth/screens/signup_screen.dart';
+import 'package:profinch_mobile_application/features/dashboard/provider/dashboard_provider.dart';
 import 'package:profinch_mobile_application/shared/widgets/background_wrapper.dart';
 import 'package:profinch_mobile_application/shared/widgets/logo.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/signin_header.dart';
@@ -52,6 +53,13 @@ class _LoginScreenState extends State<LoginScreen> {
   if (!mounted) return;
 
   if (success) {
+
+    Provider.of<DashboardProvider>(
+      context,
+      listen: false,
+    ).resetToPrimary(
+      authProvider.currentUser!.primaryAccountId,
+    );
 
     Navigator.pushReplacementNamed(
       context,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/features/accounts/screens/accounts_screen.dart';
+import 'package:profinch_mobile_application/features/profile/screens/profile_screen.dart';
 import 'package:provider/provider.dart';
 import 'core/routes/app_routes.dart';
 
@@ -7,6 +9,8 @@ import 'features/dashboard/provider/dashboard_provider.dart';
 
 import 'features/auth/screens/login_screen.dart';
 import 'features/dashboard/screens/dashboard_screen.dart';
+import 'features/accounts/provider/account_provider.dart';
+
 void main() {
   runApp(
      MultiProvider(
@@ -16,6 +20,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (_) => DashboardProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AccountProvider(),
         ),
       ],
 
@@ -44,6 +51,8 @@ class MyApp extends StatelessWidget {
       routes: {
         AppRoutes.login: (context) => const LoginScreen(),
         AppRoutes.dashboard: (context) => const DashboardScreen(),
+        AppRoutes.profile: (context) => const ProfileScreen(),
+        AppRoutes.accounts: (context) => const AccountsScreen(),
       },
     );
   }

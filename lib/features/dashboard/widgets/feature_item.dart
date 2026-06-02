@@ -3,16 +3,20 @@ import 'package:flutter/material.dart';
 class FeatureItem extends StatelessWidget {
   final IconData icon;
   final String title;
+  final VoidCallback? onTap;
 
   const FeatureItem({
     super.key,
     required this.icon,
     required this.title,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return InkWell(
+      onTap: onTap,
+      child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
 
@@ -40,6 +44,7 @@ class FeatureItem extends StatelessWidget {
           ),
         ),
       ],
+    ),
     );
   }
 }

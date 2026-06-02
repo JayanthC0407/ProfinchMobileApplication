@@ -2,12 +2,24 @@ import 'package:flutter/material.dart';
 
 class BalanceCard extends StatelessWidget {
 
+  final String accountNumber;
+  final String accountType;
   final double balance;
-
+  final List accounts;
+  final String selectedAccountId;
+  final Function(String?) onChanged;
+  
   const BalanceCard({
     super.key,
+    required this.accountNumber,
+    required this.accountType,
     required this.balance,
+    required this.accounts,
+    required this.selectedAccountId,
+    required this.onChanged,
   });
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -68,35 +80,39 @@ class BalanceCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
               color: const Color.fromARGB(255, 8, 18, 162).withValues(alpha: 0.15),
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: const [
+            child: DropdownButton<String>(
+              value: selectedAccountId,
+              underline: const SizedBox(),
 
-                Text(
-                  "Savings Account",
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 51, 3, 141),
-                  ),
-                ),
+              items: accounts.map<DropdownMenuItem<String>>(
+                (account) {
 
-                SizedBox(width: 8),
+                  return DropdownMenuItem<String>(
+                    value: account.id,
+                    child: Text(
+                      account.accountType,
+                    ),
+                  );
+                },
+              ).toList(),
 
-                Icon(
-                  Icons.keyboard_arrow_down,
-                  color: Color.fromARGB(255, 18, 3, 101),
-                )
-              ],
+              onChanged: onChanged,
             ),
           ),
 
           const SizedBox(height: 18),
 
-          const Text(
-            "Account No. 1234 5678 9012",
-            style: TextStyle(
-              color: Color.fromARGB(179, 55, 3, 133),
+          Text(
+            "Account No. $accountNumber",
+            style: const TextStyle(
+              color: Color.fromARGB(
+                179,
+                55,
+                3,
+                133,
+              ),
             ),
-          )
+          ),
         ],
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/routes/app_routes.dart';
 
-import '../../profile/screens/profile_screen.dart';
 
 class BottomNavBar extends StatelessWidget {
 
@@ -20,11 +20,9 @@ class BottomNavBar extends StatelessWidget {
 
         if (index == 4) {
 
-          Navigator.push(
+          Navigator.pushNamed(
             context,
-            MaterialPageRoute(
-              builder: (_) => const ProfileScreen(),
-            ),
+            AppRoutes.profile,
           );
         }
       },
