@@ -4,21 +4,17 @@ import 'core/routes/app_routes.dart';
 
 import 'features/auth/provider/auth_provider.dart';
 import 'features/dashboard/provider/dashboard_provider.dart';
-
+import 'features/auth/screens/splash_screen.dart';     
 import 'features/auth/screens/login_screen.dart';
 import 'features/dashboard/screens/dashboard_screen.dart';
+
 void main() {
   runApp(
-     MultiProvider(
+    MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (_) => AuthProvider(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => DashboardProvider(),
-        ),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => DashboardProvider()),
       ],
-
       child: const MyApp(),
     ),
   );
@@ -40,8 +36,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'SF Pro Display',
       ),
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.splash,            
       routes: {
+        AppRoutes.splash: (context) => const SplashScreen(),   
         AppRoutes.login: (context) => const LoginScreen(),
         AppRoutes.dashboard: (context) => const DashboardScreen(),
       },
