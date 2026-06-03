@@ -22,7 +22,7 @@ class QuickActionItem extends StatelessWidget {
           backgroundColor: const Color(0xffEEF3FF),
           child: Icon(
             icon,
-            color: Colors.blue,
+            color: const Color.fromARGB(255, 30, 137, 224),
           ),
         ),
 

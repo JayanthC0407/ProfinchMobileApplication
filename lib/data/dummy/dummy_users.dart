@@ -7,6 +7,7 @@ class DummyUsers {
 
     UserModel(
       id: 'USR001',
+      primaryAccountId: 'ACC001',
       username: 'Arjun Sharma',
       email: 'arjun.sharma@email.com',
       password: '123456',
@@ -18,8 +19,10 @@ class DummyUsers {
       isKycVerified: true,
     ),
 
+
     UserModel(
       id: 'USR002',
+      primaryAccountId: 'ACC004',
       username: 'Priya Nair',
       email: 'priya.nair@email.com',
       password: '123456',
@@ -33,6 +36,7 @@ class DummyUsers {
 
     UserModel(
       id: 'USR003',
+      primaryAccountId: 'ACC007',
       username: 'Rahul Mehta',
       email: 'rahul.mehta@email.com',
       password: '123456',

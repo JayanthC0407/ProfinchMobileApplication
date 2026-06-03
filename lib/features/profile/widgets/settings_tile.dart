@@ -33,9 +33,7 @@ class SettingsTile extends StatelessWidget {
       ),
 
       title: Text(title),
-
       trailing: const Icon(Icons.arrow_forward_ios_rounded),
-
       onTap: onTap,
     );
   }

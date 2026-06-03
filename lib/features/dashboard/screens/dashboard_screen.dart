@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/routes/app_routes.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/dashboard_provider.dart';
@@ -8,6 +9,7 @@ import '../widgets/feature_item.dart';
 import '../widgets/quick_action_item.dart';
 import '../widgets/transaction_tiles.dart';
 import '../../auth/provider/auth_provider.dart';
+import '../../../data/dummy/dummy_accounts.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -15,9 +17,26 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<DashboardProvider>(context);
-    final authProvider = Provider.of<AuthProvider>(context);
-    final user = authProvider.currentUser;
 
+    final authProvider =
+      Provider.of<AuthProvider>(context);
+
+    final user = authProvider.currentUser!;
+
+    final userAccounts =
+      DummyAccounts.allAccounts
+          .where((account) =>
+              account.userId == user.id)
+          .toList();
+
+    final selectedAccount =
+    userAccounts.firstWhere(
+      (account) =>
+          account.id ==
+          (provider.selectedAccountId ??
+              user.primaryAccountId),
+      orElse: () => userAccounts.first,
+    );
     return Scaffold(
       bottomNavigationBar: const BottomNavBar(),
       body: Container(
@@ -69,7 +88,6 @@ class DashboardScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     // Notification bell
                     Stack(
                       clipBehavior: Clip.none,
@@ -106,7 +124,22 @@ class DashboardScreen extends StatelessWidget {
                 const SizedBox(height: 22),
 
                 // ── BALANCE CARD ──────────────────────────────────
-                BalanceCard(balance: provider.totalBalance),
+                BalanceCard(
+                  balance: selectedAccount.availableBalance,
+                  accountNumber:
+                      selectedAccount.accountNumber,
+                  accountType:
+                      selectedAccount.accountType,
+                  accounts: userAccounts,
+                  selectedAccountId:
+                      selectedAccount.id,
+                  onChanged: (accountId) {
+
+                    if (accountId == null) return;
+
+                    provider.selectAccount(accountId);
+                  },
+                ),
 
                 const SizedBox(height: 22),
 
@@ -165,8 +198,17 @@ class DashboardScreen extends StatelessWidget {
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 16,
                   childAspectRatio: 0.85,                 // ✅ gives more height
-                  children: const [
-                    FeatureItem(icon: Icons.account_balance, title: "Accounts"),
+                  children: [
+                    FeatureItem(
+                      icon: Icons.account_balance,
+                      title: "Accounts",
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.accounts,
+                        );
+                       },
+                      ),
                     FeatureItem(icon: Icons.credit_card, title: "Cards"),
                     FeatureItem(icon: Icons.currency_rupee, title: "Loans"),
                     FeatureItem(icon: Icons.bar_chart, title: "Analytics"),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
+import 'package:profinch_mobile_application/data/dummy/dummy_accounts.dart';
 import 'package:provider/provider.dart';
-
 import '../../auth/provider/auth_provider.dart';
 import '../widgets/profile_header.dart';
 import '../widgets/profile_info_tile.dart';
@@ -18,6 +18,12 @@ class ProfileScreen extends StatelessWidget {
     final authProvider = Provider.of<AuthProvider>(context);
 
     final user = authProvider.currentUser!;
+
+    final primaryAccount =
+        DummyAccounts.allAccounts.firstWhere(
+          (a) => a.id == user.primaryAccountId,
+        );
+    value:primaryAccount.accountNumber;
 
     return Scaffold(
 
@@ -59,9 +65,9 @@ class ProfileScreen extends StatelessWidget {
             ),
 
             ProfileInfoTile(
-              title: "Account Number",
-              value: user.accountNumber,
-              icon: Icons.account_balance,
+              title: "Primary Account",
+              value: primaryAccount.accountType,
+              icon: Icons.star,
             ),
 
             ProfileInfoTile(

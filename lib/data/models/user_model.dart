@@ -9,6 +9,8 @@ class UserModel {
   final String accountNumber;
   final DateTime createdAt;
   final bool isKycVerified;
+  
+  final String primaryAccountId;
 
   UserModel({
     required this.id,
@@ -21,14 +23,16 @@ class UserModel {
     required this.accountNumber,
     required this.createdAt,
     required this.isKycVerified,
+    required this.primaryAccountId,
   });
 
-  UserModel copyWith({
+ UserModel copyWith({
   String? username,
   String? email,
   String? phoneNumber,
-}) {
-
+  String? primaryAccountId,
+}) 
+ {
   return UserModel(
     id: id,
     username: username ?? this.username,
@@ -40,6 +44,7 @@ class UserModel {
     accountNumber: accountNumber,
     createdAt: createdAt,
     isKycVerified: isKycVerified,
+    primaryAccountId:primaryAccountId ?? this.primaryAccountId,
   );
 }
 }
