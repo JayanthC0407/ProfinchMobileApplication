@@ -14,36 +14,37 @@ class FeatureItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
+    return GestureDetector(
+      onTap: onTap,            // ← wraps column with tap
       child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
+        mainAxisSize: MainAxisSize.min,
+        children: [
 
-        CircleAvatar(
-          radius: 22,                         // ✅ reduced from 28
-          backgroundColor: Colors.white,
-          child: Icon(
-            icon,
-            color: Colors.blue,
-            size: 20,                         // ✅ reduced from 28
+          CircleAvatar(
+            radius: 22,
+            backgroundColor: Colors.white,
+            child: Icon(
+              icon,
+              color: Colors.blue,
+              size: 20,
+            ),
           ),
-        ),
-        const SizedBox(height: 6),            // ✅ reduced from 10
 
-        Text(
-          title,
-          textAlign: TextAlign.center,
-          maxLines: 1,                        // ✅ no wrapping
-          overflow: TextOverflow.ellipsis,    // ✅ no overflow
-          style: const TextStyle(
-            fontSize: 11,                     // ✅ smaller text
-            color: Colors.white,              // ✅ white for dark bg
-            fontWeight: FontWeight.w500,
+          const SizedBox(height: 6),
+
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontSize: 11,
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-      ],
-    ),
+        ],
+      ),
     );
   }
 }

@@ -209,7 +209,7 @@ class DashboardScreen extends StatelessWidget {
                         );
                        },
                       ),
-                    FeatureItem(icon: Icons.credit_card, title: "Cards"),
+                    FeatureItem(icon: Icons.credit_card, title: "Cards", onTap:() => Navigator.pushNamed(context, AppRoutes.cards)),
                     FeatureItem(icon: Icons.currency_rupee, title: "Loans"),
                     FeatureItem(icon: Icons.bar_chart, title: "Analytics"),
                     FeatureItem(icon: Icons.account_balance_wallet, title: "Wallet"),
