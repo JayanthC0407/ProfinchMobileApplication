@@ -95,7 +95,6 @@ class BalanceCard extends StatelessWidget {
                   );
                 },
               ).toList(),
-
               onChanged: onChanged,
             ),
           ),

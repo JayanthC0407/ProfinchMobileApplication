@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
   if (!mounted) return;
 
   if (success) {
-
+    
     Provider.of<DashboardProvider>(
       context,
       listen: false,

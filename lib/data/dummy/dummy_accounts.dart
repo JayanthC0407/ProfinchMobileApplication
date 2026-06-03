@@ -179,5 +179,6 @@ class DummyAccounts {
     overDraftLimit: 0.0,
     nomineeRegistered: false,
   ),
+  
 ];
 }

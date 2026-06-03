@@ -29,7 +29,6 @@ class FeatureItem extends StatelessWidget {
             size: 20,                         // ✅ reduced from 28
           ),
         ),
-
         const SizedBox(height: 6),            // ✅ reduced from 10
 
         Text(

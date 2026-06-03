@@ -19,6 +19,7 @@ class DummyUsers {
       isKycVerified: true,
     ),
 
+
     UserModel(
       id: 'USR002',
       primaryAccountId: 'ACC004',

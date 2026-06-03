@@ -19,7 +19,7 @@ class DashboardProvider extends ChangeNotifier {
       'title': 'Salary Credit',
       'subtitle': 'Salary for May',
       'amount': '+ ₹75,000',
-      'color': Colors.green,
+      'color': const Color.fromARGB(255, 94, 194, 97),
       'icon': Icons.arrow_downward,
       'bgColor': const Color(0xffDDF7E3),
     },

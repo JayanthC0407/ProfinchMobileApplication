@@ -49,9 +49,13 @@ class MyApp extends StatelessWidget {
       initialRoute: AppRoutes.splash,            
       routes: {
         AppRoutes.splash: (context) => const SplashScreen(),   
+
         AppRoutes.login: (context) => const LoginScreen(),
+
         AppRoutes.dashboard: (context) => const DashboardScreen(),
+
         AppRoutes.profile: (context) => const ProfileScreen(),
+        
         AppRoutes.accounts: (context) => const AccountsScreen(),
       },
     );

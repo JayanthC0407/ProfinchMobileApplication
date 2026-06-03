@@ -61,7 +61,7 @@ class TransactionTile extends StatelessWidget {
                 Text(
                   subtitle,
                   style: const TextStyle(
-                    color: Colors.grey,
+                    color: Color.fromARGB(255, 90, 87, 87),
                   ),
                 )
               ],

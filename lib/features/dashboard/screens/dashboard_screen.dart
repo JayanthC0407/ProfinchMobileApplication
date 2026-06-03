@@ -88,7 +88,6 @@ class DashboardScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     // Notification bell
                     Stack(
                       clipBehavior: Clip.none,

@@ -41,9 +41,7 @@ class AccountCard extends StatelessWidget {
             Text(
               account.accountNumber,
             ),
-
             const SizedBox(height: 10),
-
             Text(
               "₹ ${account.balance.toStringAsFixed(2)}",
               style: const TextStyle(

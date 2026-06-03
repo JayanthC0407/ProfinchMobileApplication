@@ -71,4 +71,5 @@ class AccountDetailsScreen extends StatelessWidget {
       ),
     );
   }
+  
 }

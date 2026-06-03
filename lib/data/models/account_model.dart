@@ -2,17 +2,13 @@ class AccountModel {
 
   final String id;
   final String userId;
-
   final String accountNumber;
   final String iban;
-
   final String ifscCode;
   final String branchCode;
   final String branchName;
-
   final String accountType;
   final String currencyCode;
-
   final double balance;
   final double availableBalance;
   final double currentBalance;

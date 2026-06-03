@@ -151,6 +151,7 @@ class _EditProfileScreenState
                 ),
               ),
             )
+            
           ],
         ),
       ),

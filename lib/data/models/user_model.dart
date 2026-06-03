@@ -9,6 +9,7 @@ class UserModel {
   final String accountNumber;
   final DateTime createdAt;
   final bool isKycVerified;
+  
   final String primaryAccountId;
 
   UserModel({

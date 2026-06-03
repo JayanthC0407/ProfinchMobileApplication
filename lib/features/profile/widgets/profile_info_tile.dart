@@ -44,7 +44,7 @@ class ProfileInfoTile extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    color: Colors.grey,
+                    color: Color.fromARGB(255, 119, 116, 116),
                     fontSize: 14,
                   ),
                 ),

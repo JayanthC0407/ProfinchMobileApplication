@@ -11,6 +11,7 @@ class AccountProvider extends ChangeNotifier {
         .toList();
   }
 
+
   double getTotalBalance(String userId) {
 
     return DummyAccounts.allAccounts
