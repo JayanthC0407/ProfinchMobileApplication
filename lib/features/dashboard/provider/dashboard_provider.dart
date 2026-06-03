@@ -14,6 +14,13 @@ class DashboardProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool showMoreServices = false;
+
+    void toggleMoreServices() {
+      showMoreServices = !showMoreServices;
+      notifyListeners();
+    }
+
   List<Map<String, dynamic>> transactions = [
     {
       'title': 'Salary Credit',
