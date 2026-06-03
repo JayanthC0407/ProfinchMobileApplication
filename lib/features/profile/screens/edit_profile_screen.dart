@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/features/dashboard/provider/dashboard_provider.dart';
 import 'package:provider/provider.dart';
-
 import '../../auth/provider/auth_provider.dart';
+import '../../../data/dummy/dummy_accounts.dart';
 
 class EditProfileScreen extends StatefulWidget {
 
   const EditProfileScreen({super.key});
+  
 
   @override
   State<EditProfileScreen> createState() =>
@@ -18,7 +20,10 @@ class _EditProfileScreenState
   late TextEditingController usernameController;
   late TextEditingController emailController;
   late TextEditingController phoneController;
-
+  
+  String? selectedPrimaryAccountId;
+ 
+ 
   @override
   void initState() {
     super.initState();
@@ -36,6 +41,9 @@ class _EditProfileScreenState
 
     phoneController =
         TextEditingController(text: user.phoneNumber);
+    
+    selectedPrimaryAccountId =user.primaryAccountId;
+    
   }
 
   @override
@@ -45,6 +53,11 @@ class _EditProfileScreenState
         Provider.of<AuthProvider>(context);
 
     final user = authProvider.currentUser!;
+
+    final accounts =
+    DummyAccounts.allAccounts
+        .where((a) => a.userId == user.id)
+        .toList();
 
     return Scaffold(
 
@@ -84,6 +97,29 @@ class _EditProfileScreenState
 
             const SizedBox(height: 40),
 
+            DropdownButtonFormField<String>(
+              value: selectedPrimaryAccountId,
+              decoration: const InputDecoration(
+                labelText: 'Primary Account',
+              ),
+              items: accounts.map((account) {
+
+                return DropdownMenuItem(
+                  value: account.id,
+                  child: Text(
+                    "${account.accountType} (${account.accountNumber})",
+                  ),
+                );
+
+              }).toList(),
+              onChanged: (value) {
+
+                setState(() {
+                  selectedPrimaryAccountId = value;
+                });
+              },
+            ),
+
             SizedBox(
               width: double.infinity,
               height: 55,
@@ -92,19 +128,22 @@ class _EditProfileScreenState
                 onPressed: () {
 
                   final updatedUser = user.copyWith(
-                    username:
-                        usernameController.text.trim(),
-
-                    email:
-                        emailController.text.trim(),
-
-                    phoneNumber:
-                        phoneController.text.trim(),
+                    username: usernameController.text.trim(),
+                    email: emailController.text.trim(),
+                    phoneNumber: phoneController.text.trim(),
+                    primaryAccountId: selectedPrimaryAccountId,
                   );
 
                   authProvider.updateUser(updatedUser);
 
-                  Navigator.pop(context);
+                    Provider.of<DashboardProvider>(
+                      context,
+                      listen: false,
+                    ).resetToPrimary(
+                      selectedPrimaryAccountId!,
+                    );
+
+                    Navigator.pop(context);
                 },
 
                 child: const Text(
@@ -112,6 +151,7 @@ class _EditProfileScreenState
                 ),
               ),
             )
+            
           ],
         ),
       ),

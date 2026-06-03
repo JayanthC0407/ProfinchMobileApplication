@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/data/models/user_model.dart';
 import 'package:profinch_mobile_application/data/repositories/auth_repository.dart';
 
+
 class AuthProvider extends ChangeNotifier {
 
   final AuthRepository _repository = AuthRepository();

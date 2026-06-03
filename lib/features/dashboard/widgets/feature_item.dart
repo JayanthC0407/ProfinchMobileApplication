@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class FeatureItem extends StatelessWidget {
   final IconData icon;
   final String title;
-  final VoidCallback? onTap;   // ← added
+  final VoidCallback? onTap;
 
   const FeatureItem({
     super.key,
     required this.icon,
     required this.title,
-    this.onTap,                // ← optional so existing code won't break
+    this.onTap,
   });
 
   @override

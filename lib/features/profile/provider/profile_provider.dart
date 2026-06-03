@@ -29,6 +29,7 @@ class ProfileProvider extends ChangeNotifier {
       accountNumber: user!.accountNumber,
       createdAt: user!.createdAt,
       isKycVerified: user!.isKycVerified,
+      primaryAccountId: user!.primaryAccountId,
     );
 
     notifyListeners();
