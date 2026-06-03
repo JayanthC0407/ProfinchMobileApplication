@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/features/cards/provider/card_provider.dart';
+import 'package:profinch_mobile_application/features/cards/screens/card_screen.dart';
 import 'package:provider/provider.dart';
 import 'core/routes/app_routes.dart';
 
@@ -14,6 +16,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => DashboardProvider()),
+        ChangeNotifierProvider(create: (_) => CardProvider()),
       ],
       child: const MyApp(),
     ),
@@ -41,6 +44,8 @@ class MyApp extends StatelessWidget {
         AppRoutes.splash: (context) => const SplashScreen(),   
         AppRoutes.login: (context) => const LoginScreen(),
         AppRoutes.dashboard: (context) => const DashboardScreen(),
+        AppRoutes.cards: (context) => const CardsScreen(),
+
       },
     );
   }

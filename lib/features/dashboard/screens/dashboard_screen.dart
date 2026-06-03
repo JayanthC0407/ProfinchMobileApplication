@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/routes/app_routes.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/dashboard_provider.dart';
@@ -165,15 +166,15 @@ class DashboardScreen extends StatelessWidget {
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 16,
                   childAspectRatio: 0.85,                 // ✅ gives more height
-                  children: const [
-                    FeatureItem(icon: Icons.account_balance, title: "Accounts"),
-                    FeatureItem(icon: Icons.credit_card, title: "Cards"),
-                    FeatureItem(icon: Icons.currency_rupee, title: "Loans"),
-                    FeatureItem(icon: Icons.bar_chart, title: "Analytics"),
-                    FeatureItem(icon: Icons.account_balance_wallet, title: "Wallet"),
-                    FeatureItem(icon: Icons.receipt_long, title: "Bills"),
-                    FeatureItem(icon: Icons.card_giftcard, title: "Rewards"),
-                    FeatureItem(icon: Icons.more_horiz, title: "More"),
+                  children: [
+                    const FeatureItem(icon: Icons.account_balance, title: "Accounts"),
+                    FeatureItem(icon: Icons.credit_card, title: "Cards", onTap:() => Navigator.pushNamed(context, AppRoutes.cards)),
+                    const FeatureItem(icon: Icons.currency_rupee, title: "Loans"),
+                    const FeatureItem(icon: Icons.bar_chart, title: "Analytics"),
+                    const FeatureItem(icon: Icons.account_balance_wallet, title: "Wallet"),
+                    const FeatureItem(icon: Icons.receipt_long, title: "Bills"),
+                    const FeatureItem(icon: Icons.card_giftcard, title: "Rewards"),
+                    const FeatureItem(icon: Icons.more_horiz, title: "More"),
                   ],
                 ),
 
