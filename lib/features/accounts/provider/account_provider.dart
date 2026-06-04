@@ -3,7 +3,6 @@ import 'package:profinch_mobile_application/data/dummy/dummy_accounts.dart';
 import 'package:profinch_mobile_application/data/models/account_model.dart';
 
 class AccountProvider extends ChangeNotifier {
-
   List<AccountModel> getAccountsByUserId(String userId) {
 
     return DummyAccounts.allAccounts

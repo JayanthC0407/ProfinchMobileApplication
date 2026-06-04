@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
+import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
+import 'package:profinch_mobile_application/features/upi/provider/upi_provider.dart';
+import 'package:profinch_mobile_application/features/upi/screens/scan_qr_screen.dart';
+import 'package:provider/provider.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int currentIndex;
 
   const BottomNavBar({
     super.key,
-    this.currentIndex = 0,  // default to Home
+    this.currentIndex = 0, // default to Home
   });
 
   @override
@@ -33,15 +37,22 @@ class _BottomNavBarState extends State<BottomNavBar> {
         Navigator.pushNamedAndRemoveUntil(
           context,
           AppRoutes.dashboard,
-          (route) => false,  // clears navigation stack
+          (route) => false, // clears navigation stack
         );
         break;
       case 1:
         Navigator.pushNamed(context, AppRoutes.transactions);
         break;
       case 2:
-        // TODO: Navigate to Scan screen
-        // Navigator.pushNamed(context, AppRoutes.scan);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ChangeNotifierProvider(
+              create: (ctx) => UpiProvider((ctx.read<AuthProvider>())),
+              child: const ScanQrScreen(),
+            ),
+          ),
+        );
         break;
       case 3:
         // TODO: Navigate to Offers screen

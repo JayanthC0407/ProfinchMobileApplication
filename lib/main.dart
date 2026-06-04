@@ -4,6 +4,7 @@ import 'package:profinch_mobile_application/features/cards/provider/card_provide
 import 'package:profinch_mobile_application/features/cards/screens/card_screen.dart';
 import 'package:profinch_mobile_application/features/accounts/screens/accounts_screen.dart';
 import 'package:profinch_mobile_application/features/profile/screens/profile_screen.dart';
+import 'package:profinch_mobile_application/features/upi/screens/upi_home_screen.dart';
 import 'package:provider/provider.dart';
 import 'core/routes/app_routes.dart';
 
@@ -46,17 +47,14 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: AppRoutes.splash,
       routes: {
-        AppRoutes.splash: (context) => const SplashScreen(),
-
-        AppRoutes.login: (context) => const LoginScreen(),
-
-        AppRoutes.dashboard: (context) => const DashboardScreen(),
-        AppRoutes.cards: (context) => const CardsScreen(),
-
-        AppRoutes.profile: (context) => const ProfileScreen(),
-
-        AppRoutes.accounts: (context) => const AccountsScreen(),
-        AppRoutes.transactions: (context) => const TransactionHistoryScreen(),
+        AppRoutes.splash:        (context) => const SplashScreen(),
+        AppRoutes.login:         (context) => const LoginScreen(),
+        AppRoutes.dashboard:     (context) => const DashboardScreen(),
+        AppRoutes.cards:         (context) => const CardsScreen(),
+        AppRoutes.profile:       (context) => const ProfileScreen(),
+        AppRoutes.accounts:      (context) => const AccountsScreen(),
+        AppRoutes.transactions:  (context) => const TransactionHistoryScreen(),
+        AppRoutes.upi:           (context) => const UpiHomeScreen(),
       },
     );
   }

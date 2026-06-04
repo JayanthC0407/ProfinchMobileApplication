@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
+import 'package:profinch_mobile_application/features/upi/provider/upi_provider.dart';
+import 'package:profinch_mobile_application/features/upi/screens/receive_money_screen.dart';
+import 'package:profinch_mobile_application/features/upi/screens/scan_qr_screen.dart';
+import 'package:profinch_mobile_application/features/upi/screens/upi_home_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/dashboard_provider.dart';
@@ -18,23 +22,17 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<DashboardProvider>(context);
 
-    final authProvider =
-      Provider.of<AuthProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
 
     final user = authProvider.currentUser!;
 
-    final userAccounts =
-      DummyAccounts.allAccounts
-          .where((account) =>
-              account.userId == user.id)
-          .toList();
+    final userAccounts = DummyAccounts.allAccounts
+        .where((account) => account.userId == user.id)
+        .toList();
 
-    final selectedAccount =
-    userAccounts.firstWhere(
+    final selectedAccount = userAccounts.firstWhere(
       (account) =>
-          account.id ==
-          (provider.selectedAccountId ??
-              user.primaryAccountId),
+          account.id == (provider.selectedAccountId ?? user.primaryAccountId),
       orElse: () => userAccounts.first,
     );
     return Scaffold(
@@ -52,12 +50,10 @@ class DashboardScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 // ── HEADER ───────────────────────────────────────
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-
                     Row(
                       children: [
                         const CircleAvatar(
@@ -69,18 +65,18 @@ class DashboardScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Hello, ${user.username ?? 'User'} 👋",
+                              "Hello, ${user.username} 👋",
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,       // ✅ white text
+                                color: Colors.white, // ✅ white text
                               ),
                             ),
                             const SizedBox(height: 3),
                             const Text(
                               "Welcome Back",
                               style: TextStyle(
-                                color: Colors.white70,     // ✅ white text
+                                color: Colors.white70, // ✅ white text
                                 fontSize: 13,
                               ),
                             ),
@@ -95,7 +91,7 @@ class DashboardScreen extends StatelessWidget {
                         const Icon(
                           Icons.notifications_none,
                           size: 30,
-                          color: Colors.white,             // ✅ white icon
+                          color: Colors.white, // ✅ white icon
                         ),
                         Positioned(
                           right: -2,
@@ -126,15 +122,11 @@ class DashboardScreen extends StatelessWidget {
                 // ── BALANCE CARD ──────────────────────────────────
                 BalanceCard(
                   balance: selectedAccount.availableBalance,
-                  accountNumber:
-                      selectedAccount.accountNumber,
-                  accountType:
-                      selectedAccount.accountType,
+                  accountNumber: selectedAccount.accountNumber,
+                  accountType: selectedAccount.accountType,
                   accounts: userAccounts,
-                  selectedAccountId:
-                      selectedAccount.id,
+                  selectedAccountId: selectedAccount.id,
                   onChanged: (accountId) {
-
                     if (accountId == null) return;
 
                     provider.selectAccount(accountId);
@@ -155,11 +147,53 @@ class DashboardScreen extends StatelessWidget {
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: const [
-                      QuickActionItem(icon: Icons.send, title: "Send"),
-                      QuickActionItem(icon: Icons.add_circle_outline, title: "Add Money"),
-                      QuickActionItem(icon: Icons.qr_code_scanner, title: "Scan"),
-                      QuickActionItem(icon: Icons.account_balance_wallet, title: "Wallet"),
+                    children: [
+                      QuickActionItem(
+                        icon: Icons.send,
+                        title: "Pay to anyone",
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChangeNotifierProvider(
+                              create: (ctx) =>
+                                  UpiProvider((ctx.read<AuthProvider>())),
+                              child: const UpiHomeScreen(),
+                            ),
+                          ),
+                        ),
+                      ),
+                      QuickActionItem(
+                        icon: Icons.add_circle_outline,
+                        title: "Receive",
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChangeNotifierProvider(
+                              create: (ctx) =>
+                                  UpiProvider((ctx.read<AuthProvider>())),
+                              child: const ReceiveMoneyScreen(),
+                            ),
+                          ),
+                        ),
+                      ),
+                      QuickActionItem(
+                        icon: Icons.qr_code_scanner,
+                        title: "Scan",
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChangeNotifierProvider(
+                              create: (ctx) =>
+                                  UpiProvider((ctx.read<AuthProvider>())),
+                              child: const ScanQrScreen(),
+                            ),
+                          ),
+                        ),
+                      ),
+                      QuickActionItem(
+                        icon: Icons.account_balance_wallet,
+                        title: "Wallet",
+                      ),
                     ],
                   ),
                 ),
@@ -175,13 +209,13 @@ class DashboardScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,               // ✅ white text
+                        color: Colors.white, // ✅ white text
                       ),
                     ),
                     Text(
                       "Edit",
                       style: TextStyle(
-                        color: Colors.white70,             // ✅ white text
+                        color: Colors.white70, // ✅ white text
                         fontSize: 14,
                       ),
                     ),
@@ -197,22 +231,27 @@ class DashboardScreen extends StatelessWidget {
                   crossAxisCount: 4,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 16,
-                  childAspectRatio: 0.85,                 // ✅ gives more height
+                  childAspectRatio: 0.85, // ✅ gives more height
                   children: [
                     FeatureItem(
                       icon: Icons.account_balance,
                       title: "Accounts",
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          AppRoutes.accounts,
-                        );
-                       },
-                      ),
-                    FeatureItem(icon: Icons.credit_card, title: "Cards", onTap:() => Navigator.pushNamed(context, AppRoutes.cards)),
+                        Navigator.pushNamed(context, AppRoutes.accounts);
+                      },
+                    ),
+                    FeatureItem(
+                      icon: Icons.credit_card,
+                      title: "Cards",
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.cards),
+                    ),
                     FeatureItem(icon: Icons.currency_rupee, title: "Loans"),
                     FeatureItem(icon: Icons.bar_chart, title: "Analytics"),
-                    FeatureItem(icon: Icons.account_balance_wallet, title: "Wallet"),
+                    FeatureItem(
+                      icon: Icons.account_balance_wallet,
+                      title: "Wallet",
+                    ),
                     FeatureItem(icon: Icons.receipt_long, title: "Bills"),
                     FeatureItem(icon: Icons.card_giftcard, title: "Rewards"),
                     FeatureItem(icon: Icons.more_horiz, title: "More"),
@@ -230,15 +269,16 @@ class DashboardScreen extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
-                        color: Colors.white,               
+                        color: Colors.white,
                       ),
                     ),
                     GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, AppRoutes.transactions),
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.transactions),
                       child: Text(
                         "See All",
                         style: const TextStyle(
-                          color: Colors.white70,             
+                          color: Colors.white70,
                           fontSize: 14,
                         ),
                       ),
