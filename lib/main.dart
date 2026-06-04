@@ -3,6 +3,7 @@ import 'package:profinch_mobile_application/features/cards/provider/card_provide
 import 'package:profinch_mobile_application/features/cards/screens/card_screen.dart';
 import 'package:profinch_mobile_application/features/accounts/screens/accounts_screen.dart';
 import 'package:profinch_mobile_application/features/profile/screens/profile_screen.dart';
+import 'package:profinch_mobile_application/features/term_deposit/provider/term_deposit_provider.dart';
 import 'package:provider/provider.dart';
 import 'core/routes/app_routes.dart';
 
@@ -12,6 +13,11 @@ import 'features/auth/screens/splash_screen.dart';
 import 'features/auth/screens/login_screen.dart';
 import 'features/dashboard/screens/dashboard_screen.dart';
 import 'features/accounts/provider/account_provider.dart';
+import 'features/term_deposit/screens/term_deposit_screen.dart';
+import 'features/term_deposit/screens/my_term_deposits_screen.dart';
+import 'features/term_deposit/screens/open_term_deposit_screen.dart';
+import 'features/term_deposit/screens/redeem_term_deposit_screen.dart';
+import 'features/term_deposit/screens/term_deposit_statement_screen.dart';
 
 void main() {
   runApp(
@@ -21,6 +27,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => DashboardProvider()),
         ChangeNotifierProvider(create: (_) => AccountProvider()),
         ChangeNotifierProvider(create: (_) => CardProvider()),
+        ChangeNotifierProvider(create: (_) => TermDepositProvider()),
       ],
       child: const MyApp(),
     ),
@@ -50,11 +57,22 @@ class MyApp extends StatelessWidget {
         AppRoutes.login: (context) => const LoginScreen(),
 
         AppRoutes.dashboard: (context) => const DashboardScreen(),
+
         AppRoutes.cards: (context) => const CardsScreen(),
 
         AppRoutes.profile: (context) => const ProfileScreen(),
 
         AppRoutes.accounts: (context) => const AccountsScreen(),
+
+        AppRoutes.termDeposits: (context) => const TermDepositScreen(),
+
+        AppRoutes.myDeposits: (context) => const MyTermDepositsScreen(),
+
+        AppRoutes.openDeposit: (context) => const OpenTermDepositScreen(),
+
+        AppRoutes.redeemDeposit: (context) => const RedeemTermDepositScreen(),
+
+        AppRoutes.depositStatements: (context) => const TermDepositStatementScreen(),
       },
     );
   }

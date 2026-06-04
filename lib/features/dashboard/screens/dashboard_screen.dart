@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
+import 'package:profinch_mobile_application/features/accounts/provider/account_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/dashboard_provider.dart';
@@ -9,7 +10,6 @@ import '../widgets/feature_item.dart';
 import '../widgets/quick_action_item.dart';
 import '../widgets/transaction_tiles.dart';
 import '../../auth/provider/auth_provider.dart';
-import '../../../data/dummy/dummy_accounts.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -23,11 +23,15 @@ class DashboardScreen extends StatelessWidget {
 
     final user = authProvider.currentUser!;
 
+    final accountProvider =
+    Provider.of<AccountProvider>(
+      context,
+    );
+
     final userAccounts =
-      DummyAccounts.allAccounts
-          .where((account) =>
-              account.userId == user.id)
-          .toList();
+    accountProvider.getAccountsByUserId(
+      user.id,
+    );
 
     final selectedAccount =
     userAccounts.firstWhere(
@@ -192,32 +196,125 @@ class DashboardScreen extends StatelessWidget {
 
                 // ── QUICK ACCESS GRID ─────────────────────────────
                 GridView.count(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 16,
-                  childAspectRatio: 0.85,                 // ✅ gives more height
-                  children: [
-                    FeatureItem(
-                      icon: Icons.account_balance,
-                      title: "Accounts",
-                      onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          AppRoutes.accounts,
-                        );
-                       },
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 4,
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 0.85,
+
+                    children: [
+
+                      FeatureItem(
+                        icon: Icons.account_balance,
+                        title: "Accounts",
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.accounts,
+                          );
+                        },
                       ),
-                    FeatureItem(icon: Icons.credit_card, title: "Cards", onTap:() => Navigator.pushNamed(context, AppRoutes.cards)),
-                    FeatureItem(icon: Icons.currency_rupee, title: "Loans"),
-                    FeatureItem(icon: Icons.bar_chart, title: "Analytics"),
-                    FeatureItem(icon: Icons.account_balance_wallet, title: "Wallet"),
-                    FeatureItem(icon: Icons.receipt_long, title: "Bills"),
-                    FeatureItem(icon: Icons.card_giftcard, title: "Rewards"),
-                    FeatureItem(icon: Icons.more_horiz, title: "More"),
-                  ],
-                ),
+
+                      FeatureItem(
+                        icon: Icons.credit_card,
+                        title: "Cards",
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.cards,
+                          );
+                        },
+                      ),
+
+                      const FeatureItem(
+                        icon: Icons.currency_rupee,
+                        title: "Loans",
+                      ),
+
+                      const FeatureItem(
+                        icon: Icons.bar_chart,
+                        title: "Analytics",
+                      ),
+
+                      if (!provider.showMoreServices) ...[
+
+                        const FeatureItem(
+                          icon: Icons.account_balance_wallet,
+                          title: "Wallet",
+                        ),
+
+                        const FeatureItem(
+                          icon: Icons.receipt_long,
+                          title: "Bills",
+                        ),
+
+                        const FeatureItem(
+                          icon: Icons.card_giftcard,
+                          title: "Rewards",
+                        ),
+
+                        FeatureItem(
+                          icon: Icons.more_horiz,
+                          title: "More",
+                          onTap: () {
+                            provider.toggleMoreServices();
+                          },
+                        ),
+                      ]
+                      else ...[
+
+                        FeatureItem(
+                          icon: Icons.savings,
+                          title: "Term Dep.",
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.termDeposits,
+                            );
+                          },
+                        ),
+
+                        const FeatureItem(
+                          icon: Icons.trending_up,
+                          title: "Invest.",
+                        ),
+
+                        const FeatureItem(
+                          icon: Icons.security,
+                          title: "Insurance",
+                        ),
+
+                        const FeatureItem(
+                          icon: Icons.support_agent,
+                          title: "Service",
+                        ),
+
+                        const FeatureItem(
+                          icon: Icons.description,
+                          title: "Statements",
+                        ),
+
+                        const FeatureItem(
+                          icon: Icons.people,
+                          title: "Benefic.",
+                        ),
+
+                        const FeatureItem(
+                          icon: Icons.calculate,
+                          title: "Calculator",
+                        ),
+
+                        FeatureItem(
+                          icon: Icons.expand_less,
+                          title: "Less",
+                          onTap: () {
+                            provider.toggleMoreServices();
+                          },
+                        ),
+                      ],
+                    ],
+                  ),
 
                 const SizedBox(height: 26),
 
