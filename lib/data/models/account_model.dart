@@ -13,9 +13,7 @@ class AccountModel {
   final double availableBalance;
   final double currentBalance;
   final double holdAmount;
-
   final bool isActive;
-
   final String partyName;
 
   final DateTime openingDate;
@@ -51,4 +49,33 @@ class AccountModel {
     required this.overDraftLimit,
     required this.nomineeRegistered,
   });
+  AccountModel copyWith({
+  double? balance,
+  double? availableBalance,
+  }) {
+    return AccountModel(
+      id: id,
+      userId: userId,
+      accountNumber: accountNumber,
+      iban: iban,
+      ifscCode: ifscCode,
+      branchCode: branchCode,
+      branchName: branchName,
+      accountType: accountType,
+      currencyCode: currencyCode,
+      balance: balance ?? this.balance,
+      availableBalance:
+          availableBalance ?? this.availableBalance,
+      currentBalance: currentBalance,
+      holdAmount: holdAmount,
+      isActive: isActive,
+      partyName: partyName,
+      openingDate: openingDate,
+      hasChequeBook: hasChequeBook,
+      hasATMFacility: hasATMFacility,
+      hasOverDraftFacility: hasOverDraftFacility,
+      overDraftLimit: overDraftLimit,
+      nomineeRegistered: nomineeRegistered,
+    );
+  }
 }

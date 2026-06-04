@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:provider/provider.dart';
 
 import '../../auth/provider/auth_provider.dart';
@@ -28,6 +29,8 @@ class AccountsScreen extends StatelessWidget {
         accountProvider.getTotalBalance(user.id);
 
     return Scaffold(
+      
+       backgroundColor: AppColors.lightblue,
 
       appBar: AppBar(
         title: const Text('My Accounts'),
@@ -42,7 +45,12 @@ class AccountsScreen extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.blue,
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.primaryDark,
+                    AppColors.primary,
+                  ],
+                ),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Column(

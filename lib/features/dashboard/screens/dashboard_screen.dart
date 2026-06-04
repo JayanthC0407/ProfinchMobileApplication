@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
+import 'package:profinch_mobile_application/features/accounts/provider/account_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/dashboard_provider.dart';
@@ -9,7 +10,6 @@ import '../widgets/feature_item.dart';
 import '../widgets/quick_action_item.dart';
 import '../widgets/transaction_tiles.dart';
 import '../../auth/provider/auth_provider.dart';
-import '../../../data/dummy/dummy_accounts.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -23,11 +23,15 @@ class DashboardScreen extends StatelessWidget {
 
     final user = authProvider.currentUser!;
 
+    final accountProvider =
+    Provider.of<AccountProvider>(
+      context,
+    );
+
     final userAccounts =
-      DummyAccounts.allAccounts
-          .where((account) =>
-              account.userId == user.id)
-          .toList();
+    accountProvider.getAccountsByUserId(
+      user.id,
+    );
 
     final selectedAccount =
     userAccounts.firstWhere(
@@ -266,7 +270,7 @@ class DashboardScreen extends StatelessWidget {
                           onTap: () {
                             Navigator.pushNamed(
                               context,
-                              AppRoutes.accounts,
+                              AppRoutes.termDeposits,
                             );
                           },
                         ),
