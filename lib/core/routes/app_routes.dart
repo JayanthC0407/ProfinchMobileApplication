@@ -6,5 +6,6 @@ class AppRoutes {
   static const String cards = '/cards';
   static const String profile = '/profile';
   static const String accounts = '/accounts';
+  static const String transactions = '/transactions';
   
 }

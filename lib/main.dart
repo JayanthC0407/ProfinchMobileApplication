@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/features/accounts/screens/transaction_history_screen.dart';
 import 'package:profinch_mobile_application/features/cards/provider/card_provider.dart';
 import 'package:profinch_mobile_application/features/cards/screens/card_screen.dart';
 import 'package:profinch_mobile_application/features/accounts/screens/accounts_screen.dart';
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.profile: (context) => const ProfileScreen(),
 
         AppRoutes.accounts: (context) => const AccountsScreen(),
+        AppRoutes.transactions: (context) => const TransactionHistoryScreen(),
       },
     );
   }

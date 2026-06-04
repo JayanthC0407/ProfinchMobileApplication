@@ -224,20 +224,23 @@ class DashboardScreen extends StatelessWidget {
                 // ── RECENT TRANSACTIONS HEADER ────────────────────
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
+                  children: [
+                    const Text(
                       "Recent Transactions",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 18,
-                        color: Colors.white,               // ✅ white text
+                        color: Colors.white,               
                       ),
                     ),
-                    Text(
-                      "See All",
-                      style: TextStyle(
-                        color: Colors.white70,             // ✅ white text
-                        fontSize: 14,
+                    GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, AppRoutes.transactions),
+                      child: Text(
+                        "See All",
+                        style: const TextStyle(
+                          color: Colors.white70,             
+                          fontSize: 14,
+                        ),
                       ),
                     ),
                   ],
