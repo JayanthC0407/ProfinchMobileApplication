@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class DashboardProvider extends ChangeNotifier {
 
+  // ── Account selection ──────────────────────────────────────────
   String? selectedAccountId;
 
   void selectAccount(String accountId) {
@@ -14,6 +15,16 @@ class DashboardProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // ── More / Less services toggle ────────────────────────────────
+  bool _showMoreServices = false;
+  bool get showMoreServices => _showMoreServices;
+
+  void toggleMoreServices() {
+    _showMoreServices = !_showMoreServices;
+    notifyListeners();
+  }
+
+  // ── Recent transactions ────────────────────────────────────────
   List<Map<String, dynamic>> transactions = [
     {
       'title': 'Salary Credit',
