@@ -1,5 +1,4 @@
 class AppRoutes {
-
   static const String splash = '/splash';
   static const String login = '/login';
   static const String dashboard = '/dashboard';
@@ -8,4 +7,10 @@ class AppRoutes {
   static const String accounts = '/accounts';
   static const String transactions = '/transactions';
   static const String upi = '/upi';
+}
+  static const String termDeposits = '/termDeposits';
+  static const String myDeposits = '/myDeposits';
+  static const String openDeposit = '/openDeposit';
+  static const String redeemDeposit = '/redeemDeposit';
+  static const String depositStatements = '/depositStatements';
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
 import 'package:profinch_mobile_application/data/dummy/dummy_accounts.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,7 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
 
-      backgroundColor: const Color(0xffF5F7FB),
+      backgroundColor: AppColors.lightblue, // light background
 
       appBar: AppBar(
         backgroundColor: Colors.transparent,

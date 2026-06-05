@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
+
+// ✅ Keep both — UPI imports (your branch) + AccountProvider (main branch)
 import 'package:profinch_mobile_application/features/upi/provider/upi_provider.dart';
 import 'package:profinch_mobile_application/features/upi/screens/receive_money_screen.dart';
 import 'package:profinch_mobile_application/features/upi/screens/scan_qr_screen.dart';
 import 'package:profinch_mobile_application/features/upi/screens/upi_home_screen.dart';
+import 'package:profinch_mobile_application/features/accounts/provider/account_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/dashboard_provider.dart';
@@ -13,7 +16,6 @@ import '../widgets/feature_item.dart';
 import '../widgets/quick_action_item.dart';
 import '../widgets/transaction_tiles.dart';
 import '../../auth/provider/auth_provider.dart';
-import '../../../data/dummy/dummy_accounts.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -21,20 +23,19 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<DashboardProvider>(context);
-
     final authProvider = Provider.of<AuthProvider>(context);
-
     final user = authProvider.currentUser!;
 
-    final userAccounts = DummyAccounts.allAccounts
-        .where((account) => account.userId == user.id)
-        .toList();
+    // ✅ Use AccountProvider (main branch) — cleaner approach
+    final accountProvider = Provider.of<AccountProvider>(context);
+    final userAccounts = accountProvider.getAccountsByUserId(user.id);
 
     final selectedAccount = userAccounts.firstWhere(
       (account) =>
           account.id == (provider.selectedAccountId ?? user.primaryAccountId),
       orElse: () => userAccounts.first,
     );
+
     return Scaffold(
       bottomNavigationBar: const BottomNavBar(),
       body: Container(
@@ -50,6 +51,7 @@ class DashboardScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 // ── HEADER ───────────────────────────────────────
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,14 +71,14 @@ class DashboardScreen extends StatelessWidget {
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white, // ✅ white text
+                                color: Colors.white,
                               ),
                             ),
                             const SizedBox(height: 3),
                             const Text(
                               "Welcome Back",
                               style: TextStyle(
-                                color: Colors.white70, // ✅ white text
+                                color: Colors.white70,
                                 fontSize: 13,
                               ),
                             ),
@@ -84,14 +86,13 @@ class DashboardScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // Notification bell
                     Stack(
                       clipBehavior: Clip.none,
                       children: [
                         const Icon(
                           Icons.notifications_none,
                           size: 30,
-                          color: Colors.white, // ✅ white icon
+                          color: Colors.white,
                         ),
                         Positioned(
                           right: -2,
@@ -128,7 +129,6 @@ class DashboardScreen extends StatelessWidget {
                   selectedAccountId: selectedAccount.id,
                   onChanged: (accountId) {
                     if (accountId == null) return;
-
                     provider.selectAccount(accountId);
                   },
                 ),
@@ -148,6 +148,7 @@ class DashboardScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
+                      // ✅ Your UPI navigation kept
                       QuickActionItem(
                         icon: Icons.send,
                         title: "Pay to anyone",
@@ -156,7 +157,7 @@ class DashboardScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => ChangeNotifierProvider(
                               create: (ctx) =>
-                                  UpiProvider((ctx.read<AuthProvider>())),
+                                  UpiProvider(ctx.read<AuthProvider>()),
                               child: const UpiHomeScreen(),
                             ),
                           ),
@@ -170,7 +171,7 @@ class DashboardScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => ChangeNotifierProvider(
                               create: (ctx) =>
-                                  UpiProvider((ctx.read<AuthProvider>())),
+                                  UpiProvider(ctx.read<AuthProvider>()),
                               child: const ReceiveMoneyScreen(),
                             ),
                           ),
@@ -184,7 +185,7 @@ class DashboardScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => ChangeNotifierProvider(
                               create: (ctx) =>
-                                  UpiProvider((ctx.read<AuthProvider>())),
+                                  UpiProvider(ctx.read<AuthProvider>()),
                               child: const ScanQrScreen(),
                             ),
                           ),
@@ -209,15 +210,12 @@ class DashboardScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white, // ✅ white text
+                        color: Colors.white,
                       ),
                     ),
                     Text(
                       "Edit",
-                      style: TextStyle(
-                        color: Colors.white70, // ✅ white text
-                        fontSize: 14,
-                      ),
+                      style: TextStyle(color: Colors.white70, fontSize: 14),
                     ),
                   ],
                 ),
@@ -225,36 +223,109 @@ class DashboardScreen extends StatelessWidget {
                 const SizedBox(height: 16),
 
                 // ── QUICK ACCESS GRID ─────────────────────────────
+                // ✅ Use teammate's expanded grid (More/Less toggle + Term Deposits)
                 GridView.count(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   crossAxisCount: 4,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 16,
-                  childAspectRatio: 0.85, // ✅ gives more height
+                  childAspectRatio: 0.85,
                   children: [
+
                     FeatureItem(
                       icon: Icons.account_balance,
                       title: "Accounts",
-                      onTap: () {
-                        Navigator.pushNamed(context, AppRoutes.accounts);
-                      },
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.accounts),
                     ),
+
                     FeatureItem(
                       icon: Icons.credit_card,
                       title: "Cards",
                       onTap: () =>
                           Navigator.pushNamed(context, AppRoutes.cards),
                     ),
-                    FeatureItem(icon: Icons.currency_rupee, title: "Loans"),
-                    FeatureItem(icon: Icons.bar_chart, title: "Analytics"),
-                    FeatureItem(
-                      icon: Icons.account_balance_wallet,
-                      title: "Wallet",
+
+                    const FeatureItem(
+                      icon: Icons.currency_rupee,
+                      title: "Loans",
                     ),
-                    FeatureItem(icon: Icons.receipt_long, title: "Bills"),
-                    FeatureItem(icon: Icons.card_giftcard, title: "Rewards"),
-                    FeatureItem(icon: Icons.more_horiz, title: "More"),
+
+                    const FeatureItem(
+                      icon: Icons.bar_chart,
+                      title: "Analytics",
+                    ),
+
+                    if (!provider.showMoreServices) ...[
+
+                      const FeatureItem(
+                        icon: Icons.account_balance_wallet,
+                        title: "Wallet",
+                      ),
+
+                      const FeatureItem(
+                        icon: Icons.receipt_long,
+                        title: "Bills",
+                      ),
+
+                      const FeatureItem(
+                        icon: Icons.card_giftcard,
+                        title: "Rewards",
+                      ),
+
+                      FeatureItem(
+                        icon: Icons.more_horiz,
+                        title: "More",
+                        onTap: () => provider.toggleMoreServices(),
+                      ),
+
+                    ] else ...[
+
+                      FeatureItem(
+                        icon: Icons.savings,
+                        title: "Term Dep.",
+                        onTap: () => Navigator.pushNamed(
+                            context, AppRoutes.termDeposits),
+                      ),
+
+                      const FeatureItem(
+                        icon: Icons.trending_up,
+                        title: "Invest.",
+                      ),
+
+                      const FeatureItem(
+                        icon: Icons.security,
+                        title: "Insurance",
+                      ),
+
+                      const FeatureItem(
+                        icon: Icons.support_agent,
+                        title: "Service",
+                      ),
+
+                      const FeatureItem(
+                        icon: Icons.description,
+                        title: "Statements",
+                      ),
+
+                      const FeatureItem(
+                        icon: Icons.people,
+                        title: "Benefic.",
+                      ),
+
+                      const FeatureItem(
+                        icon: Icons.calculate,
+                        title: "Calculator",
+                      ),
+
+                      FeatureItem(
+                        icon: Icons.expand_less,
+                        title: "Less",
+                        onTap: () => provider.toggleMoreServices(),
+                      ),
+
+                    ],
                   ],
                 ),
 
@@ -273,14 +344,11 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () =>
-                          Navigator.pushNamed(context, AppRoutes.transactions),
-                      child: Text(
+                      onTap: () => Navigator.pushNamed(
+                          context, AppRoutes.transactions),
+                      child: const Text(
                         "See All",
-                        style: const TextStyle(
-                          color: Colors.white70,
-                          fontSize: 14,
-                        ),
+                        style: TextStyle(color: Colors.white70, fontSize: 14),
                       ),
                     ),
                   ],

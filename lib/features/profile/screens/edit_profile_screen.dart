@@ -107,7 +107,7 @@ class _EditProfileScreenState
                 return DropdownMenuItem(
                   value: account.id,
                   child: Text(
-                    "${account.accountType} (${account.accountNumber})",
+                    "${account.accountType} • ${account.accountNumber.substring(account.accountNumber.length - 4)}",
                   ),
                 );
 
