@@ -295,9 +295,15 @@ class DashboardScreen extends StatelessWidget {
                           title: "Statements",
                         ),
 
-                        const FeatureItem(
+                        FeatureItem(
                           icon: Icons.people,
                           title: "Benefic.",
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.beneficiaries,
+                            );
+                          },
                         ),
 
                         const FeatureItem(

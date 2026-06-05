@@ -10,4 +10,8 @@ class AppRoutes {
   static const String openDeposit = '/openDeposit';
   static const String redeemDeposit = '/redeemDeposit';
   static const String depositStatements = '/depositStatements';
+  static const String beneficiaries = '/beneficiaries';
+  static const String beneficiaryType = '/beneficiaryType';
+  static const String addBeneficiary = '/addBeneficiary';
+  static const String beneficiaryDetails = '/beneficiaryDetails';
 }
