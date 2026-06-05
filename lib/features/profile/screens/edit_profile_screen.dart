@@ -98,7 +98,7 @@ class _EditProfileScreenState
             const SizedBox(height: 40),
 
             DropdownButtonFormField<String>(
-              value: selectedPrimaryAccountId,
+              initialValue: selectedPrimaryAccountId,
               decoration: const InputDecoration(
                 labelText: 'Primary Account',
               ),

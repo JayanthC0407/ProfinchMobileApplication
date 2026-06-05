@@ -5,6 +5,8 @@ class AppRoutes {
   static const String cards = '/cards';
   static const String profile = '/profile';
   static const String accounts = '/accounts';
+  static const String transactions = '/transactions';
+  static const String upi = '/upi';
   static const String termDeposits = '/termDeposits';
   static const String myDeposits = '/myDeposits';
   static const String openDeposit = '/openDeposit';
