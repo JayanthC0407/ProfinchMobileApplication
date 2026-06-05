@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/features/Beneficiaries/provider/beneficiary_provider.dart';
+import 'package:profinch_mobile_application/features/Beneficiaries/screens/beneficiaries_screen.dart';
+import 'package:profinch_mobile_application/features/Beneficiaries/screens/beneficiary_type_screen.dart';
 import 'package:profinch_mobile_application/features/accounts/screens/transaction_history_screen.dart';
 import 'package:profinch_mobile_application/features/cards/provider/card_provider.dart';
 import 'package:profinch_mobile_application/features/cards/screens/card_screen.dart';
@@ -31,6 +34,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => AccountProvider()),
         ChangeNotifierProvider(create: (_) => CardProvider()),
         ChangeNotifierProvider(create: (_) => TermDepositProvider()),
+        ChangeNotifierProvider(create: (_) => BeneficiaryProvider()),
       ],
       child: const MyApp(),
     ),
@@ -70,6 +74,10 @@ class MyApp extends StatelessWidget {
         AppRoutes.openDeposit:       (context) => const OpenTermDepositScreen(),
         AppRoutes.redeemDeposit:     (context) => const RedeemTermDepositScreen(),
         AppRoutes.depositStatements: (context) => const TermDepositStatementScreen(),
+
+        AppRoutes.beneficiaries: (context) => const BeneficiariesScreen(),
+
+        AppRoutes.beneficiaryType: (context) => const BeneficiaryTypeScreen(),
       },
     );
   }

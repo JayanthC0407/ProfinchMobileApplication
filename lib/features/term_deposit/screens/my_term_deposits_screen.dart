@@ -42,7 +42,7 @@ class MyTermDepositsScreen
     );
 
     return Scaffold(
-       backgroundColor: AppColors.lightblue,
+       backgroundColor: AppColors.light,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title:
@@ -66,7 +66,7 @@ class MyTermDepositsScreen
           return Card(
             margin:
                 const EdgeInsets.all(12),
-            color: AppColors.light, // light blue
+            color: AppColors.lightblue, // light blue
             child: ListTile(
 
                 onTap: () {
