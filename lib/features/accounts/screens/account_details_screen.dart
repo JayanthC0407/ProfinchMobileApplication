@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/data/models/account_model.dart';
 
 class AccountDetailsScreen extends StatelessWidget {
@@ -14,7 +15,7 @@ class AccountDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-
+        backgroundColor: AppColors.light,
       appBar: AppBar(
         title: const Text("Account Details"),
       ),

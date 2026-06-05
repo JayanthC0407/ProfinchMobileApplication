@@ -325,8 +325,31 @@ class DashboardScreen extends StatelessWidget {
                         onTap: () => provider.toggleMoreServices(),
                       ),
 
+                        FeatureItem(
+                          icon: Icons.people,
+                          title: "Benefic.",
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.beneficiaries,
+                            );
+                          },
+                        ),
+
+                        const FeatureItem(
+                          icon: Icons.calculate,
+                          title: "Calculator",
+                        ),
+
+                        FeatureItem(
+                          icon: Icons.expand_less,
+                          title: "Less",
+                          onTap: () {
+                            provider.toggleMoreServices();
+                          },
+                        ),
+                      ],
                     ],
-                  ],
                 ),
 
                 const SizedBox(height: 26),
@@ -369,6 +392,7 @@ class DashboardScreen extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 16),
+          
               ],
             ),
           ),
