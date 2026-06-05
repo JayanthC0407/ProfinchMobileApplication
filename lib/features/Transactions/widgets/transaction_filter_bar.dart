@@ -29,8 +29,9 @@ class TransactionFilterBar extends StatelessWidget {
     final isSelected = selected == filter;
     Color chipColor;
     if (isSelected) {
-      if (filter == TransactionFilter.credit) chipColor = Colors.green.shade600;
-      else if (filter == TransactionFilter.debit) chipColor = Colors.red.shade600;
+      if (filter == TransactionFilter.credit) {
+        chipColor = Colors.green.shade600;
+      } else if (filter == TransactionFilter.debit) chipColor = Colors.red.shade600;
       else chipColor = AppColors.primaryDark;
     } else {
       chipColor = Colors.grey.shade200;
