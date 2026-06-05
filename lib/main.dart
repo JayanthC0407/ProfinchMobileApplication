@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/features/Beneficiaries/provider/beneficiary_provider.dart';
 import 'package:profinch_mobile_application/features/Beneficiaries/screens/beneficiaries_screen.dart';
 import 'package:profinch_mobile_application/features/Beneficiaries/screens/beneficiary_type_screen.dart';
-import 'package:profinch_mobile_application/features/accounts/screens/transaction_history_screen.dart';
+import 'package:profinch_mobile_application/features/Transactions/screens/transaction_history_screen.dart';
 import 'package:profinch_mobile_application/features/cards/provider/card_provider.dart';
 import 'package:profinch_mobile_application/features/cards/screens/card_screen.dart';
 import 'package:profinch_mobile_application/features/accounts/screens/accounts_screen.dart';
