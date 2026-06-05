@@ -109,6 +109,9 @@ class BeneficiaryDetailsScreen
               ),
 
               label: const Text(
+                style: TextStyle(
+                  color: Colors.white,
+                ),
                 "Remove Beneficiary",
               ),
             ),

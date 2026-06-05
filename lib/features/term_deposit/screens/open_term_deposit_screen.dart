@@ -84,7 +84,7 @@ class _OpenTermDepositScreenState
 
     return Scaffold(
 
-       backgroundColor: AppColors.lightblue,
+       backgroundColor: Colors.white, // light background
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title:

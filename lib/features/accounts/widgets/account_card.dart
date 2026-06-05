@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/data/models/account_model.dart';
 
 class AccountCard extends StatelessWidget {
@@ -21,7 +22,7 @@ class AccountCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.lightblue, // light blue background
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(

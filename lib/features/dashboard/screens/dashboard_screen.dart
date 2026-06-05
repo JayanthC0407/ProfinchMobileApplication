@@ -309,22 +309,6 @@ class DashboardScreen extends StatelessWidget {
                         title: "Statements",
                       ),
 
-                      const FeatureItem(
-                        icon: Icons.people,
-                        title: "Benefic.",
-                      ),
-
-                      const FeatureItem(
-                        icon: Icons.calculate,
-                        title: "Calculator",
-                      ),
-
-                      FeatureItem(
-                        icon: Icons.expand_less,
-                        title: "Less",
-                        onTap: () => provider.toggleMoreServices(),
-                      ),
-
                         FeatureItem(
                           icon: Icons.people,
                           title: "Benefic.",

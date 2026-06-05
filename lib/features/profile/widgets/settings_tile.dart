@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 
 class SettingsTile extends StatelessWidget {
 
@@ -22,7 +23,7 @@ class SettingsTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
 
-      tileColor: Colors.white,
+      tileColor: AppColors.lightblue,
 
       leading: CircleAvatar(
         backgroundColor: const Color(0xffEEF3FF),

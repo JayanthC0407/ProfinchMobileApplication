@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 
 class BeneficiaryCard extends StatelessWidget {
 
@@ -19,6 +20,7 @@ class BeneficiaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Card(
+      color: AppColors.lightblue,
       elevation: 3,
       margin: const EdgeInsets.symmetric(
         horizontal: 16,
