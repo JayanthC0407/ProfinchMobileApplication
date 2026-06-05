@@ -43,11 +43,13 @@ class AccountCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              "₹ ${account.balance.toStringAsFixed(2)}",
-              style: const TextStyle(
+              "₹ ${account.availableBalance.toStringAsFixed(2)}",
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
-                color: Colors.green,
+                color: account.availableBalance < 0
+                    ? Colors.red
+                    : Colors.green,
               ),
             ),
           ],
