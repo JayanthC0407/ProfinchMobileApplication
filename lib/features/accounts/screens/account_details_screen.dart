@@ -17,12 +17,14 @@ class AccountDetailsScreen extends StatelessWidget {
     return Scaffold(
         backgroundColor: AppColors.light,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: const Text("Account Details"),
       ),
 
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          
           children: [
 
             ListTile(

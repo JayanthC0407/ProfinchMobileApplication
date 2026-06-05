@@ -85,7 +85,7 @@ class TermDepositDetailsScreen
         }
 
     return Scaffold(
-        backgroundColor: AppColors.lightblue,
+        backgroundColor: AppColors.light,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: const Text(

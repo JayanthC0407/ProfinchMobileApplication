@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
 import 'package:profinch_mobile_application/core/constants/colors.dart';
-import 'package:profinch_mobile_application/features/accounts/provider/transaction_provider.dart';
+import 'package:profinch_mobile_application/features/Transactions/provider/transaction_provider.dart';
 import '../widgets/transaction_tile_widget.dart';
 import '../widgets/transaction_filter_bar.dart';
 import '../widgets/transaction_summary_card.dart';

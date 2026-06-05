@@ -28,7 +28,7 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
 
-      backgroundColor: AppColors.lightblue, // light background
+      backgroundColor: AppColors.light, // light background
 
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -53,7 +53,7 @@ class ProfileScreen extends StatelessWidget {
 
             const SizedBox(height: 25),
 
-            ProfileInfoTile(
+            ProfileInfoTile( // light blue
               title: "Phone Number",
               value: user.phoneNumber,
               icon: Icons.phone,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
-import 'package:profinch_mobile_application/features/accounts/provider/transaction_provider.dart';
+import 'package:profinch_mobile_application/features/Transactions/provider/transaction_provider.dart';
 
 class TransactionFilterBar extends StatelessWidget {
   final TransactionFilter selected;

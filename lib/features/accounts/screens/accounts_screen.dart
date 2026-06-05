@@ -29,10 +29,9 @@ class AccountsScreen extends StatelessWidget {
         accountProvider.getTotalBalance(user.id);
 
     return Scaffold(
-      
-       backgroundColor: AppColors.lightblue,
-
+       backgroundColor: AppColors.light,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: const Text('My Accounts'),
       ),
 
@@ -59,7 +58,7 @@ class AccountsScreen extends StatelessWidget {
                   const Text(
                     "Total Balance",
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: Colors.white,
                     ),
                   ),
 
@@ -82,11 +81,11 @@ class AccountsScreen extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 itemCount: accounts.length,
-                itemBuilder: (_, index) {
-
+                itemBuilder: (_, index) { 
                   final account = accounts[index];
 
                   return AccountCard(
+                    // light blue
                     account: account,
                     onTap: () {
 

@@ -35,7 +35,7 @@ class TermDepositStatementScreen
 
     return Scaffold(
 
-       backgroundColor: AppColors.lightblue,
+       backgroundColor: AppColors.light,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: const Text(
@@ -53,6 +53,8 @@ class TermDepositStatementScreen
               deposits[index];
 
           return Card(
+            color: AppColors.lightblue, // light blue
+            elevation: 4,
             margin:
                 const EdgeInsets.all(12),
 
