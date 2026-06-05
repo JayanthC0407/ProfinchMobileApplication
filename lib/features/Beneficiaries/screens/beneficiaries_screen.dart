@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/routes/app_routes.dart';
@@ -38,13 +39,16 @@ class BeneficiariesScreen
     );
 
     return Scaffold(
+      backgroundColor: AppColors.light,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title:
             const Text("Beneficiaries"),
       ),
 
       floatingActionButton:
           FloatingActionButton(
+            backgroundColor: AppColors.lightblue,
         onPressed: () {
 
           Navigator.pushNamed(

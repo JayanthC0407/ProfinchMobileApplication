@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 
 class ProfileInfoTile extends StatelessWidget {
 
@@ -20,7 +21,7 @@ class ProfileInfoTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.lightblue, // light blue background
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -44,7 +45,7 @@ class ProfileInfoTile extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    color: Colors.grey,
+                    color: Color.fromARGB(255, 109, 105, 105),
                     fontSize: 14,
                   ),
                 ),

@@ -14,7 +14,7 @@ class TermDepositScreen
 
     return Scaffold(
 
-       backgroundColor: AppColors.lightblue,
+       backgroundColor: AppColors.light,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: const Text(
@@ -27,12 +27,12 @@ class TermDepositScreen
 
              Card(
               elevation: 4,
-              color: AppColors.primary,// light blue
+              color: AppColors.lightblue,// light blue
 
               child: ListTile(
                 leading: const Icon(
                   Icons.account_balance,
-                  color: Color.fromARGB(255, 243, 244, 245),
+                  color: AppColors.primary, // light blue
                 ),
 
                 title: const Text(
@@ -45,7 +45,7 @@ class TermDepositScreen
 
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
-                  color:Color.fromARGB(255, 243, 244, 245),
+                  color:AppColors.primary, // light blue
                 ),
 
                 onTap: () {
@@ -59,12 +59,12 @@ class TermDepositScreen
 
               Card(
               elevation: 4,
-              color: AppColors.primary,// light blue
+              color: AppColors.lightblue,// light blue
 
               child: ListTile(
                 leading: const Icon(
                   Icons.add_circle,
-                  color: Color.fromARGB(255, 243, 244, 245),
+                  color: AppColors.primary, // light blue
                 ),
 
                 title: const Text(
@@ -77,7 +77,7 @@ class TermDepositScreen
 
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
-                  color: Color.fromARGB(255, 243, 244, 245),
+                  color: AppColors.primary, // light blue
                 ),
 
                 onTap: () {
@@ -91,12 +91,12 @@ class TermDepositScreen
 
           Card(
            elevation: 4,
-           color: AppColors.primary,// light blue
+           color: AppColors.lightblue,// light blue
 
           child: ListTile(
             leading: const Icon(
               Icons.currency_exchange,
-              color: Color.fromARGB(255, 243, 244, 245),
+              color: AppColors.primary, // light blue
             ),
 
             title: const Text(
@@ -109,7 +109,7 @@ class TermDepositScreen
 
             trailing: const Icon(
               Icons.arrow_forward_ios,
-              color: Color.fromARGB(255, 243, 244, 245),
+              color: AppColors.primary, // light blue
             ),
 
             onTap: () {
@@ -123,12 +123,12 @@ class TermDepositScreen
 
          Card(
            elevation: 4,
-           color: AppColors.primary, // light blue
+           color: AppColors.lightblue, // light blue
 
           child: ListTile(
             leading: const Icon(
               Icons.receipt_long,
-              color: Color.fromARGB(255, 243, 244, 245),
+              color: AppColors.primary, // light blue
             ),
 
             title: const Text(
@@ -141,7 +141,7 @@ class TermDepositScreen
 
             trailing: const Icon(
               Icons.arrow_forward_ios,
-              color: Color.fromARGB(255, 243, 244, 245),
+              color: AppColors.primary, // light blue
             ),
 
             onTap: () {

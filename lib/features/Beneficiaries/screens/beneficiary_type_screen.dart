@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 
 import 'add_beneficiary_screen.dart';
 
@@ -13,7 +14,9 @@ class BeneficiaryTypeScreen
   Widget build(BuildContext context) {
 
     return Scaffold(
+        backgroundColor: AppColors.light,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         title: const Text(
           "Select Beneficiary Type",
         ),
@@ -58,6 +61,7 @@ class BeneficiaryTypeScreen
   ) {
 
     return Card(
+      color: AppColors.lightblue,
       child: ListTile(
         leading: Icon(
           icon,

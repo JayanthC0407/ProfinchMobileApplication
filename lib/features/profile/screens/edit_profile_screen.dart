@@ -119,12 +119,15 @@ class _EditProfileScreenState
                 });
               },
             ),
+             
+              const SizedBox(height: 20),
 
             SizedBox(
               width: double.infinity,
               height: 55,
+              
               child: ElevatedButton(
-
+                   
                 onPressed: () {
 
                   final updatedUser = user.copyWith(
@@ -145,9 +148,17 @@ class _EditProfileScreenState
 
                     Navigator.pop(context);
                 },
-
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(255, 154, 189, 218),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                ),
                 child: const Text(
                   "Save Changes",
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
                 ),
               ),
             )
