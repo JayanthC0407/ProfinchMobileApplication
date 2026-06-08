@@ -9,7 +9,6 @@ import 'package:profinch_mobile_application/features/accounts/screens/accounts_s
 import 'package:profinch_mobile_application/features/loans/provider/loan_provider.dart';
 import 'package:profinch_mobile_application/features/loans/screens/apply_loan_screen.dart';
 import 'package:profinch_mobile_application/features/loans/screens/emi_calculator_screen.dart';
-import 'package:profinch_mobile_application/features/loans/screens/loan_statement_screen.dart';
 import 'package:profinch_mobile_application/features/loans/screens/my_loans_screen.dart';
 import 'package:profinch_mobile_application/features/profile/screens/profile_screen.dart';
 

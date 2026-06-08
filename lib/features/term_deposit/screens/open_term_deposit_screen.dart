@@ -100,7 +100,7 @@ class _OpenTermDepositScreenState
 
             DropdownButtonFormField<
                 String>(
-              value:
+              initialValue:
                   selectedAccountId,
 
               items:
@@ -142,7 +142,7 @@ class _OpenTermDepositScreenState
             const SizedBox(height: 20),
 
             DropdownButtonFormField<int>(
-              value:
+              initialValue:
                   tenureMonths,
 
               items: const [

@@ -112,7 +112,7 @@ class _ScanQrScreenState extends State<ScanQrScreen>
                         // Animated scan line
                         AnimatedBuilder(
                           animation: _scanAnimation,
-                          builder: (_, __) => Positioned(
+                          builder: (_, _) => Positioned(
                             top: _scanAnimation.value * 220,
                             left: 10,
                             right: 10,

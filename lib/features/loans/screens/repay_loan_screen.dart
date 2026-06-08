@@ -82,7 +82,7 @@ class _RepayLoanScreenState extends State<RepayLoanScreen> {
             const SizedBox(height: 20),
 
             DropdownButtonFormField<String>(
-              value: selectedAccountId,
+              initialValue: selectedAccountId,
 
               items: accounts.map((account) {
                 return DropdownMenuItem(
