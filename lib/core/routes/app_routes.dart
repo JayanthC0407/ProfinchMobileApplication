@@ -16,4 +16,12 @@ class AppRoutes {
   static const String beneficiaryType = '/beneficiaryType';
   static const String addBeneficiary = '/addBeneficiary';
   static const String beneficiaryDetails = '/beneficiaryDetails';
+  static const String loans = '/loans';
+  static const String myLoans = '/myLoans';
+  static const String applyLoan = '/applyLoan';
+  static const String emiCalculator = '/emiCalculator';
+  static const String loanStatements = '/loanStatements';
+  static const String repayLoan = '/repayLoan';
+  static const String loanStatement = '/loanStatements';
+  static const String wallet = '/wallet';
 }

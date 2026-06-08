@@ -6,8 +6,6 @@ import 'package:profinch_mobile_application/features/auth/provider/auth_provider
 import '../provider/upi_provider.dart';
 import '../widgets/upi_contact_tile.dart';
 import 'send_money_screen.dart';
-import 'receive_money_screen.dart';
-import 'scan_qr_screen.dart';
 
 class UpiHomeScreen extends StatelessWidget {
   const UpiHomeScreen({super.key});

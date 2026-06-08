@@ -19,18 +19,18 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  late int _currentIndex;
+ /* late int _currentIndex;
 
   @override
   void initState() {
     super.initState();
     _currentIndex = widget.currentIndex;
   }
-
+   */
   void _onTap(int index) {
-    if (index == _currentIndex) return; // already on this tab
+    if (index == widget.currentIndex) return; // already on this tab
 
-    setState(() => _currentIndex = index);
+   // setState(() => _currentIndex = index);
 
     switch (index) {
       case 0:
@@ -67,7 +67,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: _currentIndex,
+      currentIndex: widget.currentIndex,
       selectedItemColor: AppColors.primary,
       unselectedItemColor: Colors.grey,
       type: BottomNavigationBarType.fixed,

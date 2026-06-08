@@ -20,7 +20,7 @@ class TermDepositDetailsScreen
   @override
   Widget build(BuildContext context) {
 
-    Widget _sectionTitle(
+    Widget sectionTitle(
         String title,
       ) {
         return Padding(
@@ -41,7 +41,7 @@ class TermDepositDetailsScreen
         );
       }
 
-      Widget _detailRow(
+      Widget detailRow(
           String label,
           String value,
         ) {
@@ -85,7 +85,7 @@ class TermDepositDetailsScreen
         }
 
     return Scaffold(
-        backgroundColor: AppColors.lightblue,
+        backgroundColor: AppColors.light,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: const Text(
@@ -176,35 +176,35 @@ class TermDepositDetailsScreen
 
               const SizedBox(height: 30),
 
-              _sectionTitle(
+              sectionTitle(
                 "Deposit Information",
               ),
 
-              _detailRow(
+              detailRow(
                 "Deposit ID",
                 deposit.id,
               ),
 
-              _detailRow(
+              detailRow(
                 "Principal Amount",
                 "₹${deposit.principalAmount.toStringAsFixed(2)}",
               ),
 
-              _detailRow(
+              detailRow(
                 "Interest Rate",
                 "${deposit.interestRate}%",
               ),
 
-              _detailRow(
+              detailRow(
                 "Tenure",
                 "${deposit.tenureMonths} Months",
               ),
 
               const SizedBox(height: 25),
 
-              _sectionTitle("Timeline"),
+              sectionTitle("Timeline"),
 
-              _detailRow(
+              detailRow(
                 "Opening Date",
                 deposit.startDate
                     .toString()
@@ -212,7 +212,7 @@ class TermDepositDetailsScreen
                     .first,
               ),
 
-              _detailRow(
+              detailRow(
                 "Maturity Date",
                 deposit.maturityDate
                     .toString()
@@ -222,23 +222,23 @@ class TermDepositDetailsScreen
 
               const SizedBox(height: 25),
 
-              _sectionTitle(
+              sectionTitle(
                 "Funding Account",
               ),
 
-              _detailRow(
+              detailRow(
                 "Account Type",
                 account.accountType,
               ),
 
-              _detailRow(
+              detailRow(
                 "Account Number",
                 account.accountNumber,
               ),
 
               const SizedBox(height: 25),
 
-              _sectionTitle(
+              sectionTitle(
                 "Interest Earned",
               ),
 

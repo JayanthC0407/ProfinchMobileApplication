@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
-import 'package:profinch_mobile_application/features/accounts/provider/transaction_provider.dart';
+import 'package:profinch_mobile_application/features/Transactions/provider/transaction_provider.dart';
 
 class TransactionFilterBar extends StatelessWidget {
   final TransactionFilter selected;
@@ -29,8 +29,9 @@ class TransactionFilterBar extends StatelessWidget {
     final isSelected = selected == filter;
     Color chipColor;
     if (isSelected) {
-      if (filter == TransactionFilter.credit) chipColor = Colors.green.shade600;
-      else if (filter == TransactionFilter.debit) chipColor = Colors.red.shade600;
+      if (filter == TransactionFilter.credit) {
+        chipColor = Colors.green.shade600;
+      } else if (filter == TransactionFilter.debit) chipColor = Colors.red.shade600;
       else chipColor = AppColors.primaryDark;
     } else {
       chipColor = Colors.grey.shade200;

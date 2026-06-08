@@ -51,7 +51,6 @@ class DashboardScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 // ── HEADER ───────────────────────────────────────
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -194,6 +193,7 @@ class DashboardScreen extends StatelessWidget {
                       QuickActionItem(
                         icon: Icons.account_balance_wallet,
                         title: "Wallet",
+                        onTap: () => Navigator.pushNamed(context, AppRoutes.wallet),
                       ),
                     ],
                   ),
@@ -232,7 +232,6 @@ class DashboardScreen extends StatelessWidget {
                   mainAxisSpacing: 16,
                   childAspectRatio: 0.85,
                   children: [
-
                     FeatureItem(
                       icon: Icons.account_balance,
                       title: "Accounts",
@@ -247,9 +246,12 @@ class DashboardScreen extends StatelessWidget {
                           Navigator.pushNamed(context, AppRoutes.cards),
                     ),
 
-                    const FeatureItem(
+                    FeatureItem(
                       icon: Icons.currency_rupee,
                       title: "Loans",
+
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.loans),
                     ),
 
                     const FeatureItem(
@@ -258,10 +260,9 @@ class DashboardScreen extends StatelessWidget {
                     ),
 
                     if (!provider.showMoreServices) ...[
-
                       const FeatureItem(
-                        icon: Icons.account_balance_wallet,
-                        title: "Wallet",
+                        icon: Icons.calculate,
+                        title: "Calculator",
                       ),
 
                       const FeatureItem(
@@ -279,14 +280,14 @@ class DashboardScreen extends StatelessWidget {
                         title: "More",
                         onTap: () => provider.toggleMoreServices(),
                       ),
-
                     ] else ...[
-
                       FeatureItem(
                         icon: Icons.savings,
                         title: "Term Dep.",
                         onTap: () => Navigator.pushNamed(
-                            context, AppRoutes.termDeposits),
+                          context,
+                          AppRoutes.termDeposits,
+                        ),
                       ),
 
                       const FeatureItem(
@@ -299,7 +300,7 @@ class DashboardScreen extends StatelessWidget {
                         title: "Insurance",
                       ),
 
-                      const FeatureItem(
+                     /* const FeatureItem(
                         icon: Icons.support_agent,
                         title: "Service",
                       ),
@@ -308,38 +309,16 @@ class DashboardScreen extends StatelessWidget {
                         icon: Icons.description,
                         title: "Statements",
                       ),
-
-                      const FeatureItem(
+                          */
+                      FeatureItem(
                         icon: Icons.people,
                         title: "Benefic.",
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.beneficiaries);
+                        },
                       ),
 
-                      const FeatureItem(
-                        icon: Icons.calculate,
-                        title: "Calculator",
-                      ),
-
-                      FeatureItem(
-                        icon: Icons.expand_less,
-                        title: "Less",
-                        onTap: () => provider.toggleMoreServices(),
-                      ),
-
-                        FeatureItem(
-                          icon: Icons.people,
-                          title: "Benefic.",
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              AppRoutes.beneficiaries,
-                            );
-                          },
-                        ),
-
-                        const FeatureItem(
-                          icon: Icons.calculate,
-                          title: "Calculator",
-                        ),
+                      
 
                         FeatureItem(
                           icon: Icons.expand_less,
@@ -367,8 +346,8 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () => Navigator.pushNamed(
-                          context, AppRoutes.transactions),
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.transactions),
                       child: const Text(
                         "See All",
                         style: TextStyle(color: Colors.white70, fontSize: 14),
@@ -392,7 +371,6 @@ class DashboardScreen extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 16),
-          
               ],
             ),
           ),
