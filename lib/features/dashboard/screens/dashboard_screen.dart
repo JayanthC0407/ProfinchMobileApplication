@@ -193,7 +193,8 @@ class DashboardScreen extends StatelessWidget {
                       QuickActionItem(
                         icon: Icons.account_balance_wallet,
                         title: "Wallet",
-                        onTap: () => Navigator.pushNamed(context, AppRoutes.wallet),
+                        onTap: () =>
+                            Navigator.pushNamed(context, AppRoutes.wallet),
                       ),
                     ],
                   ),
@@ -260,9 +261,13 @@ class DashboardScreen extends StatelessWidget {
                     ),
 
                     if (!provider.showMoreServices) ...[
-                      const FeatureItem(
+                      FeatureItem(
                         icon: Icons.calculate,
                         title: "Calculator",
+
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.calculators);
+                        },
                       ),
 
                       const FeatureItem(
@@ -300,7 +305,7 @@ class DashboardScreen extends StatelessWidget {
                         title: "Insurance",
                       ),
 
-                     /* const FeatureItem(
+                      /* const FeatureItem(
                         icon: Icons.support_agent,
                         title: "Service",
                       ),
@@ -318,17 +323,15 @@ class DashboardScreen extends StatelessWidget {
                         },
                       ),
 
-                      
-
-                        FeatureItem(
-                          icon: Icons.expand_less,
-                          title: "Less",
-                          onTap: () {
-                            provider.toggleMoreServices();
-                          },
-                        ),
-                      ],
+                      FeatureItem(
+                        icon: Icons.expand_less,
+                        title: "Less",
+                        onTap: () {
+                          provider.toggleMoreServices();
+                        },
+                      ),
                     ],
+                  ],
                 ),
 
                 const SizedBox(height: 26),
