@@ -24,7 +24,6 @@ class ProfileScreen extends StatelessWidget {
         DummyAccounts.allAccounts.firstWhere(
           (a) => a.id == user.primaryAccountId,
         );
-    value:primaryAccount.accountNumber;
 
     return Scaffold(
 

@@ -193,6 +193,7 @@ class DashboardScreen extends StatelessWidget {
                       QuickActionItem(
                         icon: Icons.account_balance_wallet,
                         title: "Wallet",
+                        onTap: () => Navigator.pushNamed(context, AppRoutes.wallet),
                       ),
                     ],
                   ),
@@ -309,28 +310,31 @@ class DashboardScreen extends StatelessWidget {
                         title: "Statements",
                       ),
 
-                      FeatureItem(
-                        icon: Icons.people,
-                        title: "Benefic.",
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.beneficiaries);
-                        },
-                      ),
+                        FeatureItem(
+                          icon: Icons.people,
+                          title: "Benefic.",
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              AppRoutes.beneficiaries,
+                            );
+                          },
+                        ),
 
-                      const FeatureItem(
-                        icon: Icons.calculate,
-                        title: "Calculator",
-                      ),
+                        const FeatureItem(
+                          icon: Icons.calculate,
+                          title: "Calculator",
+                        ),
 
-                      FeatureItem(
-                        icon: Icons.expand_less,
-                        title: "Less",
-                        onTap: () {
-                          provider.toggleMoreServices();
-                        },
-                      ),
+                        FeatureItem(
+                          icon: Icons.expand_less,
+                          title: "Less",
+                          onTap: () {
+                            provider.toggleMoreServices();
+                          },
+                        ),
+                      ],
                     ],
-                  ],
                 ),
 
                 const SizedBox(height: 26),

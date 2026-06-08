@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/models/term_deposit_model.dart';
@@ -100,7 +99,7 @@ class _OpenTermDepositScreenState
 
             DropdownButtonFormField<
                 String>(
-              value:
+              initialValue:
                   selectedAccountId,
 
               items:
@@ -142,7 +141,7 @@ class _OpenTermDepositScreenState
             const SizedBox(height: 20),
 
             DropdownButtonFormField<int>(
-              value:
+              initialValue:
                   tenureMonths,
 
               items: const [

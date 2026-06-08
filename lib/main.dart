@@ -9,7 +9,6 @@ import 'package:profinch_mobile_application/features/accounts/screens/accounts_s
 import 'package:profinch_mobile_application/features/loans/provider/loan_provider.dart';
 import 'package:profinch_mobile_application/features/loans/screens/apply_loan_screen.dart';
 import 'package:profinch_mobile_application/features/loans/screens/emi_calculator_screen.dart';
-import 'package:profinch_mobile_application/features/loans/screens/loan_statement_screen.dart';
 import 'package:profinch_mobile_application/features/loans/screens/my_loans_screen.dart';
 import 'package:profinch_mobile_application/features/profile/screens/profile_screen.dart';
 
@@ -20,6 +19,7 @@ import 'package:profinch_mobile_application/features/term_deposit/screens/my_ter
 import 'package:profinch_mobile_application/features/term_deposit/screens/open_term_deposit_screen.dart';
 import 'package:profinch_mobile_application/features/term_deposit/screens/redeem_term_deposit_screen.dart';
 import 'package:profinch_mobile_application/features/term_deposit/screens/term_deposit_statement_screen.dart';
+import 'package:profinch_mobile_application/features/wallet/screens/wallet_screen.dart';
 
 import 'package:provider/provider.dart';
 import 'core/routes/app_routes.dart';
@@ -96,6 +96,8 @@ class MyApp extends StatelessWidget {
         AppRoutes.emiCalculator: (context) => const EmiCalculatorScreen(),
 
         //AppRoutes.loanStatements: (context) => const LoanStatementScreen(),
+
+        AppRoutes.wallet: (context) => const WalletScreen(),
       },
     );
   }
