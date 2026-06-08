@@ -127,7 +127,7 @@ class _SipCalculatorScreenState extends State<SipCalculatorScreen> {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF1A3A6B).withOpacity(0.08),
+                    color: const Color(0xFF1A3A6B).withValues(alpha: 0.08),
                     blurRadius: 16,
                     offset: const Offset(0, 4),
                   ),
@@ -214,7 +214,7 @@ class _SipCalculatorScreenState extends State<SipCalculatorScreen> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF0D47A1).withOpacity(0.30),
+                      color: const Color(0xFF0D47A1).withValues(alpha: 0.30),
                       blurRadius: 18,
                       offset: const Offset(0, 6),
                     ),
@@ -371,7 +371,7 @@ class _SipCalculatorScreenState extends State<SipCalculatorScreen> {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.15),
+            color: Colors.white.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(icon, color: Colors.white, size: 18),
@@ -381,7 +381,7 @@ class _SipCalculatorScreenState extends State<SipCalculatorScreen> {
           child: Text(
             label,
             style: TextStyle(
-              color: Colors.white.withOpacity(0.80),
+              color: Colors.white.withValues(alpha: 0.80),
               fontSize: 13,
             ),
           ),
