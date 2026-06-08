@@ -24,4 +24,13 @@ class AppRoutes {
   static const String repayLoan = '/repayLoan';
   static const String loanStatement = '/loanStatements';
   static const String wallet = '/wallet';
+  static const String calculators = '/calculators';
+
+  static const String loanEligibility = '/loanEligibility';
+
+  static const String tdCalculator = '/tdCalculator';
+
+  static const String currencyConverter = '/currencyConverter';
+
+  static const String sipCalculator = '/sipCalculator';
 }

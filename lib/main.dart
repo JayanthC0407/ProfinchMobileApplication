@@ -3,6 +3,11 @@ import 'package:profinch_mobile_application/features/Beneficiaries/provider/bene
 import 'package:profinch_mobile_application/features/Beneficiaries/screens/beneficiaries_screen.dart';
 import 'package:profinch_mobile_application/features/Beneficiaries/screens/beneficiary_type_screen.dart';
 import 'package:profinch_mobile_application/features/Transactions/screens/transaction_history_screen.dart';
+import 'package:profinch_mobile_application/features/calculators/screens/calculator_menu_screen.dart';
+import 'package:profinch_mobile_application/features/calculators/screens/currency_converter_screen.dart';
+import 'package:profinch_mobile_application/features/calculators/screens/loan_eligibility_screen.dart';
+import 'package:profinch_mobile_application/features/calculators/screens/sip_calculator_screen.dart';
+import 'package:profinch_mobile_application/features/calculators/screens/term_deposit_calculator_screen.dart';
 import 'package:profinch_mobile_application/features/cards/provider/card_provider.dart';
 import 'package:profinch_mobile_application/features/cards/screens/card_screen.dart';
 import 'package:profinch_mobile_application/features/accounts/screens/accounts_screen.dart';
@@ -30,7 +35,6 @@ import 'features/auth/screens/login_screen.dart';
 import 'features/dashboard/screens/dashboard_screen.dart';
 import 'features/accounts/provider/account_provider.dart';
 import 'features/loans/screens/loans_screen.dart';
-
 
 void main() {
   runApp(
@@ -81,7 +85,8 @@ class MyApp extends StatelessWidget {
         AppRoutes.myDeposits: (context) => const MyTermDepositsScreen(),
         AppRoutes.openDeposit: (context) => const OpenTermDepositScreen(),
         AppRoutes.redeemDeposit: (context) => const RedeemTermDepositScreen(),
-        AppRoutes.depositStatements: (context) => const TermDepositStatementScreen(),
+        AppRoutes.depositStatements: (context) =>
+            const TermDepositStatementScreen(),
 
         AppRoutes.beneficiaries: (context) => const BeneficiariesScreen(),
 
@@ -95,9 +100,14 @@ class MyApp extends StatelessWidget {
 
         AppRoutes.emiCalculator: (context) => const EmiCalculatorScreen(),
 
-        //AppRoutes.loanStatements: (context) => const LoanStatementScreen(),
-
         AppRoutes.wallet: (context) => const WalletScreen(),
+
+        AppRoutes.calculators: (context) => const CalculatorMenuScreen(),
+        AppRoutes.tdCalculator: (context) =>const TermDepositCalculatorScreen(),
+        AppRoutes.loanEligibility: (context) => const LoanEligibilityScreen(),
+        AppRoutes.currencyConverter: (context) => const CurrencyConverterScreen(),
+        AppRoutes.sipCalculator: (context) => const SipCalculatorScreen(),
+       // AppRoutes.emiCalculator: (context) => const EmiCalculatorScreen(),
       },
     );
   }
