@@ -193,6 +193,7 @@ class DashboardScreen extends StatelessWidget {
                       QuickActionItem(
                         icon: Icons.account_balance_wallet,
                         title: "Wallet",
+                        onTap: () => Navigator.pushNamed(context, AppRoutes.wallet),
                       ),
                     ],
                   ),
