@@ -23,4 +23,5 @@ class AppRoutes {
   static const String loanStatements = '/loanStatements';
   static const String repayLoan = '/repayLoan';
   static const String loanStatement = '/loanStatements';
+  static const String wallet = '/wallet';
 }
