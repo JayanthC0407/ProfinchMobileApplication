@@ -261,8 +261,8 @@ class DashboardScreen extends StatelessWidget {
 
                     if (!provider.showMoreServices) ...[
                       const FeatureItem(
-                        icon: Icons.account_balance_wallet,
-                        title: "Wallet",
+                        icon: Icons.calculate,
+                        title: "Calculator",
                       ),
 
                       const FeatureItem(
@@ -300,7 +300,7 @@ class DashboardScreen extends StatelessWidget {
                         title: "Insurance",
                       ),
 
-                      const FeatureItem(
+                     /* const FeatureItem(
                         icon: Icons.support_agent,
                         title: "Service",
                       ),
@@ -309,22 +309,16 @@ class DashboardScreen extends StatelessWidget {
                         icon: Icons.description,
                         title: "Statements",
                       ),
+                          */
+                      FeatureItem(
+                        icon: Icons.people,
+                        title: "Benefic.",
+                        onTap: () {
+                          Navigator.pushNamed(context, AppRoutes.beneficiaries);
+                        },
+                      ),
 
-                        FeatureItem(
-                          icon: Icons.people,
-                          title: "Benefic.",
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              AppRoutes.beneficiaries,
-                            );
-                          },
-                        ),
-
-                        const FeatureItem(
-                          icon: Icons.calculate,
-                          title: "Calculator",
-                        ),
+                      
 
                         FeatureItem(
                           icon: Icons.expand_less,
