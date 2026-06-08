@@ -4,6 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import '../provider/upi_provider.dart';
 
+import 'package:qr_flutter/qr_flutter.dart';
+
+import 'package:share_plus/share_plus.dart';
+
 class ReceiveMoneyScreen extends StatelessWidget {
   const ReceiveMoneyScreen({super.key});
 
@@ -20,13 +24,24 @@ class ReceiveMoneyScreen extends StatelessWidget {
         title: const Text(
           'Receive Money',
           style: TextStyle(
-              color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600),
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.share_outlined, color: Colors.white),
             onPressed: () {
-              // TODO: Share UPI ID
+              String upiId = provider.myUpiId;
+
+              SharePlus.instance.share(
+                ShareParams(
+                  text: 'Here is my UPI ID for payment: $upiId',
+                  subject: 'UPI ID for Payment',
+                  title: 'Share UPI ID',
+                ),
+              );
             },
           ),
         ],
@@ -35,14 +50,16 @@ class ReceiveMoneyScreen extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-
             // ── Profile + UPI card ─────────────────────────────
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF42001E), Color(0xFFE01A37)],
+                  colors: [
+                    Color.fromARGB(255, 5, 3, 95),
+                    Color.fromARGB(255, 178, 26, 224),
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -117,70 +134,13 @@ class ReceiveMoneyScreen extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   // ── QR code placeholder ────────────────────────
-                  // TODO: Replace with real QR using qr_flutter package
-                  // QrImageView(data: provider.myUpiId, size: 200)
-                  Container(
-                    width: 200,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: AppColors.primaryDark, width: 2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Stack(
-                      children: [
-                        // Corner decorations
-                        ..._buildQrCorners(),
-                        // Center content
-                        Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primaryDark,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: const Icon(
-                                  Icons.account_balance,
-                                  color: Colors.white,
-                                  size: 28,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              const Text(
-                                'ProFinch Pay',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF1A1A2E),
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'Add qr_flutter\nto show QR',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.grey.shade400,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  QrImageView(data: provider.myUpiId, size: 200),
 
                   const SizedBox(height: 20),
 
                   Text(
                     'Show this QR code to receive payment',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey.shade500,
-                    ),
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
                   ),
                 ],
               ),
@@ -205,8 +165,11 @@ class ReceiveMoneyScreen extends StatelessWidget {
                       color: AppColors.primaryDark.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Icon(Icons.alternate_email_rounded,
-                        color: AppColors.primaryDark, size: 20),
+                    child: Icon(
+                      Icons.alternate_email_rounded,
+                      color: AppColors.primaryDark,
+                      size: 20,
+                    ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -215,8 +178,7 @@ class ReceiveMoneyScreen extends StatelessWidget {
                       children: [
                         const Text(
                           'Your UPI ID',
-                          style: TextStyle(
-                              fontSize: 12, color: Colors.grey),
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
                         ),
                         const SizedBox(height: 2),
                         Text(
@@ -232,21 +194,24 @@ class ReceiveMoneyScreen extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () {
-                      Clipboard.setData(
-                          ClipboardData(text: provider.myUpiId));
+                      Clipboard.setData(ClipboardData(text: provider.myUpiId));
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: const Text('UPI ID copied!'),
                           backgroundColor: Colors.green.shade600,
                           behavior: SnackBarBehavior.floating,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                           duration: const Duration(seconds: 2),
                         ),
                       );
                     },
-                    icon: Icon(Icons.copy_rounded,
-                        color: AppColors.primary, size: 20),
+                    icon: Icon(
+                      Icons.copy_rounded,
+                      color: AppColors.primary,
+                      size: 20,
+                    ),
                   ),
                 ],
               ),
@@ -258,64 +223,4 @@ class ReceiveMoneyScreen extends StatelessWidget {
       ),
     );
   }
-
-  // ── QR corner decorators ───────────────────────────────────────
-  static List<Widget> _buildQrCorners() {
-    const size = 20.0;
-    const thickness = 3.0;
-    const color = Color(0xFF42001E);
-
-    Widget corner(AlignmentGeometry align, double rotateAngle) =>
-        Positioned.fill(
-          child: Align(
-            alignment: align,
-            child: SizedBox(
-              width: size,
-              height: size,
-              child: CustomPaint(
-                painter: _CornerPainter(rotateAngle, color, thickness),
-              ),
-            ),
-          ),
-        );
-
-    return [
-      corner(Alignment.topLeft, 0),
-      corner(Alignment.topRight, 90),
-      corner(Alignment.bottomRight, 180),
-      corner(Alignment.bottomLeft, 270),
-    ];
-  }
-}
-
-class _CornerPainter extends CustomPainter {
-  final double angle;
-  final Color color;
-  final double thickness;
-
-  _CornerPainter(this.angle, this.color, this.thickness);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = thickness
-      ..style = PaintingStyle.stroke
-      ..strokeCap = StrokeCap.square;
-
-    canvas.save();
-    canvas.translate(size.width / 2, size.height / 2);
-    canvas.rotate(angle * 3.14159 / 180);
-    canvas.translate(-size.width / 2, -size.height / 2);
-
-    final path = Path()
-      ..moveTo(0, size.height)
-      ..lineTo(0, 0)
-      ..lineTo(size.width, 0);
-    canvas.drawPath(path, paint);
-    canvas.restore();
-  }
-
-  @override
-  bool shouldRepaint(_CornerPainter old) => false;
 }
