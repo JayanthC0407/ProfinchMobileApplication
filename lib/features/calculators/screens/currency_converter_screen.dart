@@ -125,7 +125,7 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF1A3A6B).withOpacity(0.08),
+                    color: const Color(0xFF1A3A6B).withValues(alpha: 0.08),
                     blurRadius: 16,
                     offset: const Offset(0, 4),
                   ),
@@ -210,7 +210,7 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
                             boxShadow: [
                               BoxShadow(
                                 color:
-                                    const Color(0xFF1565C0).withOpacity(0.30),
+                                    const Color(0xFF1565C0).withValues(alpha: 0.30),
                                 blurRadius: 8,
                                 offset: const Offset(0, 3),
                               ),
@@ -279,7 +279,7 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF0D47A1).withOpacity(0.30),
+                      color: const Color(0xFF0D47A1).withValues(alpha: 0.30),
                       blurRadius: 18,
                       offset: const Offset(0, 6),
                     ),

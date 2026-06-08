@@ -64,7 +64,7 @@ class CalculatorMenuScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF0D47A1).withOpacity(0.30),
+                  color: const Color(0xFF0D47A1).withValues(alpha: 0.30),
                   blurRadius: 18,
                   offset: const Offset(0, 6),
                 ),
@@ -101,7 +101,7 @@ class CalculatorMenuScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.15),
+                    color: Colors.white.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: const Icon(

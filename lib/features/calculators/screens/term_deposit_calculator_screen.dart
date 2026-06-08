@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
-import 'package:profinch_mobile_application/shared/widgets/background_wrapper.dart';
 
 class TermDepositCalculatorScreen extends StatefulWidget {
   const TermDepositCalculatorScreen({super.key});
@@ -29,8 +28,9 @@ class _TermDepositCalculatorScreenState
   void calculate() {
     if (amountController.text.isEmpty ||
         rateController.text.isEmpty ||
-        tenureController.text.isEmpty)
+        tenureController.text.isEmpty) {
       return;
+    }
 
     final principal = double.parse(amountController.text);
 
@@ -207,7 +207,7 @@ class _CalcHeader extends StatelessWidget {
               padding: const EdgeInsets.all(10),
 
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.15),
+                color: Colors.white.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
 
@@ -265,7 +265,7 @@ class _InputCard extends StatelessWidget {
     return Card(
       color: Colors.white,
       shadowColor:
-      Colors.blue.withOpacity(0.15),
+      Colors.blue.withValues(alpha: 0.15),
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
@@ -401,7 +401,7 @@ class _ResultChip extends StatelessWidget {
       width: fullWidth ? double.infinity : null,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
