@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 
 class EmiCalculatorScreen extends StatefulWidget {
   const EmiCalculatorScreen({super.key});
@@ -9,294 +11,366 @@ class EmiCalculatorScreen extends StatefulWidget {
 }
 
 class _EmiCalculatorScreenState extends State<EmiCalculatorScreen> {
-  final amountController = TextEditingController();
+  final principalController = TextEditingController();
   final rateController = TextEditingController();
   final tenureController = TextEditingController();
 
-  double emi = 0;
-  double totalPayment = 0;
+  double emiAmount = 0;
+  double totalPayable = 0;
   double totalInterest = 0;
   bool _hasResult = false;
 
   void calculateEmi() {
-    if (amountController.text.isEmpty ||
+    if (principalController.text.isEmpty ||
         rateController.text.isEmpty ||
         tenureController.text.isEmpty) {
       return;
     }
 
-    final p = double.parse(amountController.text);
+    final principal = double.parse(principalController.text);
     final annualRate = double.parse(rateController.text);
-    final n = int.parse(tenureController.text);
-    final r = annualRate / 12 / 100;
-    final result = p * r * (pow(1 + r, n) / (pow(1 + r, n) - 1));
+    final tenureMonths = int.parse(tenureController.text);
+
+    final monthlyRate = annualRate / 12 / 100;
+
+    final emi = principal *
+        monthlyRate *
+        pow(1 + monthlyRate, tenureMonths) /
+        (pow(1 + monthlyRate, tenureMonths) - 1);
+
+    final total = emi * tenureMonths;
 
     setState(() {
-      emi = result;
-      totalPayment = result * n;
-      totalInterest = totalPayment - p;
+      emiAmount = emi;
+      totalPayable = total;
+      totalInterest = total - principal;
       _hasResult = true;
     });
-  }
-
-  Widget _inputField({
-    required TextEditingController controller,
-    required String label,
-    required String hint,
-    required IconData icon,
-    String? suffix,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: Colors.grey.shade600,
-            letterSpacing: 0.3,
-          ),
-        ),
-        const SizedBox(height: 6),
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: Colors.grey.shade200),
-          ),
-          child: TextField(
-            controller: controller,
-            keyboardType: TextInputType.number,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-            ),
-            decoration: InputDecoration(
-              hintText: hint,
-              hintStyle:
-                  TextStyle(fontSize: 14, color: Colors.grey.shade400),
-              prefixIcon: Icon(icon, color: Colors.grey.shade400, size: 20),
-              suffixText: suffix,
-              suffixStyle: TextStyle(
-                color: Colors.grey.shade500,
-                fontWeight: FontWeight.w500,
-              ),
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16, vertical: 14),
-            ),
-          ),
-        ),
-      ],
-    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FA),
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF1A3A6B),
-        foregroundColor: Colors.white,
-        title: const Text(
-          "EMI Calculator",
-          style: TextStyle(fontWeight: FontWeight.w600),
-        ),
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
+      body: Column(
+        children: [
+          _CalcHeader(
+            title: "EMI Calculator",
+            subtitle: "Calculate your monthly instalments",
+            icon: Icons.calculate_outlined,
+            iconBg: const Color(0xFFEDE9FE),
+            iconColor: const Color(0xFF7C3AED),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.grey.shade100),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _inputField(
-                    controller: amountController,
-                    label: "LOAN AMOUNT",
-                    hint: "e.g. 500000",
-                    icon: Icons.currency_rupee,
-                    suffix: "₹",
-                  ),
-                  const SizedBox(height: 16),
-                  _inputField(
-                    controller: rateController,
-                    label: "INTEREST RATE",
-                    hint: "e.g. 10.5",
-                    icon: Icons.percent,
-                    suffix: "% p.a.",
-                  ),
-                  const SizedBox(height: 16),
-                  _inputField(
-                    controller: tenureController,
-                    label: "TENURE",
-                    hint: "e.g. 24",
-                    icon: Icons.calendar_today_outlined,
-                    suffix: "months",
-                  ),
-                  const SizedBox(height: 24),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2563B0),
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 0,
+                  _InputCard(
+                    children: [
+                      _InputField(
+                        controller: principalController,
+                        label: "LOAN AMOUNT",
+                        hint: "e.g. 500000",
+                        icon: Icons.currency_rupee,
+                        suffix: "₹",
                       ),
-                      onPressed: calculateEmi,
-                      child: const Text(
-                        "Calculate EMI",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
+                      const SizedBox(height: 16),
+                      _InputField(
+                        controller: rateController,
+                        label: "INTEREST RATE",
+                        hint: "e.g. 8.5",
+                        icon: Icons.percent,
+                        suffix: "% p.a.",
                       ),
+                      const SizedBox(height: 16),
+                      _InputField(
+                        controller: tenureController,
+                        label: "LOAN TENURE",
+                        hint: "e.g. 60",
+                        icon: Icons.calendar_today_outlined,
+                        suffix: "months",
+                      ),
+                      const SizedBox(height: 20),
+                      _CalcButton(
+                        label: "Calculate EMI",
+                        color: const Color.fromARGB(255, 11, 73, 155),
+                        onPressed: calculateEmi,
+                      ),
+                    ],
+                  ),
+                  if (_hasResult) ...[
+                    const SizedBox(height: 16),
+                    _ResultHero(
+                      label: "Monthly EMI",
+                      value: "₹${emiAmount.toStringAsFixed(2)}",
+                      gradient: const [Color(0xFF4C1D95), Color(0xFF7C3AED)],
                     ),
-                  ),
+                    const SizedBox(height: 12),
+                    _ResultChip(
+                      label: "Total Interest Payable",
+                      value: "₹${totalInterest.toStringAsFixed(2)}",
+                      icon: Icons.trending_up,
+                      color: const Color(0xFF7C3AED),
+                      fullWidth: true,
+                    ),
+                    const SizedBox(height: 10),
+                    _ResultChip(
+                      label: "Total Amount Payable",
+                      value: "₹${totalPayable.toStringAsFixed(2)}",
+                      icon: Icons.account_balance_outlined,
+                      color: const Color(0xFF7C3AED),
+                      fullWidth: true,
+                    ),
+                  ],
                 ],
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-            if (_hasResult) ...[
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [Color(0xFF1A3A6B), Color(0xFF2563B0)],
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Column(
-                  children: [
-                    const Text(
-                      "Monthly EMI",
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      "₹${emi.toStringAsFixed(2)}",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: -1,
-                      ),
-                    ),
-                  ],
-                ),
+// ── Shared UI Components (same pattern as Term Deposit) ───────────────────────
+
+class _CalcHeader extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final Color iconBg;
+  final Color iconColor;
+
+  const _CalcHeader({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.iconBg,
+    required this.iconColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 200,
+      padding: const EdgeInsets.fromLTRB(20, 50, 20, 24),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF0F172A), Color(0xFF1E3A8A)],
+        ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
+      ),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.15),
+                shape: BoxShape.circle,
               ),
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Expanded(
-                    child: _ResultCard(
-                      label: "Total Payment",
-                      value: "₹${totalPayment.toStringAsFixed(0)}",
-                      icon: Icons.payments_outlined,
-                      color: Colors.blue.shade700,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: _ResultCard(
-                      label: "Total Interest",
-                      value: "₹${totalInterest.toStringAsFixed(0)}",
-                      icon: Icons.trending_up,
-                      color: Colors.orange.shade700,
-                    ),
-                  ),
-                ],
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 18,
               ),
-            ],
-          ],
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: AppColors.lightblue,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(subtitle,
+                    style: const TextStyle(color: Colors.white70)),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(color: iconBg, shape: BoxShape.circle),
+            child: Icon(icon, size: 40, color: iconColor),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _InputCard extends StatelessWidget {
+  final List<Widget> children;
+
+  const _InputCard({required this.children});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.white,
+      shadowColor: Colors.blue.withValues(alpha: 0.15),
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(children: children),
+      ),
+    );
+  }
+}
+
+class _InputField extends StatelessWidget {
+  final TextEditingController controller;
+  final String label;
+  final String hint;
+  final IconData icon;
+  final String suffix;
+
+  const _InputField({
+    required this.controller,
+    required this.label,
+    required this.hint,
+    required this.icon,
+    required this.suffix,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        prefixIcon: Icon(icon),
+        suffixText: suffix,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+    );
+  }
+}
+
+class _CalcButton extends StatelessWidget {
+  final String label;
+  final Color color;
+  final VoidCallback onPressed;
+
+  const _CalcButton({
+    required this.label,
+    required this.color,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 55,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        onPressed: onPressed,
+        child: Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
   }
 }
 
-class _ResultCard extends StatelessWidget {
+class _ResultHero extends StatelessWidget {
   final String label;
   final String value;
-  final IconData icon;
-  final Color color;
+  final List<Color> gradient;
 
-  const _ResultCard({
+  const _ResultHero({
     required this.label,
     required this.value,
-    required this.icon,
-    required this.color,
+    required this.gradient,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.grey.shade100),
+        gradient: LinearGradient(colors: gradient),
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Column(
+        children: [
+          Text(label, style: const TextStyle(color: Colors.white70)),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ResultChip extends StatelessWidget {
+  final String label;
+  final String value;
+  final IconData icon;
+  final Color color;
+  final bool fullWidth;
+
+  const _ResultChip({
+    required this.label,
+    required this.value,
+    required this.icon,
+    required this.color,
+    this.fullWidth = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: fullWidth ? double.infinity : null,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
         children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Icon(icon, color: color, size: 18),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  label,
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.grey.shade500,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  value,
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: color,
-                  ),
-                ),
-              ],
-            ),
+          Icon(icon, color: color),
+          const SizedBox(width: 12),
+          Expanded(child: Text(label)),
+          Text(
+            value,
+            style: TextStyle(color: color, fontWeight: FontWeight.bold),
           ),
         ],
       ),

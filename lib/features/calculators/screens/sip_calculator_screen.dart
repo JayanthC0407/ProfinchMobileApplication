@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 
 class SipCalculatorScreen extends StatefulWidget {
   const SipCalculatorScreen({super.key});
@@ -17,6 +18,7 @@ class _SipCalculatorScreenState extends State<SipCalculatorScreen> {
   double investedAmount = 0;
   double estimatedReturns = 0;
   double futureValue = 0;
+  bool _hasResult = false;
 
   void calculateSip() {
     if (sipController.text.isEmpty ||
@@ -42,359 +44,366 @@ class _SipCalculatorScreenState extends State<SipCalculatorScreen> {
       investedAmount = invested;
       futureValue = maturityAmount;
       estimatedReturns = futureValue - investedAmount;
+      _hasResult = true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F4FF),
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: false,
-        titleSpacing: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: const Color(0xFFE8F0FE),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 16,
-                color: Color(0xFF1565C0),
-              ),
-              onPressed: () => Navigator.pop(context),
-              padding: EdgeInsets.zero,
-            ),
+      backgroundColor: const Color(0xFFF5F7FA),
+      body: Column(
+        children: [
+          _CalcHeader(
+            title: "SIP Calculator",
+            subtitle: "Estimate your future wealth",
+            icon: Icons.trending_up_rounded,
+            iconBg: const Color(0xFFD1FAE5),
+            iconColor: const Color(0xFF059669),
           ),
-        ),
-        title: const Padding(
-          padding: EdgeInsets.only(left: 8),
-          child: Text(
-            "SIP Calculator",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF0D1B3E),
-            ),
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 20, 16, 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Info banner
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFE8F0FE),
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: Row(
-                children: const [
-                  Icon(Icons.trending_up_rounded,
-                      size: 16, color: Color(0xFF1565C0)),
-                  SizedBox(width: 8),
-                  Text(
-                    "Start small, grow big — estimate your SIP returns",
-                    style: TextStyle(
-                      fontSize: 12.5,
-                      color: Color(0xFF1565C0),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Input card
-            Container(
-              width: double.infinity,
+          Expanded(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFF1A3A6B).withValues(alpha: 0.08),
-                    blurRadius: 16,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text(
-                    "Investment Details",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF0D1B3E),
-                    ),
-                  ),
-                  const SizedBox(height: 18),
-                  _buildInputField(
-                    controller: sipController,
-                    label: "Monthly SIP Amount",
-                    hint: "e.g. 5000",
-                    icon: Icons.account_balance_wallet_outlined,
-                    prefix: "₹",
-                  ),
-                  const SizedBox(height: 16),
-                  _buildInputField(
-                    controller: returnController,
-                    label: "Expected Annual Return",
-                    hint: "e.g. 12",
-                    icon: Icons.percent_rounded,
-                    suffix: "%",
-                  ),
-                  const SizedBox(height: 16),
-                  _buildInputField(
-                    controller: yearsController,
-                    label: "Investment Period",
-                    hint: "e.g. 10",
-                    icon: Icons.calendar_month_outlined,
-                    suffix: "Years",
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            SizedBox(
-              width: double.infinity,
-              height: 52,
-              child: ElevatedButton(
-                onPressed: calculateSip,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1565C0),
-                  foregroundColor: Colors.white,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                child: const Text(
-                  "Calculate SIP",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.3,
-                  ),
-                ),
-              ),
-            ),
-
-            if (futureValue > 0) ...[
-              const SizedBox(height: 24),
-
-              // Gradient result card
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF0D47A1), Color(0xFF1976D2)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF0D47A1).withValues(alpha: 0.30),
-                      blurRadius: 18,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Investment Summary",
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
+                  _InputCard(
+                    children: [
+                      _InputField(
+                        controller: sipController,
+                        label: "MONTHLY SIP AMOUNT",
+                        hint: "e.g. 5000",
+                        icon: Icons.account_balance_wallet_outlined,
+                        suffix: "₹",
                       ),
-                    ),
+                      const SizedBox(height: 16),
+                      _InputField(
+                        controller: returnController,
+                        label: "EXPECTED ANNUAL RETURN",
+                        hint: "e.g. 12",
+                        icon: Icons.percent_rounded,
+                        suffix: "% p.a.",
+                      ),
+                      const SizedBox(height: 16),
+                      _InputField(
+                        controller: yearsController,
+                        label: "INVESTMENT PERIOD",
+                        hint: "e.g. 10",
+                        icon: Icons.calendar_today_outlined,
+                        suffix: "years",
+                      ),
+                      const SizedBox(height: 20),
+                      _CalcButton(
+                        label: "Calculate SIP",
+                        color: const Color.fromARGB(255, 11, 73, 155),
+                        onPressed: calculateSip,
+                      ),
+                    ],
+                  ),
+                  if (_hasResult) ...[
                     const SizedBox(height: 16),
-                    _buildResultRow(
+                    _ResultHero(
+                      label: "Future Value",
+                      value: "₹${futureValue.toStringAsFixed(2)}",
+                      gradient: const [Color(0xFF065F46), Color(0xFF059669)],
+                    ),
+                    const SizedBox(height: 12),
+                    _ResultChip(
                       label: "Invested Amount",
                       value: "₹${investedAmount.toStringAsFixed(2)}",
                       icon: Icons.savings_outlined,
+                      color: const Color(0xFF059669),
+                      fullWidth: true,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Divider(color: Colors.white24, height: 1),
-                    ),
-                    _buildResultRow(
+                    const SizedBox(height: 10),
+                    _ResultChip(
                       label: "Estimated Returns",
                       value: "₹${estimatedReturns.toStringAsFixed(2)}",
                       icon: Icons.show_chart_rounded,
+                      color: const Color(0xFF059669),
+                      fullWidth: true,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      child: Divider(color: Colors.white24, height: 1),
-                    ),
-                    _buildResultRow(
-                      label: "Future Value",
-                      value: "₹${futureValue.toStringAsFixed(2)}",
-                      icon: Icons.emoji_events_outlined,
-                      highlight: true,
-                    ),
-
-                    // Progress bar showing return ratio
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 12),
+                    // Progress bar
                     ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: LinearProgressIndicator(
-                        value: investedAmount / futureValue,
-                        backgroundColor: Colors.white24,
-                        valueColor:
-                            const AlwaysStoppedAnimation<Color>(Colors.white),
+                        value: futureValue > 0
+                            ? (investedAmount / futureValue).clamp(0.0, 1.0)
+                            : 0,
+                        backgroundColor: const Color(0xFFD1FAE5),
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                            Color(0xFF059669)),
                         minHeight: 8,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 6),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text("Principal",
-                            style: TextStyle(
-                                color: Colors.white60, fontSize: 11)),
+                        const Text(
+                          "Principal",
+                          style: TextStyle(
+                              color: Color(0xFF6B7280), fontSize: 11),
+                        ),
                         Text(
-                          "${((investedAmount / futureValue) * 100).toStringAsFixed(1)}% of total",
+                          "${futureValue > 0 ? ((investedAmount / futureValue) * 100).toStringAsFixed(1) : '0'}% of total",
                           style: const TextStyle(
-                              color: Colors.white60, fontSize: 11),
+                              color: Color(0xFF6B7280), fontSize: 11),
                         ),
                       ],
                     ),
                   ],
-                ),
+                ],
               ),
-            ],
-          ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Shared UI Components (same pattern as Term Deposit) ───────────────────────
+
+class _CalcHeader extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final Color iconBg;
+  final Color iconColor;
+
+  const _CalcHeader({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.iconBg,
+    required this.iconColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 200,
+      padding: const EdgeInsets.fromLTRB(20, 50, 20, 24),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xFF0F172A), Color(0xFF1E3A8A)],
+        ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
+      ),
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.15),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.white,
+                size: 18,
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    color: AppColors.lightblue,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(subtitle,
+                    style: const TextStyle(color: Colors.white70)),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(color: iconBg, shape: BoxShape.circle),
+            child: Icon(icon, size: 40, color: iconColor),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _InputCard extends StatelessWidget {
+  final List<Widget> children;
+
+  const _InputCard({required this.children});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: Colors.white,
+      shadowColor: Colors.blue.withValues(alpha: 0.15),
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(children: children),
+      ),
+    );
+  }
+}
+
+class _InputField extends StatelessWidget {
+  final TextEditingController controller;
+  final String label;
+  final String hint;
+  final IconData icon;
+  final String suffix;
+
+  const _InputField({
+    required this.controller,
+    required this.label,
+    required this.hint,
+    required this.icon,
+    required this.suffix,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        prefixIcon: Icon(icon),
+        suffixText: suffix,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+    );
+  }
+}
+
+class _CalcButton extends StatelessWidget {
+  final String label;
+  final Color color;
+  final VoidCallback onPressed;
+
+  const _CalcButton({
+    required this.label,
+    required this.color,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 55,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: color,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        onPressed: onPressed,
+        child: Text(
+          label,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildInputField({
-    required TextEditingController controller,
-    required String label,
-    required String hint,
-    required IconData icon,
-    String? prefix,
-    String? suffix,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12.5,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF7A8BAD),
+class _ResultHero extends StatelessWidget {
+  final String label;
+  final String value;
+  final List<Color> gradient;
+
+  const _ResultHero({
+    required this.label,
+    required this.value,
+    required this.gradient,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(colors: gradient),
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Column(
+        children: [
+          Text(label, style: const TextStyle(color: Colors.white70)),
+          const SizedBox(height: 8),
+          Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w600,
-            color: Color(0xFF0D1B3E),
-          ),
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: const TextStyle(
-                color: Color(0xFFBDCAE5), fontWeight: FontWeight.w400),
-            prefixIcon: Icon(icon, color: const Color(0xFF1565C0), size: 20),
-            prefixText: prefix != null ? "$prefix " : null,
-            prefixStyle: const TextStyle(
-              color: Color(0xFF0D1B3E),
-              fontWeight: FontWeight.w600,
-              fontSize: 15,
-            ),
-            suffixText: suffix,
-            suffixStyle: const TextStyle(
-              color: Color(0xFF7A8BAD),
-              fontSize: 13,
-            ),
-            filled: true,
-            fillColor: const Color(0xFFF8FAFF),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: BorderSide(color: Colors.grey[200]!),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide: BorderSide(color: Colors.grey[200]!),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(14),
-              borderSide:
-                  const BorderSide(color: Color(0xFF1565C0), width: 1.5),
-            ),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
+}
 
-  Widget _buildResultRow({
-    required String label,
-    required String value,
-    required IconData icon,
-    bool highlight = false,
-  }) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(10),
+class _ResultChip extends StatelessWidget {
+  final String label;
+  final String value;
+  final IconData icon;
+  final Color color;
+  final bool fullWidth;
+
+  const _ResultChip({
+    required this.label,
+    required this.value,
+    required this.icon,
+    required this.color,
+    this.fullWidth = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: fullWidth ? double.infinity : null,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: color),
+          const SizedBox(width: 12),
+          Expanded(child: Text(label)),
+          Text(
+            value,
+            style: TextStyle(color: color, fontWeight: FontWeight.bold),
           ),
-          child: Icon(icon, color: Colors.white, size: 18),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            label,
-            style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.80),
-              fontSize: 13,
-            ),
-          ),
-        ),
-        Text(
-          value,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: highlight ? 18 : 15,
-            fontWeight: highlight ? FontWeight.w800 : FontWeight.w600,
-          ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
