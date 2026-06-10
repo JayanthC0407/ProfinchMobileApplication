@@ -164,98 +164,101 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
                     const SizedBox(height: 12),
 
                     // Filter chips row
-                    Row(
-                      children: [
-
-                        // Type filter chips
-                        Expanded(
-                          child: TransactionFilterBar(
-                            selected: provider.typeFilter,
-                            onChanged: provider.setTypeFilter,
-                          ),
-                        ),
-
-                        const SizedBox(width: 8),
-
-                        // Category filter button
-                        GestureDetector(
-                          onTap: () =>
-                              _showCategoryFilter(context, provider),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: provider.categoryFilter != null
-                                  ? Colors.white
-                                  : Colors.white24,
-                              borderRadius: BorderRadius.circular(20),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                      
+                          // Type filter chips
+                          
+                            TransactionFilterBar(
+                              selected: provider.typeFilter,
+                              onChanged: provider.setTypeFilter,
                             ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.category_outlined,
-                                  size: 16,
-                                  color: provider.categoryFilter != null
-                                      ? AppColors.primaryDark
-                                      : Colors.white,
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  'Category',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
+                          
+                      
+                          const SizedBox(width: 8),
+                      
+                          // Category filter button
+                          GestureDetector(
+                            onTap: () =>
+                                _showCategoryFilter(context, provider),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: provider.categoryFilter != null
+                                    ? Colors.white
+                                    : Colors.white24,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.category_outlined,
+                                    size: 16,
                                     color: provider.categoryFilter != null
                                         ? AppColors.primaryDark
                                         : Colors.white,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Category',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: provider.categoryFilter != null
+                                          ? AppColors.primaryDark
+                                          : Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-
-                        const SizedBox(width: 8),
-
-                        // Date range button
-                        GestureDetector(
-                          onTap: () => _pickDateRange(context, provider),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: provider.dateRange != null
-                                  ? Colors.white
-                                  : Colors.white24,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.date_range_outlined,
-                                  size: 16,
-                                  color: provider.dateRange != null
-                                      ? AppColors.primaryDark
-                                      : Colors.white,
-                                ),
-                                const SizedBox(width: 4),
-                                Text(
-                                  provider.dateRange != null
-                                      ? '${DateFormat('dd MMM').format(provider.dateRange!.start)} - ${DateFormat('dd MMM').format(provider.dateRange!.end)}'
-                                      : 'Date',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
+                      
+                          const SizedBox(width: 8),
+                      
+                          // Date range button
+                          GestureDetector(
+                            onTap: () => _pickDateRange(context, provider),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: provider.dateRange != null
+                                    ? Colors.white
+                                    : Colors.white24,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.date_range_outlined,
+                                    size: 16,
                                     color: provider.dateRange != null
                                         ? AppColors.primaryDark
                                         : Colors.white,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    provider.dateRange != null
+                                        ? '${DateFormat('dd MMM').format(provider.dateRange!.start)} - ${DateFormat('dd MMM').format(provider.dateRange!.end)}'
+                                        : 'Date',
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: provider.dateRange != null
+                                          ? AppColors.primaryDark
+                                          : Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),

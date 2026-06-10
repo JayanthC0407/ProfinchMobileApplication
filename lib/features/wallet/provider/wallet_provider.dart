@@ -36,18 +36,15 @@ class WalletProvider extends ChangeNotifier {
   WalletModel get wallet => _wallet;
   bool get isLoading => _isLoading;
 
-  // ── Wallet balance ─────────────────────────────────────────────
   double get walletBalance => _wallet.balance;
   double get dailyLimit => _wallet.dailyLimit;
   double get remainingDailyLimit => _wallet.remainingDailyLimit;
 
-  // ── Account balance of logged-in user ──────────────────────────
   double get accountBalance {
     final userId = _authProvider.currentUser?.id ?? '';
     return _accountProvider.getTotalBalance(userId);
   }
 
-  // ── Wallet transaction history ─────────────────────────────────
   final List<WalletTransaction> _history = [
     WalletTransaction(
       id: 'WTX001',
@@ -112,10 +109,8 @@ class WalletProvider extends ChangeNotifier {
 
     await Future.delayed(const Duration(seconds: 2));
 
-    // Debit from bank account
     _accountProvider.debitAccount(accountId, amount);
 
-    // Credit wallet
     _wallet = WalletModel(
       id: _wallet.id,
       userId: _wallet.userId,
@@ -125,7 +120,6 @@ class WalletProvider extends ChangeNotifier {
       isActive: _wallet.isActive,
     );
 
-    // Add to history
     _history.add(WalletTransaction(
       id: 'WTX${DateTime.now().millisecondsSinceEpoch}',
       title: 'Top-up from Bank Account',
@@ -153,7 +147,6 @@ class WalletProvider extends ChangeNotifier {
 
     await Future.delayed(const Duration(seconds: 2));
 
-    // Debit wallet
     _wallet = WalletModel(
       id: _wallet.id,
       userId: _wallet.userId,
@@ -163,16 +156,55 @@ class WalletProvider extends ChangeNotifier {
       isActive: _wallet.isActive,
     );
 
-    // Credit bank account
     _accountProvider.creditAccount(accountId, amount);
 
-    // Add to history
     _history.add(WalletTransaction(
       id: 'WTX${DateTime.now().millisecondsSinceEpoch}',
       title: 'Transfer to Bank Account',
       amount: amount,
       date: DateTime.now(),
       type: WalletTransactionType.transfer,
+      isCredit: false,
+    ));
+
+    _isLoading = false;
+    notifyListeners();
+    return true;
+  }
+
+  // ── ✅ NEW: Send from wallet (used by Send & Scan QR buttons) ──
+  Future<bool> sendFromWallet({
+    required String receiverName,
+    required String receiverUpiId,
+    required double amount,
+    required String note,
+  }) async {
+    if (amount <= 0) return false;
+    if (amount > _wallet.balance) return false;      // ← checks wallet balance
+    if (amount > remainingDailyLimit) return false;  // ← checks daily limit
+
+    _isLoading = true;
+    notifyListeners();
+
+    await Future.delayed(const Duration(seconds: 2));
+
+    // ✅ Debit wallet balance
+    _wallet = WalletModel(
+      id: _wallet.id,
+      userId: _wallet.userId,
+      balance: _wallet.balance - amount,
+      dailyLimit: _wallet.dailyLimit,
+      usedTodayLimit: _wallet.usedTodayLimit + amount,
+      isActive: _wallet.isActive,
+    );
+
+    // ✅ Add to wallet history
+    _history.add(WalletTransaction(
+      id: 'WTX${DateTime.now().millisecondsSinceEpoch}',
+      title: 'Paid to $receiverName',
+      amount: amount,
+      type: WalletTransactionType.payment,
+      date: DateTime.now(),
       isCredit: false,
     ));
 
