@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/features/upi/screens/scan_qr_screen.dart';
-import 'package:profinch_mobile_application/features/upi/screens/send_money_screen.dart';
-import 'package:profinch_mobile_application/features/upi/provider/upi_provider.dart';
+import 'package:profinch_mobile_application/features/wallet/screens/wallet_scan_qr_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'package:profinch_mobile_application/core/constants/colors.dart';
@@ -12,6 +10,7 @@ import '../widgets/wallet_balance_card.dart';
 import '../widgets/wallet_transaction_tile.dart';
 import '../widgets/top_up_sheet.dart';
 import '../widgets/transfer_to_bank_sheet.dart';
+import '../widgets/wallet_send_sheet.dart'; // ← new widget (see below)
 
 class WalletScreen extends StatelessWidget {
   const WalletScreen({super.key});
@@ -37,7 +36,6 @@ class _WalletView extends StatelessWidget {
   ) {
     final userId = authProvider.currentUser?.id ?? '';
     final accounts = accountProvider.getAccountsByUserId(userId);
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -59,7 +57,6 @@ class _WalletView extends StatelessWidget {
   ) {
     final userId = authProvider.currentUser?.id ?? '';
     final accounts = accountProvider.getAccountsByUserId(userId);
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -73,31 +70,60 @@ class _WalletView extends StatelessWidget {
     );
   }
 
-  // ── Navigate to Send Money ────────────────────────────────────
-  void _navigateToSendMoney(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => ChangeNotifierProvider(
-          create: (ctx) => UpiProvider(
-            ctx.read<AuthProvider>(),
-          ), // ✅ UpiProvider not upi_provider
-          child: const SendMoneyScreen(),
-        ),
+  void _showSendSheet(BuildContext context, WalletProvider provider) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => WalletSendSheet(
+        walletBalance: provider.walletBalance,
+        onSend:
+            ({
+              required receiverName,
+              required receiverUpiId,
+              required amount,
+              required note,
+            }) => provider.sendFromWallet(
+              receiverName: receiverName,
+              receiverUpiId: receiverUpiId,
+              amount: amount,
+              note: note,
+            ),
       ),
     );
   }
 
-  // ── Navigate to Scan QR ───────────────────────────────────────
-  void _navigateToScanQr(BuildContext context) {
+  // ── Pay QR button — opens camera scanner ──────────────────────
+  void _navigateToScanQr(BuildContext context, WalletProvider provider) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => ChangeNotifierProvider(
-          create: (ctx) => UpiProvider(
-            ctx.read<AuthProvider>(),
-          ), // ✅ UpiProvider not upi_provider
-          child: const ScanQrScreen(),
+        builder: (_) => WalletScanQrScreen(
+          onScanned: (upiId) {
+            // After scanning, show send sheet with prefilled UPI ID
+            Navigator.pop(context); // close scanner
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (_) => WalletSendSheet(
+                walletBalance: provider.walletBalance,
+                prefillUpiId: upiId, // ← prefilled from QR
+                onSend:
+                    ({
+                      required receiverName,
+                      required receiverUpiId,
+                      required amount,
+                      required note,
+                    }) => provider.sendFromWallet(
+                      receiverName: receiverName,
+                      receiverUpiId: receiverUpiId,
+                      amount: amount,
+                      note: note,
+                    ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -133,7 +159,6 @@ class _WalletView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // ── Wallet balance card ──────────────────────
                   WalletBalanceCard(
                     walletBalance: walletProvider.walletBalance,
                     dailyLimit: walletProvider.dailyLimit,
@@ -142,7 +167,6 @@ class _WalletView extends StatelessWidget {
 
                   const SizedBox(height: 20),
 
-                  // ── Action buttons ───────────────────────────
                   Row(
                     children: [
                       _buildActionButton(
@@ -169,25 +193,26 @@ class _WalletView extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 12),
+                      // ✅ Uses WalletSendSheet — deducts from wallet
                       _buildActionButton(
                         icon: Icons.send_rounded,
                         label: 'Send',
                         color: const Color(0xFF7C3AED),
-                        onTap: () => _navigateToSendMoney(context), // ✅ fixed
+                        onTap: () => _showSendSheet(context, walletProvider),
                       ),
                       const SizedBox(width: 12),
+                      // ✅ Also uses WalletSendSheet with QR scan
                       _buildActionButton(
                         icon: Icons.qr_code_rounded,
                         label: 'Pay QR',
                         color: const Color(0xFF0EA5E9),
-                        onTap: () => _navigateToScanQr(context), // ✅ fixed
+                        onTap: () => _navigateToScanQr(context, walletProvider),
                       ),
                     ],
                   ),
 
                   const SizedBox(height: 24),
 
-                  // ── Account balance info ─────────────────────
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
@@ -244,7 +269,6 @@ class _WalletView extends StatelessWidget {
 
                   const SizedBox(height: 24),
 
-                  // ── Transaction history ──────────────────────
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
