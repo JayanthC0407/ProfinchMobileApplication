@@ -9,6 +9,7 @@ import 'package:profinch_mobile_application/features/calculators/screens/loan_el
 import 'package:profinch_mobile_application/features/calculators/screens/sip_calculator_screen.dart';
 import 'package:profinch_mobile_application/features/calculators/screens/term_deposit_calculator_screen.dart';
 import 'package:profinch_mobile_application/features/cards/provider/card_provider.dart';
+import 'package:profinch_mobile_application/features/cards/screens/apply_card_screen.dart';
 import 'package:profinch_mobile_application/features/cards/screens/card_screen.dart';
 import 'package:profinch_mobile_application/features/accounts/screens/accounts_screen.dart';
 import 'package:profinch_mobile_application/features/loans/provider/loan_provider.dart';
@@ -112,6 +113,9 @@ class MyApp extends StatelessWidget {
         AppRoutes.currencyConverter: (context) =>
             const CurrencyConverterScreen(),
         AppRoutes.sipCalculator: (context) => const SipCalculatorScreen(),
+       // AppRoutes.emiCalculator: (context) => const EmiCalculatorScreen(),
+
+       AppRoutes.applyCard: (context) => const ApplyCardScreen(),
         
         AppRoutes.transferMoney: (context) => const TransferMoneyScreen(),
       },

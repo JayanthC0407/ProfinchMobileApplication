@@ -33,6 +33,7 @@ class AppRoutes {
   static const String currencyConverter = '/currencyConverter';
 
   static const String sipCalculator = '/sipCalculator';
+  static const String applyCard = '/applyCard';
 
   static const String transferMoney = '/transferMoney';
 }
