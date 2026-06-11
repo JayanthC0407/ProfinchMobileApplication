@@ -260,32 +260,32 @@ class DashboardScreen extends StatelessWidget {
                       title: "Analytics",
                     ),
 
-                    if (!provider.showMoreServices) ...[
-                      FeatureItem(
-                        icon: Icons.calculate,
-                        title: "Calculator",
+                    // Always visible items
+                    FeatureItem(
+                      icon: Icons.calculate,
+                      title: "Calculator",
+                      onTap: () {
+                        Navigator.pushNamed(context, AppRoutes.calculators);
+                      },
+                    ),
 
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.calculators);
-                        },
-                      ),
+                    const FeatureItem(icon: Icons.receipt_long, title: "Bills"),
 
-                      const FeatureItem(
-                        icon: Icons.receipt_long,
-                        title: "Bills",
-                      ),
+                    const FeatureItem(
+                      icon: Icons.card_giftcard,
+                      title: "Rewards",
+                    ),
 
-                      const FeatureItem(
-                        icon: Icons.card_giftcard,
-                        title: "Rewards",
-                      ),
-
+                    // Show More button initially
+                    if (!provider.showMoreServices)
                       FeatureItem(
                         icon: Icons.more_horiz,
                         title: "More",
                         onTap: () => provider.toggleMoreServices(),
                       ),
-                    ] else ...[
+
+                    // Additional items when expanded
+                    if (provider.showMoreServices) ...[
                       FeatureItem(
                         icon: Icons.savings,
                         title: "Term Dep.",
@@ -305,16 +305,6 @@ class DashboardScreen extends StatelessWidget {
                         title: "Insurance",
                       ),
 
-                      /* const FeatureItem(
-                        icon: Icons.support_agent,
-                        title: "Service",
-                      ),
-
-                      const FeatureItem(
-                        icon: Icons.description,
-                        title: "Statements",
-                      ),
-                          */
                       FeatureItem(
                         icon: Icons.people,
                         title: "Benefic.",
@@ -326,9 +316,7 @@ class DashboardScreen extends StatelessWidget {
                       FeatureItem(
                         icon: Icons.expand_less,
                         title: "Less",
-                        onTap: () {
-                          provider.toggleMoreServices();
-                        },
+                        onTap: () => provider.toggleMoreServices(),
                       ),
                     ],
                   ],
