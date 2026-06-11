@@ -5,3 +5,4 @@ build/
 .ios/
 .android/
 .flutter-plugins-dependencies/
+.flutter-plugins-dependencies
