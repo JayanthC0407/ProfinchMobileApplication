@@ -8,6 +8,8 @@ import '../provider/card_provider.dart';
 import '../widgets/card_widget.dart';
 import '../widgets/card_limit_widget.dart';
 import '../widgets/card_settings_tile.dart';
+import 'package:profinch_mobile_application/core/routes/app_routes.dart';
+
 
 class CardsScreen extends StatefulWidget {
   const CardsScreen({super.key});
@@ -52,7 +54,7 @@ class _CardsScreenState extends State<CardsScreen>
           IconButton(
             icon: const Icon(Icons.add, color: Colors.white),
             onPressed: () {
-              // TODO: Navigate to apply card screen
+                            Navigator.pushNamed(context, AppRoutes.applyCard);
             },
           ),
         ],
