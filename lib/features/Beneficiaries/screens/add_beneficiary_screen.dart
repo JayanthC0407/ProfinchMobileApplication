@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/models/beneficiary_model.dart';
@@ -33,14 +32,14 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
     }
   }
 
-  Color get _typeBg {
-    switch (widget.beneficiaryType) {
-      case 'PBI': return const Color(0xFFDBEAFE);
-      case 'LOCAL': return const Color(0xFFCCFBF1);
-      case 'INTERNATIONAL': return const Color(0xFFFEF3C7);
-      default: return const Color(0xFFE0E7FF);
-    }
-  }
+  // Color get _typeBg {
+  //   switch (widget.beneficiaryType) {
+  //     case 'PBI': return const Color(0xFFDBEAFE);
+  //     case 'LOCAL': return const Color(0xFFCCFBF1);
+  //     case 'INTERNATIONAL': return const Color(0xFFFEF3C7);
+  //     default: return const Color(0xFFE0E7FF);
+  //   }
+  // }
 
   Widget _field({
     required TextEditingController controller,

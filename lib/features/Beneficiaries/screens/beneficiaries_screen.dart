@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/routes/app_routes.dart';
