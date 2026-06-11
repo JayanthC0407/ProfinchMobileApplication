@@ -4,3 +4,4 @@ build/
 .idea/
 .ios/
 .android/
+.flutter-plugins-dependencies
