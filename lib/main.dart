@@ -16,6 +16,8 @@ import 'package:profinch_mobile_application/features/loans/screens/apply_loan_sc
 import 'package:profinch_mobile_application/features/loans/screens/emi_calculator_screen.dart';
 import 'package:profinch_mobile_application/features/loans/screens/my_loans_screen.dart';
 import 'package:profinch_mobile_application/features/profile/screens/profile_screen.dart';
+import 'package:profinch_mobile_application/features/transfers/provider/transfer_provider.dart';
+import 'package:profinch_mobile_application/features/transfers/screens/transfer_money_screen.dart';
 
 import 'package:profinch_mobile_application/features/upi/screens/upi_home_screen.dart';
 import 'package:profinch_mobile_application/features/term_deposit/provider/term_deposit_provider.dart';
@@ -47,6 +49,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => TermDepositProvider()),
         ChangeNotifierProvider(create: (_) => BeneficiaryProvider()),
         ChangeNotifierProvider(create: (_) => LoanProvider()),
+        ChangeNotifierProvider(create: (_) => TransferProvider()),
       ],
       child: const MyApp(),
     ),
@@ -103,11 +106,14 @@ class MyApp extends StatelessWidget {
         AppRoutes.wallet: (context) => const WalletScreen(),
 
         AppRoutes.calculators: (context) => const CalculatorMenuScreen(),
-        AppRoutes.tdCalculator: (context) =>const TermDepositCalculatorScreen(),
+        AppRoutes.tdCalculator: (context) =>
+            const TermDepositCalculatorScreen(),
         AppRoutes.loanEligibility: (context) => const LoanEligibilityScreen(),
-        AppRoutes.currencyConverter: (context) => const CurrencyConverterScreen(),
+        AppRoutes.currencyConverter: (context) =>
+            const CurrencyConverterScreen(),
         AppRoutes.sipCalculator: (context) => const SipCalculatorScreen(),
-       // AppRoutes.emiCalculator: (context) => const EmiCalculatorScreen(),
+        
+        AppRoutes.transferMoney: (context) => const TransferMoneyScreen(),
       },
     );
   }
