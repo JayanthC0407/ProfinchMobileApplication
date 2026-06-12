@@ -124,10 +124,11 @@ class _LocalTransferScreenState extends State<LocalTransferScreen> {
                           onTap: () =>
                               setState(() => transferMode = m['value'] as String),
                           child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 180),
+                            height: 90,
+                            duration: const Duration(milliseconds: 200),
                             margin: const EdgeInsets.only(right: 8),
                             padding: const EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 8),
+                                vertical: 8, horizontal: 8),
                             decoration: BoxDecoration(
                               color: active
                                   ? const Color(0xFF2563B0)
@@ -159,7 +160,7 @@ class _LocalTransferScreenState extends State<LocalTransferScreen> {
                                   style: TextStyle(
                                     fontSize: 9,
                                     color: active
-                                        ? Colors.white.withOpacity(0.75)
+                                        ? Colors.white.withValues(alpha: 0.75)
                                         : Colors.grey.shade400,
                                   ),
                                 ),
@@ -216,6 +217,7 @@ class _TransferHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -256,7 +258,7 @@ class _TransferHeader extends StatelessWidget {
               child: Text(
                 subtitle,
                 style: TextStyle(
-                    color: Colors.white.withOpacity(0.65), fontSize: 13),
+                    color: Colors.white.withValues(alpha: 0.65), fontSize: 13),
               ),
             ),
           ],
