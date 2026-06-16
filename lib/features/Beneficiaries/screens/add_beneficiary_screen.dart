@@ -102,7 +102,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [_typeColor.withValues(alpha: 0.85), _typeColor],
+                colors: [Color(0xFF1A3A6B), Color(0xFF2563B0)],
               ),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(28),

@@ -36,4 +36,5 @@ class AppRoutes {
   static const String applyCard = '/applyCard';
 
   static const String transferMoney = '/transferMoney';
+  static const String redeemPoints = '/redeemPoints';
 }
