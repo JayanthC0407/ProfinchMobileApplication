@@ -296,6 +296,26 @@ class _InternationalTransferScreenState
                     ),
                   ),
                   const SizedBox(height: 100),
+                  _ContinueButton(
+                    onPressed: () {
+                      if (selectedAccountId == null ||
+                          amountController.text.isEmpty) {
+                        return;
+                      }
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => TransferConfirmationScreen(
+                            beneficiary: widget.beneficiary,
+                            accountId: selectedAccountId!,
+                            amount: double.parse(amountController.text),
+                            remarks: remarksController.text,
+                            transferMode: "INTERNATIONAL",
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
