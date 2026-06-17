@@ -271,9 +271,11 @@ class DashboardScreen extends StatelessWidget {
 
                     const FeatureItem(icon: Icons.receipt_long, title: "Bills"),
 
-                    const FeatureItem(
+                    FeatureItem(
                       icon: Icons.card_giftcard,
                       title: "Rewards",
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.rewards),
                     ),
 
                     // Show More button initially

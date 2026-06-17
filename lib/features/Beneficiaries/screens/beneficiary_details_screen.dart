@@ -71,7 +71,7 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [_typeColor.withOpacity(0.85), _typeColor],
+                colors: [_typeColor.withValues(alpha:0.85), _typeColor],
               ),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(28),
@@ -109,7 +109,7 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
                     width: 70,
                     height: 70,
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha:0.2),
                       shape: BoxShape.circle,
                     ),
                     child: Center(

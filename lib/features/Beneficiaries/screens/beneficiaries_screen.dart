@@ -87,7 +87,7 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                     child: Text(
                       "${allBeneficiaries.length} saved recipient${allBeneficiaries.length == 1 ? '' : 's'}",
                       style: TextStyle(
-                          color: Colors.white.withOpacity(0.65), fontSize: 13),
+                          color: Colors.white.withValues(alpha: 0.65), fontSize: 13),
                     ),
                   ),
                   // Transfer Money quick action inside header
@@ -99,10 +99,10 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                       child: Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.15),
+                          color: Colors.white.withValues(alpha:0.15),
                           borderRadius: BorderRadius.circular(14),
                           border:
-                              Border.all(color: Colors.white.withOpacity(0.2)),
+                              Border.all(color: Colors.white.withValues(alpha:0.2)),
                         ),
                         child: Row(
                           children: [
@@ -110,7 +110,7 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                               width: 38,
                               height: 38,
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
+                                color: Colors.white.withValues(alpha:0.2),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: const Icon(Icons.swap_horiz_rounded,
@@ -131,14 +131,14 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                                   Text(
                                     "Send to a beneficiary",
                                     style: TextStyle(
-                                        color: Colors.white.withOpacity(0.65),
+                                        color: Colors.white.withValues(alpha:0.65),
                                         fontSize: 12),
                                   ),
                                 ],
                               ),
                             ),
                             Icon(Icons.arrow_forward_ios_rounded,
-                                color: Colors.white.withOpacity(0.7), size: 14),
+                                color: Colors.white.withValues(alpha:0.7), size: 14),
                           ],
                         ),
                       ),

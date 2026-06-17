@@ -10,7 +10,6 @@ import '../widgets/card_limit_widget.dart';
 import '../widgets/card_settings_tile.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
 
-
 class CardsScreen extends StatefulWidget {
   const CardsScreen({super.key});
 
@@ -54,7 +53,7 @@ class _CardsScreenState extends State<CardsScreen>
           IconButton(
             icon: const Icon(Icons.add, color: Colors.white),
             onPressed: () {
-                            Navigator.pushNamed(context, AppRoutes.applyCard);
+              Navigator.pushNamed(context, AppRoutes.applyCard);
             },
           ),
         ],
@@ -90,13 +89,15 @@ class _CardsScreenState extends State<CardsScreen>
 
   // ── Card Tab ───────────────────────────────────────────────────
   Widget _buildCardTab(
-      BuildContext context, CardModel card, CardProvider provider) {
+    BuildContext context,
+    CardModel card,
+    CardProvider provider,
+  ) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(18),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           // ── Card visual ────────────────────────────────────────
           CardWidget(card: card),
 
@@ -140,7 +141,7 @@ class _CardsScreenState extends State<CardsScreen>
 
           // ── Reward points (credit card only) ──────────────────
           if (card.cardType == CardType.credit) ...[
-            _buildRewardPoints(card),
+            _buildRewardPoints(context, card),
             const SizedBox(height: 20),
           ],
 
@@ -228,7 +229,10 @@ class _CardsScreenState extends State<CardsScreen>
 
   // ── ATM Limit card ─────────────────────────────────────────────
   Widget _buildAtmLimitCard(
-      BuildContext context, CardModel card, CardProvider provider) {
+    BuildContext context,
+    CardModel card,
+    CardProvider provider,
+  ) {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -264,9 +268,7 @@ class _CardsScreenState extends State<CardsScreen>
             onPressed: () => _showAtmLimitDialog(context, card, provider),
             icon: const Icon(Icons.edit_outlined, size: 16),
             label: const Text('Change'),
-            style: TextButton.styleFrom(
-              foregroundColor: AppColors.primary,
-            ),
+            style: TextButton.styleFrom(foregroundColor: AppColors.primary),
           ),
         ],
       ),
@@ -274,55 +276,84 @@ class _CardsScreenState extends State<CardsScreen>
   }
 
   // ── Reward points card ─────────────────────────────────────────
-  Widget _buildRewardPoints(CardModel card) {
+  Widget _buildRewardPoints(BuildContext context, CardModel card) {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF1A1A2E), Color(0xFF0F3460)],
+          colors: [Color(0xFF1A1A2E), Color(0xFF7C3AED), Color(0xFF0F3460)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Reward Points',
-                style: TextStyle(fontSize: 13, color: Colors.white70),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Reward Points',
+                    style: TextStyle(fontSize: 13, color: Colors.white70),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '${card.rewardPoints} pts',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    '≈ ₹${(card.rewardPoints / 10).toStringAsFixed(0)} cashback value',
+                    style: const TextStyle(fontSize: 12, color: Colors.white54),
+                  ),
+                ],
               ),
-              const SizedBox(height: 4),
-              Text(
-                '${card.rewardPoints} pts',
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.15),
+                  shape: BoxShape.circle,
                 ),
-              ),
-              const SizedBox(height: 2),
-              const Text(
-                '≈ ₹342 cashback value',
-                style: TextStyle(fontSize: 12, color: Colors.white54),
+                child: const Icon(
+                  Icons.stars_rounded,
+                  color: Colors.amber,
+                  size: 22,
+                ),
               ),
             ],
           ),
-          ElevatedButton(
-            onPressed: () {
-              // TODO: Navigate to redeem points screen
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
+
+          const SizedBox(height: 14),
+
+          // ✅ Redeem button now navigates to RewardsScreen
+          SizedBox(
+            width: double.infinity,
+            height: 42,
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.rewards,
+                ); // ← connects here
+              },
+              icon: const Icon(Icons.card_giftcard_outlined, size: 18),
+              label: const Text('Redeem Points'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
             ),
-            child: const Text('Redeem'),
           ),
         ],
       ),
@@ -391,7 +422,10 @@ class _CardsScreenState extends State<CardsScreen>
   }
 
   void _showAtmLimitDialog(
-      BuildContext context, CardModel card, CardProvider provider) {
+    BuildContext context,
+    CardModel card,
+    CardProvider provider,
+  ) {
     double selectedLimit = card.atmLimit;
     final limits = [10000.0, 25000.0, 50000.0, 100000.0];
 
@@ -418,8 +452,7 @@ class _CardsScreenState extends State<CardsScreen>
                   groupValue: selectedLimit,
                   title: Text('₹${limit.toStringAsFixed(0)}'),
                   activeColor: AppColors.primary,
-                  onChanged: (val) =>
-                      setModalState(() => selectedLimit = val!),
+                  onChanged: (val) => setModalState(() => selectedLimit = val!),
                 ),
               ),
               const SizedBox(height: 12),
