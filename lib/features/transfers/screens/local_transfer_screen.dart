@@ -24,10 +24,18 @@ class _LocalTransferScreenState extends State<LocalTransferScreen> {
   String transferMode = "IMPS";
   final amountController = TextEditingController();
   final remarksController = TextEditingController();
+  String? amountError;
+  String? accountError;
 
   static const _purposes = [
-    "Self Transfer", "Family Support", "Rent Payment",
-    "Business Payment", "Salary", "Loan Repayment", "Investment", "Others",
+    "Self Transfer",
+    "Family Support",
+    "Rent Payment",
+    "Business Payment",
+    "Salary",
+    "Loan Repayment",
+    "Investment",
+    "Others",
   ];
 
   static const _modes = [
@@ -53,15 +61,69 @@ class _LocalTransferScreenState extends State<LocalTransferScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final accounts = Provider.of<AccountProvider>(context)
-        .getAccountsByUserId(
-            Provider.of<AuthProvider>(context).currentUser!.id);
+    final accounts = Provider.of<AccountProvider>(
+      context,
+    ).getAccountsByUserId(Provider.of<AuthProvider>(context).currentUser!.id);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FA),
+
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          color: Colors.white,
+
+          child: _ContinueButton(
+            onPressed: () {
+              setState(() {
+                amountError = null;
+                accountError = null;
+              });
+
+              bool isValid = true;
+
+              if (amountController.text.trim().isEmpty) {
+                amountError = "Please enter transfer amount";
+                isValid = false;
+              }
+
+              if (selectedAccountId == null) {
+                accountError = "Please select an account";
+                isValid = false;
+              }
+
+              if (!isValid) {
+                setState(() {});
+                return;
+              }
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => TransferConfirmationScreen(
+                    beneficiary: widget.beneficiary,
+
+                    accountId: selectedAccountId!,
+
+                    amount: double.parse(amountController.text),
+
+                    remarks: remarksController.text,
+
+                    transferMode: transferMode,
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+
       body: Column(
         children: [
-          _TransferHeader(title: "Local Transfer", subtitle: "IMPS / NEFT / RTGS"),
+          _TransferHeader(
+            title: "Local Transfer",
+            subtitle: "IMPS / NEFT / RTGS",
+          ),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
@@ -76,33 +138,84 @@ class _LocalTransferScreenState extends State<LocalTransferScreen> {
                   const SizedBox(height: 10),
                   // Bank details info chip
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xFFCCFBF1),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.account_balance_outlined,
-                            size: 16, color: Color(0xFF0D9488)),
+                        const Icon(
+                          Icons.account_balance_outlined,
+                          size: 16,
+                          color: Color(0xFF0D9488),
+                        ),
                         const SizedBox(width: 8),
                         Text(
                           "${widget.beneficiary.bankName}  •  IFSC: ${widget.beneficiary.ifscCode}",
                           style: const TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF0D9488),
-                              fontWeight: FontWeight.w500),
+                            fontSize: 12,
+                            color: Color(0xFF0D9488),
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 16),
-                  AmountInputCard(controller: amountController),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AmountInputCard(controller: amountController),
+
+                      if (amountError != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, left: 4),
+                          child: Text(
+                            amountError!,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                   const SizedBox(height: 16),
-                  AccountSelectorWidget(
-                    accounts: accounts,
-                    selectedAccountId: selectedAccountId,
-                    onChanged: (v) => setState(() => selectedAccountId = v),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AccountSelectorWidget(
+                        accounts: accounts,
+                        selectedAccountId: selectedAccountId,
+                        onChanged: (v) {
+                          setState(() {
+                            selectedAccountId = v;
+
+                            if (v != null) {
+                              accountError = null;
+                            }
+                          });
+                        },
+                      ),
+
+                      if (accountError != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, left: 4),
+                          child: Text(
+                            accountError!,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                   const SizedBox(height: 16),
                   // Transfer mode selector
@@ -121,14 +234,17 @@ class _LocalTransferScreenState extends State<LocalTransferScreen> {
                       final active = transferMode == m['value'];
                       return Expanded(
                         child: GestureDetector(
-                          onTap: () =>
-                              setState(() => transferMode = m['value'] as String),
+                          onTap: () => setState(
+                            () => transferMode = m['value'] as String,
+                          ),
                           child: AnimatedContainer(
                             height: 90,
                             duration: const Duration(milliseconds: 200),
                             margin: const EdgeInsets.only(right: 8),
                             padding: const EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 8),
+                              vertical: 8,
+                              horizontal: 8,
+                            ),
                             decoration: BoxDecoration(
                               color: active
                                   ? const Color(0xFF2563B0)
@@ -142,16 +258,22 @@ class _LocalTransferScreenState extends State<LocalTransferScreen> {
                             ),
                             child: Column(
                               children: [
-                                Icon(m['icon'] as IconData,
-                                    size: 18,
-                                    color: active ? Colors.white : Colors.grey.shade500),
+                                Icon(
+                                  m['icon'] as IconData,
+                                  size: 18,
+                                  color: active
+                                      ? Colors.white
+                                      : Colors.grey.shade500,
+                                ),
                                 const SizedBox(height: 4),
                                 Text(
                                   m['label'] as String,
                                   style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
-                                    color: active ? Colors.white : const Color(0xFF111827),
+                                    color: active
+                                        ? Colors.white
+                                        : const Color(0xFF111827),
                                   ),
                                 ),
                                 Text(
@@ -180,21 +302,7 @@ class _LocalTransferScreenState extends State<LocalTransferScreen> {
                   ),
                   const SizedBox(height: 16),
                   _RemarksField(controller: remarksController),
-                  const SizedBox(height: 28),
-                  _ContinueButton(
-                    onPressed: () {
-                      if (selectedAccountId == null || amountController.text.isEmpty) return;
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (_) => TransferConfirmationScreen(
-                          beneficiary: widget.beneficiary,
-                          accountId: selectedAccountId!,
-                          amount: double.parse(amountController.text),
-                          remarks: remarksController.text,
-                          transferMode: transferMode,
-                        ),
-                      ));
-                    },
-                  ),
+                  const SizedBox(height: 100),
                 ],
               ),
             ),
@@ -204,7 +312,6 @@ class _LocalTransferScreenState extends State<LocalTransferScreen> {
     );
   }
 }
-
 
 // ─── Shared private widgets used only in this file ───────────────────────────
 
@@ -258,7 +365,9 @@ class _TransferHeader extends StatelessWidget {
               child: Text(
                 subtitle,
                 style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.65), fontSize: 13),
+                  color: Colors.white.withValues(alpha: 0.65),
+                  fontSize: 13,
+                ),
               ),
             ),
           ],
@@ -307,14 +416,17 @@ class _DropdownSection extends StatelessWidget {
             child: DropdownButton<String>(
               value: value,
               isExpanded: true,
-              icon: const Icon(Icons.keyboard_arrow_down_rounded,
-                  color: Color(0xFF2563B0)),
+              icon: const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: Color(0xFF2563B0),
+              ),
               items: items
-                  .map((item) => DropdownMenuItem(
-                        value: item,
-                        child: Text(item,
-                            style: const TextStyle(fontSize: 14)),
-                      ))
+                  .map(
+                    (item) => DropdownMenuItem(
+                      value: item,
+                      child: Text(item, style: const TextStyle(fontSize: 14)),
+                    ),
+                  )
                   .toList(),
               onChanged: onChanged,
             ),
@@ -358,11 +470,16 @@ class _RemarksField extends StatelessWidget {
             decoration: InputDecoration(
               hintText: "Add a note...",
               hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
-              prefixIcon: Icon(Icons.notes_outlined,
-                  color: Colors.grey.shade400, size: 18),
+              prefixIcon: Icon(
+                Icons.notes_outlined,
+                color: Colors.grey.shade400,
+                size: 18,
+              ),
               border: InputBorder.none,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 12,
+              ),
             ),
           ),
         ),

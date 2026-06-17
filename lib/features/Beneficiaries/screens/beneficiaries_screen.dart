@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -87,7 +89,7 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                     child: Text(
                       "${allBeneficiaries.length} saved recipient${allBeneficiaries.length == 1 ? '' : 's'}",
                       style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.65), fontSize: 13),
+                          color: Colors.white.withValues(alpha:0.65), fontSize: 13),
                     ),
                   ),
                   // Transfer Money quick action inside header
@@ -131,14 +133,14 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                                   Text(
                                     "Send to a beneficiary",
                                     style: TextStyle(
-                                        color: Colors.white.withValues(alpha:0.65),
+                                        color: Colors.white.withValues(alpha: 0.65),
                                         fontSize: 12),
                                   ),
                                 ],
                               ),
                             ),
                             Icon(Icons.arrow_forward_ios_rounded,
-                                color: Colors.white.withValues(alpha:0.7), size: 14),
+                                color: Colors.white.withValues(alpha: 0.7), size: 14),
                           ],
                         ),
                       ),

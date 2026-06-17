@@ -328,13 +328,86 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
                       ),
                     );
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("Loan Applied Successfully"),
+                    showDialog(
+                      context: context,
+
+                      barrierDismissible: false,
+
+                      builder: (_) => Dialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+
+                        child: Padding(
+                          padding: const EdgeInsets.all(24),
+
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+
+                            children: [
+                              const CircleAvatar(
+                                radius: 36,
+                                backgroundColor: Colors.green,
+
+                                child: Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                  size: 42,
+                                ),
+                              ),
+
+                              const SizedBox(height: 20),
+
+                              const Text(
+                                "Success",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+
+                              const SizedBox(height: 10),
+
+                              const Text(
+                                "Loan Applied Successfully",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 15),
+                              ),
+
+                              const SizedBox(height: 24),
+
+                              SizedBox(
+                                width: double.infinity,
+
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFF2563B0),
+
+                                    foregroundColor: Colors.white,
+
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 14,
+                                    ),
+
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+
+                                  onPressed: () {
+                                    Navigator.pop(context);
+
+                                    Navigator.pop(context);
+                                  },
+
+                                  child: const Text("Done"),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     );
-
-                    Navigator.pop(context);
                   },
 
                   child: const Text("Apply Loan"),
