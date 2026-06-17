@@ -39,6 +39,9 @@ import 'features/dashboard/screens/dashboard_screen.dart';
 import 'features/accounts/provider/account_provider.dart';
 import 'features/loans/screens/loans_screen.dart';
 
+import 'package:profinch_mobile_application/features/rewards/screens/reward_screen.dart';
+
+
 void main() {
   runApp(
     MultiProvider(
@@ -118,6 +121,7 @@ class MyApp extends StatelessWidget {
        AppRoutes.applyCard: (context) => const ApplyCardScreen(),
         
         AppRoutes.transferMoney: (context) => const TransferMoneyScreen(),
+        AppRoutes.rewards: (context) => const RewardsScreen(),
       },
     );
   }

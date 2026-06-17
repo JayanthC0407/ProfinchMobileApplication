@@ -112,4 +112,30 @@ class CardProvider extends ChangeNotifier {
     );
     notifyListeners();
   }
+
+   // ── Redeem Points ──────────────────────────────────────────────
+  void redeemPoints(String cardId, int pointsToRedeem) {
+    final index = _cards.indexWhere((c) => c.id == cardId);
+    if (index == -1) return;
+    final card = _cards[index];
+    if (pointsToRedeem > card.rewardPoints) return;
+    _cards[index] = CardModel(
+      id: card.id,
+      userId: card.userId,
+      cardNumber: card.cardNumber,
+      cardHolderName: card.cardHolderName,
+      expiryDate: card.expiryDate,
+      cardType: card.cardType,
+      network: card.network,
+      creditLimit: card.creditLimit,
+      usedAmount: card.usedAmount,
+      isActive: card.isActive,
+      isFrozen: card.isFrozen,
+      isInternationalEnabled: card.isInternationalEnabled,
+      isOnlinePaymentEnabled: card.isOnlinePaymentEnabled,
+      atmLimit: card.atmLimit,
+      rewardPoints: card.rewardPoints - pointsToRedeem,
+    );
+    notifyListeners();
+  }
 }
