@@ -18,6 +18,7 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
     }
   }
 
+  // ignore: unused_element
   Color get _typeBg {
     switch (beneficiary.beneficiaryType) {
       case 'PBI': return const Color(0xFFDBEAFE);

@@ -26,6 +26,8 @@ class _InternationalTransferScreenState
   String purpose = "Personal Transfer";
   final amountController = TextEditingController();
   final remarksController = TextEditingController();
+  String? amountError;
+  String? accountError;
 
   static const _currencies = ["USD", "EUR", "GBP"];
   static const _purposes = ["Personal Transfer", "Education", "Business"];
@@ -34,12 +36,63 @@ class _InternationalTransferScreenState
 
   @override
   Widget build(BuildContext context) {
-    final accounts = Provider.of<AccountProvider>(context)
-        .getAccountsByUserId(
-            Provider.of<AuthProvider>(context).currentUser!.id);
+    final accounts = Provider.of<AccountProvider>(
+      context,
+    ).getAccountsByUserId(Provider.of<AuthProvider>(context).currentUser!.id);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FA),
+
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          color: Colors.white,
+
+          child: _ContinueButton(
+            onPressed: () {
+              setState(() {
+                amountError = null;
+                accountError = null;
+              });
+
+              bool isValid = true;
+
+              if (amountController.text.trim().isEmpty) {
+                amountError = "Please enter transfer amount";
+                isValid = false;
+              }
+
+              if (selectedAccountId == null) {
+                accountError = "Please select an account";
+                isValid = false;
+              }
+
+              if (!isValid) {
+                setState(() {});
+                return;
+              }
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => TransferConfirmationScreen(
+                    beneficiary: widget.beneficiary,
+
+                    accountId: selectedAccountId!,
+
+                    amount: double.parse(amountController.text),
+
+                    remarks: remarksController.text,
+
+                    transferMode: "INTERNATIONAL",
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+
       body: Column(
         children: [
           _TransferHeader(
@@ -60,7 +113,10 @@ class _InternationalTransferScreenState
                   const SizedBox(height: 10),
                   // Int'l info chips
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 10,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xFFFEF3C7),
                       borderRadius: BorderRadius.circular(12),
@@ -92,7 +148,25 @@ class _InternationalTransferScreenState
                     ),
                   ),
                   const SizedBox(height: 16),
-                  AmountInputCard(controller: amountController),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AmountInputCard(controller: amountController),
+
+                      if (amountError != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, left: 4),
+                          child: Text(
+                            amountError!,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                   const SizedBox(height: 16),
                   // Currency selector
                   Text(
@@ -151,10 +225,36 @@ class _InternationalTransferScreenState
                     }).toList(),
                   ),
                   const SizedBox(height: 16),
-                  AccountSelectorWidget(
-                    accounts: accounts,
-                    selectedAccountId: selectedAccountId,
-                    onChanged: (v) => setState(() => selectedAccountId = v),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AccountSelectorWidget(
+                        accounts: accounts,
+                        selectedAccountId: selectedAccountId,
+                        onChanged: (v) {
+                          setState(() {
+                            selectedAccountId = v;
+
+                            if (v != null) {
+                              accountError = null;
+                            }
+                          });
+                        },
+                      ),
+
+                      if (accountError != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, left: 4),
+                          child: Text(
+                            accountError!,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                   const SizedBox(height: 16),
                   _DropdownSection(
@@ -177,38 +277,25 @@ class _InternationalTransferScreenState
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.info_outline,
-                            size: 14, color: Colors.amber.shade700),
+                        Icon(
+                          Icons.info_outline,
+                          size: 14,
+                          color: Colors.amber.shade700,
+                        ),
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             "International transfers may take 1–3 business days and are subject to forex charges.",
                             style: TextStyle(
-                                fontSize: 11, color: Colors.amber.shade800),
+                              fontSize: 11,
+                              color: Colors.amber.shade800,
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 28),
-                  _ContinueButton(
-                    onPressed: () {
-                      if (selectedAccountId == null ||
-                          amountController.text.isEmpty) return;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => TransferConfirmationScreen(
-                            beneficiary: widget.beneficiary,
-                            accountId: selectedAccountId!,
-                            amount: double.parse(amountController.text),
-                            remarks: remarksController.text,
-                            transferMode: "INTERNATIONAL",
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  const SizedBox(height: 100),
                 ],
               ),
             ),
@@ -224,8 +311,11 @@ class _InfoRow extends StatelessWidget {
   final Color color;
   final String label;
 
-  const _InfoRow(
-      {required this.icon, required this.color, required this.label});
+  const _InfoRow({
+    required this.icon,
+    required this.color,
+    required this.label,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -233,14 +323,18 @@ class _InfoRow extends StatelessWidget {
       children: [
         Icon(icon, size: 13, color: color),
         const SizedBox(width: 6),
-        Text(label,
-            style: TextStyle(
-                fontSize: 12, color: color, fontWeight: FontWeight.w500)),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            color: color,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ],
     );
   }
 }
-
 
 // ─── Shared private widgets used only in this file ───────────────────────────
 
@@ -294,7 +388,9 @@ class _TransferHeader extends StatelessWidget {
               child: Text(
                 subtitle,
                 style: TextStyle(
-                    color: Colors.white.withOpacity(0.65), fontSize: 13),
+                  color: Colors.white.withOpacity(0.65),
+                  fontSize: 13,
+                ),
               ),
             ),
           ],
@@ -343,14 +439,17 @@ class _DropdownSection extends StatelessWidget {
             child: DropdownButton<String>(
               value: value,
               isExpanded: true,
-              icon: const Icon(Icons.keyboard_arrow_down_rounded,
-                  color: Color(0xFF2563B0)),
+              icon: const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: Color(0xFF2563B0),
+              ),
               items: items
-                  .map((item) => DropdownMenuItem(
-                        value: item,
-                        child: Text(item,
-                            style: const TextStyle(fontSize: 14)),
-                      ))
+                  .map(
+                    (item) => DropdownMenuItem(
+                      value: item,
+                      child: Text(item, style: const TextStyle(fontSize: 14)),
+                    ),
+                  )
                   .toList(),
               onChanged: onChanged,
             ),
@@ -394,11 +493,16 @@ class _RemarksField extends StatelessWidget {
             decoration: InputDecoration(
               hintText: "Add a note...",
               hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
-              prefixIcon: Icon(Icons.notes_outlined,
-                  color: Colors.grey.shade400, size: 18),
+              prefixIcon: Icon(
+                Icons.notes_outlined,
+                color: Colors.grey.shade400,
+                size: 18,
+              ),
               border: InputBorder.none,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 12,
+              ),
             ),
           ),
         ),

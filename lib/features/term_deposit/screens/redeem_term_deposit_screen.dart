@@ -22,25 +22,34 @@ class RedeemTermDepositScreen extends StatelessWidget {
         backgroundColor: AppColors.primaryDark,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text('Redeem Deposit',
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w600)),
+        title: const Text(
+          'Redeem Deposit',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       ),
       body: deposits.isEmpty
           ? Center(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.currency_exchange,
-                      size: 64, color: Colors.grey.shade300),
+                  Icon(
+                    Icons.currency_exchange,
+                    size: 64,
+                    color: Colors.grey.shade300,
+                  ),
                   const SizedBox(height: 16),
-                  Text('No active deposits to redeem',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey.shade500,
-                          fontWeight: FontWeight.w500)),
+                  Text(
+                    'No active deposits to redeem',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey.shade500,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ],
               ),
             )
@@ -71,7 +80,6 @@ class RedeemTermDepositScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-
                       // ── Header ──────────────────────────────
                       Container(
                         padding: const EdgeInsets.all(16),
@@ -80,39 +88,39 @@ class RedeemTermDepositScreen extends StatelessWidget {
                             colors: isPremature
                                 ? [
                                     Colors.orange.shade700,
-                                    Colors.orange.shade400
+                                    Colors.orange.shade400,
                                   ]
                                 : [
                                     const Color(0xFF0F6E56),
-                                    Colors.green.shade500
+                                    Colors.green.shade500,
                                   ],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
                           borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(16)),
+                            top: Radius.circular(16),
+                          ),
                         ),
                         child: Row(
-                          mainAxisAlignment:
-                              MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Column(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   '₹${deposit.principalAmount.toStringAsFixed(2)}',
                                   style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w700),
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                                 Text(
                                   'Principal Amount',
                                   style: TextStyle(
-                                      color:
-                                          Colors.white.withValues(alpha: 0.8),
-                                      fontSize: 11),
+                                    color: Colors.white.withValues(alpha: 0.8),
+                                    fontSize: 11,
+                                  ),
                                 ),
                               ],
                             ),
@@ -124,16 +132,17 @@ class RedeemTermDepositScreen extends StatelessWidget {
                                       ? '$daysLeft days left'
                                       : 'Matured',
                                   style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w600),
+                                    color: Colors.white,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
                                 Text(
                                   '${deposit.tenureMonths} months',
                                   style: TextStyle(
-                                      color:
-                                          Colors.white.withValues(alpha: 0.8),
-                                      fontSize: 11),
+                                    color: Colors.white.withValues(alpha: 0.8),
+                                    fontSize: 11,
+                                  ),
                                 ),
                               ],
                             ),
@@ -146,23 +155,26 @@ class RedeemTermDepositScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(16),
                         child: Column(
                           children: [
-                            _detailRow('Interest Rate',
-                                '${deposit.interestRate}%'),
+                            _detailRow(
+                              'Interest Rate',
+                              '${deposit.interestRate}%',
+                            ),
                             const SizedBox(height: 8),
-                            _detailRow('Interest Earned',
-                                '₹${interestEarned.toStringAsFixed(2)}',
-                                valueColor: const Color(0xFF0F6E56)),
+                            _detailRow(
+                              'Interest Earned',
+                              '₹${interestEarned.toStringAsFixed(2)}',
+                              valueColor: const Color(0xFF0F6E56),
+                            ),
                             const SizedBox(height: 8),
-                            _detailRow('Maturity Amount',
-                                '₹${deposit.maturityAmount.toStringAsFixed(2)}',
-                                valueColor: Colors.green.shade700),
+                            _detailRow(
+                              'Maturity Amount',
+                              '₹${deposit.maturityAmount.toStringAsFixed(2)}',
+                              valueColor: Colors.green.shade700,
+                            ),
                             const SizedBox(height: 8),
                             _detailRow(
                               'Maturity Date',
-                              deposit.maturityDate
-                                  .toString()
-                                  .split(' ')
-                                  .first,
+                              deposit.maturityDate.toString().split(' ').first,
                             ),
                             if (isPremature) ...[
                               const SizedBox(height: 10),
@@ -172,20 +184,24 @@ class RedeemTermDepositScreen extends StatelessWidget {
                                   color: Colors.orange.shade50,
                                   borderRadius: BorderRadius.circular(8),
                                   border: Border.all(
-                                      color: Colors.orange.shade200),
+                                    color: Colors.orange.shade200,
+                                  ),
                                 ),
                                 child: Row(
                                   children: [
-                                    Icon(Icons.warning_amber_rounded,
-                                        color: Colors.orange.shade600,
-                                        size: 16),
+                                    Icon(
+                                      Icons.warning_amber_rounded,
+                                      color: Colors.orange.shade600,
+                                      size: 16,
+                                    ),
                                     const SizedBox(width: 8),
                                     Expanded(
                                       child: Text(
                                         'Premature redemption may attract penalty charges.',
                                         style: TextStyle(
-                                            fontSize: 11,
-                                            color: Colors.orange.shade700),
+                                          fontSize: 11,
+                                          color: Colors.orange.shade700,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -198,20 +214,22 @@ class RedeemTermDepositScreen extends StatelessWidget {
                               height: 44,
                               child: ElevatedButton(
                                 onPressed: () => _confirmRedeem(
-                                    context,
-                                    deposit,
-                                    accountProvider,
-                                    tdProvider),
+                                  context,
+                                  deposit,
+                                  accountProvider,
+                                  tdProvider,
+                                ),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.primaryDark,
                                   foregroundColor: Colors.white,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(10)),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                 ),
-                                child: const Text('Redeem Now',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600)),
+                                child: const Text(
+                                  'Redeem Now',
+                                  style: TextStyle(fontWeight: FontWeight.w600),
+                                ),
                               ),
                             ),
                           ],
@@ -225,8 +243,13 @@ class RedeemTermDepositScreen extends StatelessWidget {
     );
   }
 
-  void _confirmRedeem(BuildContext context, deposit, AccountProvider accountProvider,
-      TermDepositProvider tdProvider) {
+  void _confirmRedeem(
+    BuildContext context,
+    deposit,
+    AccountProvider accountProvider,
+    TermDepositProvider tdProvider,
+  ) {
+
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -240,22 +263,25 @@ class RedeemTermDepositScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Confirm Redemption',
-                style: TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.w700)),
+            const Text(
+              'Confirm Redemption',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+            ),
             const SizedBox(height: 16),
-            _detailRow('Principal',
-                '₹${deposit.principalAmount.toStringAsFixed(2)}'),
-            const SizedBox(height: 8),
             _detailRow(
-                'Interest', '${deposit.interestRate}%'),
+              'Principal',
+              '₹${deposit.principalAmount.toStringAsFixed(2)}',
+            ),
+            const SizedBox(height: 8),
+            _detailRow('Interest', '${deposit.interestRate}%'),
             const SizedBox(height: 8),
             _detailRow('Tenure', '${deposit.tenureMonths} Months'),
             const Divider(height: 24),
             _detailRow(
-                'You will receive',
-                '₹${deposit.maturityAmount.toStringAsFixed(2)}',
-                valueColor: Colors.green.shade700),
+              'You will receive',
+              '₹${deposit.maturityAmount.toStringAsFixed(2)}',
+              valueColor: Colors.green.shade700,
+            ),
             const SizedBox(height: 20),
             Row(
               children: [
@@ -267,7 +293,8 @@ class RedeemTermDepositScreen extends StatelessWidget {
                       side: BorderSide(color: AppColors.primary),
                       minimumSize: const Size(0, 48),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                     child: const Text('Cancel'),
                   ),
@@ -277,29 +304,26 @@ class RedeemTermDepositScreen extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       accountProvider.creditAccount(
-                          deposit.sourceAccountId, deposit.maturityAmount);
-                      tdProvider.redeemDeposit(deposit.id);
-                      Navigator.pop(context);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                              '₹${deposit.maturityAmount.toStringAsFixed(2)} credited to your account!'),
-                          backgroundColor: Colors.green.shade600,
-                          behavior: SnackBarBehavior.floating,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                        ),
+                        deposit.sourceAccountId,
+                        deposit.maturityAmount,
                       );
+
+                      tdProvider.redeemDeposit(deposit.id);
+
+                      Navigator.pop(context);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.primaryDark,
                       foregroundColor: Colors.white,
                       minimumSize: const Size(0, 48),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                    child: const Text('Confirm',
-                        style: TextStyle(fontWeight: FontWeight.w600)),
+                    child: const Text(
+                      'Confirm',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
                   ),
                 ),
               ],
@@ -315,14 +339,18 @@ class RedeemTermDepositScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label,
-            style:
-                TextStyle(fontSize: 13, color: Colors.grey.shade500)),
-        Text(value,
-            style: TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: valueColor ?? const Color(0xFF1A1A2E))),
+        Text(
+          label,
+          style: TextStyle(fontSize: 13, color: Colors.grey.shade500),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: valueColor ?? const Color(0xFF1A1A2E),
+          ),
+        ),
       ],
     );
   }
