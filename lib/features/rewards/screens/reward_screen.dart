@@ -9,7 +9,8 @@ import '../widgets/reward_history_tile.dart';
 import '../widgets/voucher_card.dart';
 
 class RewardsScreen extends StatefulWidget {
-  const RewardsScreen({super.key});
+  final int initialTab;
+  const RewardsScreen({super.key, this.initialTab = 0,});
 
   @override
   State<RewardsScreen> createState() => _RewardsScreenState();
@@ -22,7 +23,7 @@ class _RewardsScreenState extends State<RewardsScreen>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 3, vsync: this, initialIndex: widget.initialTab,);
   }
 
   @override

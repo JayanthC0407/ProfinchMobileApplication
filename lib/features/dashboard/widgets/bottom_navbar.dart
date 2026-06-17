@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
+import 'package:profinch_mobile_application/features/rewards/screens/reward_screen.dart';
 import 'package:profinch_mobile_application/features/upi/provider/upi_provider.dart';
 import 'package:profinch_mobile_application/features/upi/screens/scan_qr_screen.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +20,7 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
- /* late int _currentIndex;
+  /* late int _currentIndex;
 
   @override
   void initState() {
@@ -30,7 +31,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   void _onTap(int index) {
     if (index == widget.currentIndex) return; // already on this tab
 
-   // setState(() => _currentIndex = index);
+    // setState(() => _currentIndex = index);
 
     switch (index) {
       case 0:
@@ -55,8 +56,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
         );
         break;
       case 3:
-        // TODO: Navigate to Offers screen
-        // Navigator.pushNamed(context, AppRoutes.offers);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const RewardsScreen(initialTab: 2)),
+        );
         break;
       case 4:
         Navigator.pushNamed(context, AppRoutes.profile);
