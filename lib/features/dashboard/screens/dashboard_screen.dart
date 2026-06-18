@@ -14,8 +14,12 @@ import '../widgets/balance_card.dart';
 import '../widgets/bottom_navbar.dart';
 import '../widgets/feature_item.dart';
 import '../widgets/quick_action_item.dart';
-import '../widgets/transaction_tiles.dart';
 import '../../auth/provider/auth_provider.dart';
+
+// ✅ New transaction history module (replaces old map-based TransactionTile)
+import 'package:profinch_mobile_application/features/Transactions/provider/transaction_provider.dart';
+import 'package:profinch_mobile_application/features/Transactions/widgets/transaction_tile_widget.dart';
+import 'package:profinch_mobile_application/features/Transactions/screens/transaction_history_screen.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -156,7 +160,7 @@ class DashboardScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => ChangeNotifierProvider(
                               create: (ctx) =>
-                                  UpiProvider(ctx.read<AuthProvider>()),
+                                  UpiProvider(ctx.read<AuthProvider>(), ctx.read<AccountProvider>()),
                               child: const UpiHomeScreen(),
                             ),
                           ),
@@ -170,7 +174,7 @@ class DashboardScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => ChangeNotifierProvider(
                               create: (ctx) =>
-                                  UpiProvider(ctx.read<AuthProvider>()),
+                                  UpiProvider(ctx.read<AuthProvider>(), ctx.read<AccountProvider>()),
                               child: const ReceiveMoneyScreen(),
                             ),
                           ),
@@ -184,7 +188,7 @@ class DashboardScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (_) => ChangeNotifierProvider(
                               create: (ctx) =>
-                                  UpiProvider(ctx.read<AuthProvider>()),
+                                  UpiProvider(ctx.read<AuthProvider>(), ctx.read<AccountProvider>()),
                               child: const ScanQrScreen(),
                             ),
                           ),
@@ -339,8 +343,12 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () =>
-                          Navigator.pushNamed(context, AppRoutes.transactions),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => const TransactionHistoryScreen(),
+                        ),
+                      ),
                       child: const Text(
                         "See All",
                         style: TextStyle(color: Colors.white70, fontSize: 14),
@@ -351,16 +359,32 @@ class DashboardScreen extends StatelessWidget {
 
                 const SizedBox(height: 14),
 
-                // ── TRANSACTION LIST ──────────────────────────────
-                ...provider.transactions.map(
-                  (transaction) => TransactionTile(
-                    title: transaction['title'],
-                    subtitle: transaction['subtitle'],
-                    amount: transaction['amount'],
-                    amountColor: transaction['color'],
-                    icon: transaction['icon'],
-                    iconBg: transaction['bgColor'],
-                  ),
+                // ── RECENT TRANSACTION LIST (latest 2) ────────────
+                // Listens directly to the shared TransactionProvider so
+                // that any transaction recorded anywhere in the app
+                // (UPI, transfer, withdrawal, EMI, loan, term deposit...)
+                // appears here immediately, without a page reload.
+                AnimatedBuilder(
+                  animation: TransactionProvider.instance,
+                  builder: (context, _) {
+                    final recent =
+                        TransactionProvider.instance.recentTransactions(count: 2);
+                    return Column(
+                      children: recent
+                          .map(
+                            (transaction) => TransactionTileWidget(
+                              transaction: transaction,
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const TransactionHistoryScreen(),
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 16),

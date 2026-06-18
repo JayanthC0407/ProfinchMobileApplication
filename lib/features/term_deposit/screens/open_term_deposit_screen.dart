@@ -7,6 +7,7 @@ import '../../../data/models/term_deposit_model.dart';
 import '../../accounts/provider/account_provider.dart';
 import '../../auth/provider/auth_provider.dart';
 import '../provider/term_deposit_provider.dart';
+import '../../Transactions/provider/transaction_provider.dart';
 
 class OpenTermDepositScreen extends StatefulWidget {
   const OpenTermDepositScreen({super.key});
@@ -91,9 +92,10 @@ class _OpenTermDepositScreenState extends State<OpenTermDepositScreen> {
     }
 
     accountProvider.debitAccount(selectedAccountId!, amount);
+    final depositId = 'TD${DateTime.now().millisecondsSinceEpoch}';
     tdProvider.addDeposit(
       TermDepositModel(
-        id: 'TD${DateTime.now().millisecondsSinceEpoch}',
+        id: depositId,
         userId: user.id,
         sourceAccountId: selectedAccountId!,
         principalAmount: amount,
@@ -104,6 +106,13 @@ class _OpenTermDepositScreenState extends State<OpenTermDepositScreen> {
         maturityAmount: maturityAmount,
         status: 'ACTIVE',
       ),
+    );
+    TransactionProvider.instance.recordTermDepositDeduction(
+      accountId: selectedAccountId!,
+      amount: amount,
+      depositId: depositId,
+      balanceAfter:
+          accountProvider.getAccountById(selectedAccountId!).availableBalance,
     );
 
     showDialog(

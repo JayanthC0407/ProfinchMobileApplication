@@ -11,6 +11,9 @@ enum TransactionCategory {
   emi,
   salary,
   refund,
+  loan,
+  termDeposit,
+  wallet,
 }
 
 class TransactionModel {

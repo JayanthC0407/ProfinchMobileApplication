@@ -23,6 +23,9 @@ class CategoryFilterSheet extends StatelessWidget {
     (TransactionCategory.atm,         'ATM',        Icons.atm_outlined),
     (TransactionCategory.transfer,    'Transfer',   Icons.swap_horiz_outlined),
     (TransactionCategory.refund,      'Refund',     Icons.replay_outlined),
+    (TransactionCategory.loan,        'Loan',       Icons.payments_outlined),
+    (TransactionCategory.termDeposit, 'Term Dep.',  Icons.savings_outlined),
+    (TransactionCategory.wallet,      'Wallet',     Icons.account_balance_wallet_outlined),
   ];
 
   @override

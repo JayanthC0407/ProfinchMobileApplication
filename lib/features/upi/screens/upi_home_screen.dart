@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
+import 'package:profinch_mobile_application/features/accounts/provider/account_provider.dart';
 import '../provider/upi_provider.dart';
 import '../widgets/upi_contact_tile.dart';
 import 'send_money_screen.dart';
@@ -13,7 +14,7 @@ class UpiHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (ctx) => UpiProvider(ctx.read<AuthProvider>()),
+      create: (ctx) => UpiProvider(ctx.read<AuthProvider>(), ctx.read<AccountProvider>()),
       child: const _UpiHomeView(),
     );
   }

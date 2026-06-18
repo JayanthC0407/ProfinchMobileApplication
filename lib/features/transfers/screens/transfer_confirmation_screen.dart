@@ -6,6 +6,7 @@ import '../../../data/models/transfer_model.dart';
 import '../../accounts/provider/account_provider.dart';
 import '../../auth/provider/auth_provider.dart';
 import '../provider/transfer_provider.dart';
+import '../../Transactions/provider/transaction_provider.dart';
 import 'transfer_success_screen.dart';
 
 class TransferConfirmationScreen extends StatelessWidget {
@@ -232,6 +233,15 @@ class TransferConfirmationScreen extends StatelessWidget {
                           status: "SUCCESS",
                           transferDate: DateTime.now(),
                         ));
+                        TransactionProvider.instance.recordAccountTransfer(
+                          accountId: accountId,
+                          amount: amount,
+                          receiverName: beneficiary.nickname,
+                          receiverAccount: beneficiary.accountNumber,
+                          balanceAfter: accountProvider
+                              .getAccountById(accountId)
+                              .availableBalance,
+                        );
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

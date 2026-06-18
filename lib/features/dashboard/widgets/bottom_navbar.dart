@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
+import 'package:profinch_mobile_application/features/accounts/provider/account_provider.dart';
 import 'package:profinch_mobile_application/features/rewards/screens/reward_screen.dart';
 import 'package:profinch_mobile_application/features/upi/provider/upi_provider.dart';
 import 'package:profinch_mobile_application/features/upi/screens/scan_qr_screen.dart';
@@ -49,7 +50,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           context,
           MaterialPageRoute(
             builder: (_) => ChangeNotifierProvider(
-              create: (ctx) => UpiProvider((ctx.read<AuthProvider>())),
+              create: (ctx) => UpiProvider(ctx.read<AuthProvider>(), ctx.read<AccountProvider>()),
               child: const ScanQrScreen(),
             ),
           ),
