@@ -8,6 +8,7 @@ import '../../../data/models/loan_model.dart';
 import '../../accounts/provider/account_provider.dart';
 import '../../auth/provider/auth_provider.dart';
 import '../provider/loan_provider.dart';
+import '../../Transactions/provider/transaction_provider.dart';
 
 class ApplyLoanScreen extends StatefulWidget {
   const ApplyLoanScreen({super.key});
@@ -294,9 +295,11 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
 
                     accountProvider.creditAccount(selectedAccountId!, amount);
 
+                    final loanId = DateTime.now().millisecondsSinceEpoch.toString();
+
                     loanProvider.addLoan(
                       LoanModel(
-                        id: DateTime.now().millisecondsSinceEpoch.toString(),
+                        id: loanId,
 
                         userId: user.id,
 
@@ -326,6 +329,15 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
 
                         status: "ACTIVE",
                       ),
+                    );
+
+                    TransactionProvider.instance.recordLoanReimbursement(
+                      accountId: selectedAccountId!,
+                      amount: amount,
+                      loanId: loanId,
+                      balanceAfter: accountProvider
+                          .getAccountById(selectedAccountId!)
+                          .availableBalance,
                     );
 
                     showDialog(

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../accounts/provider/account_provider.dart';
 import '../../auth/provider/auth_provider.dart';
 import '../provider/term_deposit_provider.dart';
+import '../../Transactions/provider/transaction_provider.dart';
 
 class RedeemTermDepositScreen extends StatelessWidget {
   const RedeemTermDepositScreen({super.key});
@@ -309,6 +310,15 @@ class RedeemTermDepositScreen extends StatelessWidget {
                       );
 
                       tdProvider.redeemDeposit(deposit.id);
+
+                      TransactionProvider.instance.recordTermDepositRedemption(
+                        accountId: deposit.sourceAccountId,
+                        amount: deposit.maturityAmount,
+                        depositId: deposit.id,
+                        balanceAfter: accountProvider
+                            .getAccountById(deposit.sourceAccountId)
+                            .availableBalance,
+                      );
 
                       Navigator.pop(context);
                     },

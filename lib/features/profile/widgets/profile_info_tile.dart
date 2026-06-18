@@ -21,7 +21,7 @@ class ProfileInfoTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: AppColors.lightblue, // light blue background
+        color: AppColors.light, // light blue background
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(

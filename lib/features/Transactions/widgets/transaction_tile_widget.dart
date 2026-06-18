@@ -25,6 +25,9 @@ class TransactionTileWidget extends StatelessWidget {
       case TransactionCategory.atm:        return Icons.atm_outlined;
       case TransactionCategory.transfer:   return Icons.swap_horiz_outlined;
       case TransactionCategory.refund:     return Icons.replay_outlined;
+      case TransactionCategory.loan:        return Icons.payments_outlined;
+      case TransactionCategory.termDeposit: return Icons.savings_outlined;
+      case TransactionCategory.wallet:      return Icons.account_balance_wallet_outlined;
     }
   }
 
@@ -40,6 +43,9 @@ class TransactionTileWidget extends StatelessWidget {
       case TransactionCategory.atm:        return const Color(0xFFEEEEEE);
       case TransactionCategory.transfer:   return const Color(0xFFE8EAF6);
       case TransactionCategory.refund:     return const Color(0xFFE8F5E9);
+      case TransactionCategory.loan:        return const Color(0xFFFBE9E7);
+      case TransactionCategory.termDeposit: return const Color(0xFFE0F2F1);
+      case TransactionCategory.wallet:      return const Color(0xFFEDE7F6);
     }
   }
 
@@ -55,6 +61,9 @@ class TransactionTileWidget extends StatelessWidget {
       case TransactionCategory.atm:        return Colors.grey.shade700;
       case TransactionCategory.transfer:   return Colors.indigo.shade700;
       case TransactionCategory.refund:     return Colors.green.shade700;
+      case TransactionCategory.loan:        return Colors.deepOrange.shade700;
+      case TransactionCategory.termDeposit: return Colors.teal.shade700;
+      case TransactionCategory.wallet:      return Colors.deepPurple.shade700;
     }
   }
 
@@ -70,6 +79,9 @@ class TransactionTileWidget extends StatelessWidget {
       case TransactionCategory.atm:         return 'ATM';
       case TransactionCategory.transfer:    return 'Transfer';
       case TransactionCategory.refund:      return 'Refund';
+      case TransactionCategory.loan:        return 'Loan';
+      case TransactionCategory.termDeposit: return 'Term Dep.';
+      case TransactionCategory.wallet:      return 'Wallet';
     }
   }
 
@@ -132,28 +144,36 @@ class TransactionTileWidget extends StatelessWidget {
                   const SizedBox(height: 3),
                   Row(
                     children: [
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 7, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: _iconBgColor,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          _categoryLabel,
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: _iconColor,
-                            fontWeight: FontWeight.w500,
+                      Flexible(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 7, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: _iconBgColor,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            _categoryLabel,
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: _iconColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),
                       const SizedBox(width: 6),
-                      Text(
-                        formattedDate,
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.grey.shade500,
+                      Expanded(
+                        child: Text(
+                          formattedDate,
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: Colors.grey.shade500,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],

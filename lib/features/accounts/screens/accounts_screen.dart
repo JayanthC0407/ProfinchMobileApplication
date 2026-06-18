@@ -29,7 +29,7 @@ class AccountsScreen extends StatelessWidget {
         accountProvider.getTotalBalance(user.id);
 
     return Scaffold(
-       backgroundColor: AppColors.light,
+       backgroundColor: AppColors.lightblue,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         title: const Text('My Accounts'),
