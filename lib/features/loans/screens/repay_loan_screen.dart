@@ -143,74 +143,11 @@ class _RepayLoanScreenState extends State<RepayLoanScreen> {
                         .availableBalance,
                   );
 
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (_) => Dialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(24),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const CircleAvatar(
-                              radius: 36,
-                              backgroundColor: Colors.green,
-                              child: Icon(
-                                Icons.check,
-                                color: Colors.white,
-                                size: 42,
-                              ),
-                            ),
-
-                            const SizedBox(height: 20),
-
-                            const Text(
-                              "Payment Successful",
-                              style: TextStyle(
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-
-                            const SizedBox(height: 10),
-
-                            const Text(
-                              "EMI Paid Successfully",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 14),
-                            ),
-
-                            const SizedBox(height: 24),
-
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 14,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                child: const Text("OK"),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("EMI Paid Successfully")),
                   );
 
-                 // Navigator.pop(context);
+                  Navigator.pop(context);
                 },
 
                 child: const Text("Pay EMI"),

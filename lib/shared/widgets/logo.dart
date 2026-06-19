@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart'; 
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 
 class AppLogo extends StatelessWidget {
   const AppLogo({super.key});
@@ -24,10 +25,10 @@ class AppLogo extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 12),
-        const Text(
+        Text(
           'Profinch Bank',
           style: TextStyle(
-            fontSize: 22,
+            fontSize: AppFontSize.xl(context),
             fontWeight: FontWeight.w600,
             color: AppColors.light,
             letterSpacing: -0.3,
