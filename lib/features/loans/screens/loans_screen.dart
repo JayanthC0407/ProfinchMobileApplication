@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:provider/provider.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
@@ -68,13 +70,13 @@ class LoansScreen extends StatelessWidget {
                     ),
                   ),
                   // title
-                  const Padding(
+                   Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 4),
                     child: Text(
                       "Loans",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 26,
+                        fontSize: RT.fs(context, 26),
                         fontWeight: FontWeight.bold,
                         letterSpacing: -0.5,
                       ),
@@ -86,7 +88,7 @@ class LoansScreen extends StatelessWidget {
                       "Manage your borrowings",
                       style: TextStyle(
                         color: Colors.white.withValues(alpha: 0.65),
-                        fontSize: 13,
+                        fontSize: AppFontSize.body(context),
                       ),
                     ),
                   ),
@@ -105,7 +107,7 @@ class LoansScreen extends StatelessWidget {
                           label: "Outstanding",
                           value: "₹${_formatAmount(totalOutstanding)}",
                           valueColor: Colors.black87,
-                          valueFontSize: 13,
+                          valueFontSize: AppFontSize.body(context),
                         ),
                         const SizedBox(width: 10),
                         _SummaryCard(
@@ -135,7 +137,7 @@ class LoansScreen extends StatelessWidget {
                     child: Text(
                       "QUICK ACTIONS",
                       style: TextStyle(
-                        fontSize: 11,
+                        fontSize: AppFontSize.small(context),
                         fontWeight: FontWeight.w600,
                         color: Colors.grey.shade500,
                         letterSpacing: 0.8,
@@ -232,7 +234,7 @@ class _SummaryCard extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                fontSize: 10,
+                fontSize: AppFontSize.xs(context),
                 color: Colors.grey.shade500,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.2,
@@ -242,7 +244,7 @@ class _SummaryCard extends StatelessWidget {
             Text(
               value,
               style: TextStyle(
-                fontSize: valueFontSize,
+                fontSize: AppFontSize.medium(context),
                 fontWeight: FontWeight.bold,
                 color: valueColor,
               ),
@@ -307,8 +309,8 @@ class _MenuCard extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        fontSize: 15,
+                      style: TextStyle(
+                        fontSize: AppFontSize.medium(context),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -316,7 +318,7 @@ class _MenuCard extends StatelessWidget {
                     Text(
                       subtitle,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: AppFontSize.small(context),
                         color: Colors.grey.shade500,
                       ),
                     ),
@@ -337,7 +339,7 @@ class _MenuCard extends StatelessWidget {
                   child: Text(
                     badge!,
                     style: TextStyle(
-                      fontSize: 10,
+                      fontSize: AppFontSize.xs(context),
                       fontWeight: FontWeight.w600,
                       color: badgeGreen
                           ? Colors.green.shade700
@@ -382,12 +384,12 @@ class _PromoBanner extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "Special offer: 8.5% p.a.",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize: 13,
+                    fontSize: AppFontSize.body(context),
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -395,7 +397,7 @@ class _PromoBanner extends StatelessWidget {
                   "Home loans till June 30",
                   style: TextStyle(
                     color: Colors.white.withValues(alpha: 0.65),
-                    fontSize: 11,
+                    fontSize: AppFontSize.small(context),
                   ),
                 ),
               ],
@@ -408,11 +410,11 @@ class _PromoBanner extends StatelessWidget {
               color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Text(
+            child: Text(
               "Apply →",
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 11,
+                fontSize: AppFontSize.small(context),
                 fontWeight: FontWeight.w600,
               ),
             ),

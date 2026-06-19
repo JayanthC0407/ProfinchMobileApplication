@@ -13,6 +13,7 @@ import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widget
 import 'package:provider/provider.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
+import 'package:profinch_mobile_application/features/auth/screens/otp_screen.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -53,7 +54,38 @@ class _LoginScreenState extends State<LoginScreen> {
   if (!mounted) return;
 
   if (success) {
-    
+
+    final phone = authProvider.currentUser!.phoneNumber;
+    final masked = phone.length >= 4
+        ? '+91 ${'•' * (phone.length - 4)}${phone.substring(phone.length - 4)}'
+        : phone;
+
+    final verified = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => OtpScreen(
+          maskedDestination: masked,
+          onVerified: (otp) async {
+            // TODO: replace with real OTP verification API call.
+            // Dummy rule for now: any 6-digit OTP equal to "123456" passes.
+            await Future.delayed(const Duration(milliseconds: 800));
+            return otp == '123456';
+          },
+          onResend: () async {
+            // TODO: trigger real OTP resend API call.
+            await Future.delayed(const Duration(milliseconds: 500));
+          },
+        ),
+      ),
+    );
+
+    if (!mounted) return;
+
+    if (verified != true) {
+      // User backed out of OTP screen without verifying — stay on login.
+      return;
+    }
+
     Provider.of<DashboardProvider>(
       context,
       listen: false,

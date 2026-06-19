@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/data/models/transaction_model.dart';
 
 class CategoryFilterSheet extends StatelessWidget {
@@ -42,10 +43,10 @@ class CategoryFilterSheet extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Filter by Category',
                 style: TextStyle(
-                  fontSize: 17,
+                  fontSize: AppFontSize.large(context),
                   fontWeight: FontWeight.w700,
                   color: Color(0xFF1A1A2E),
                 ),
@@ -103,7 +104,7 @@ class CategoryFilterSheet extends StatelessWidget {
                       Text(
                         item.$2,
                         style: TextStyle(
-                          fontSize: 10,
+                          fontSize: AppFontSize.xs(context),
                           fontWeight: FontWeight.w500,
                           color: isSelected
                               ? Colors.white

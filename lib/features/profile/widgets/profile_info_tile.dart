@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 
 class ProfileInfoTile extends StatelessWidget {
 
@@ -44,9 +45,9 @@ class ProfileInfoTile extends StatelessWidget {
 
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Color.fromARGB(255, 109, 105, 105),
-                    fontSize: 14,
+                    fontSize: AppFontSize.body(context),
                   ),
                 ),
 
@@ -54,9 +55,9 @@ class ProfileInfoTile extends StatelessWidget {
 
                 Text(
                   value,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: AppFontSize.medium(context),
                   ),
                 ),
               ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:provider/provider.dart';
 
 import '../../auth/provider/auth_provider.dart';
@@ -66,9 +67,9 @@ class AccountsScreen extends StatelessWidget {
 
                   Text(
                     "₹ ${totalBalance.toStringAsFixed(2)}",
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 30,
+                      fontSize: AppFontSize.xxl(context),
                       fontWeight: FontWeight.bold,
                     ),
                   ),

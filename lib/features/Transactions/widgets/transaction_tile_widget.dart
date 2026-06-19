@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/data/models/transaction_model.dart';
 
 class TransactionTileWidget extends StatelessWidget {
@@ -121,8 +122,8 @@ class TransactionTileWidget extends StatelessWidget {
                 children: [
                   Text(
                     transaction.title,
-                    style: const TextStyle(
-                      fontSize: 14,
+                    style: TextStyle(
+                      fontSize: AppFontSize.body(context),
                       fontWeight: FontWeight.w600,
                       color: Color(0xFF1A1A2E),
                     ),
@@ -142,7 +143,7 @@ class TransactionTileWidget extends StatelessWidget {
                         child: Text(
                           _categoryLabel,
                           style: TextStyle(
-                            fontSize: 10,
+                            fontSize: AppFontSize.small(context),
                             color: _iconColor,
                             fontWeight: FontWeight.w500,
                           ),
@@ -152,7 +153,7 @@ class TransactionTileWidget extends StatelessWidget {
                       Text(
                         formattedDate,
                         style: TextStyle(
-                          fontSize: 11,
+                          fontSize: AppFontSize.body(context),
                           color: Colors.grey.shade500,
                         ),
                       ),
@@ -171,7 +172,7 @@ class TransactionTileWidget extends StatelessWidget {
                 Text(
                   '$amountPrefix$formattedAmount',
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: AppFontSize.body(context),
                     fontWeight: FontWeight.w700,
                     color: amountColor,
                   ),
@@ -180,7 +181,7 @@ class TransactionTileWidget extends StatelessWidget {
                 Text(
                   isCredit ? 'Credit' : 'Debit',
                   style: TextStyle(
-                    fontSize: 11,
+                    fontSize: AppFontSize.body(context),
                     color: amountColor.withValues(alpha: 0.7),
                   ),
                 ),

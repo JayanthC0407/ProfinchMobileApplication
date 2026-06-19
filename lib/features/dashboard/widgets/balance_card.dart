@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 
 class BalanceCard extends StatelessWidget {
 
@@ -41,13 +43,13 @@ class BalanceCard extends StatelessWidget {
 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
+            children: [
 
               Text(
                 "Total Balance",
                 style: TextStyle(
                   color: Color.fromARGB(179, 4, 27, 107),
-                  fontSize: 18,
+                  fontSize: AppFontSize.large(context),
                 ),
               ),
 
@@ -62,9 +64,9 @@ class BalanceCard extends StatelessWidget {
 
           Text(
             "₹${balance.toStringAsFixed(2)}",
-            style: const TextStyle(
+            style: TextStyle(
               color: Color.fromARGB(255, 31, 4, 122),
-              fontSize: 34,
+              fontSize: RT.fs(context, 34),
               fontWeight: FontWeight.bold,
             ),
           ),

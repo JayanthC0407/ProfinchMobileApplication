@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -62,8 +63,8 @@ class _RepayLoanScreenState extends State<RepayLoanScreen> {
                 children: [
                   Text(
                     widget.loan.loanType,
-                    style: const TextStyle(
-                      fontSize: 20,
+                    style: TextStyle(
+                      fontSize: RT.fs(context, 20),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
