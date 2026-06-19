@@ -40,4 +40,5 @@ class AppRoutes {
   static const String rewards = '/rewards';
 
   static const String bills = '/bills';
+  static const String notifications = '/notifications';
 }

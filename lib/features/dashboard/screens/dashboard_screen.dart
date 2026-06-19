@@ -19,6 +19,7 @@ import '../../auth/provider/auth_provider.dart';
 import 'package:profinch_mobile_application/features/Transactions/provider/transaction_provider.dart';
 import 'package:profinch_mobile_application/features/Transactions/widgets/transaction_tile_widget.dart';
 import 'package:profinch_mobile_application/features/Transactions/screens/transaction_history_screen.dart';
+import 'package:profinch_mobile_application/features/notifications/provider/notification_provider.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -88,34 +89,44 @@ class DashboardScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        const Icon(
-                          Icons.notifications_none,
-                          size: 30,
-                          color: Colors.white,
-                        ),
-                        Positioned(
-                          right: -2,
-                          top: -2,
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: const BoxDecoration(
-                              color: Colors.red,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Text(
-                              '3',
-                              style: TextStyle(
+                    Consumer<NotificationProvider>(
+                      builder: (context, notifProvider, _) {
+                        final unread = notifProvider.unreadCount(user.id);
+                        return GestureDetector(
+                          onTap: () => Navigator.pushNamed(
+                              context, AppRoutes.notifications),
+                          child: Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              const Icon(
+                                Icons.notifications_none,
+                                size: 30,
                                 color: Colors.white,
-                                fontSize: AppFontSize.xs(context),
-                                fontWeight: FontWeight.bold,
                               ),
-                            ),
+                              if (unread > 0)
+                                Positioned(
+                                  right: -2,
+                                  top: -2,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(4),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.red,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Text(
+                                      unread > 9 ? '9+' : '$unread',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: AppFontSize.xs(context),
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                            ],
                           ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
                   ],
                 ),
