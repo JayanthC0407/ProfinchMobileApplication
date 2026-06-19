@@ -3,6 +3,7 @@ import 'package:profinch_mobile_application/data/dummy/dummy_wallet.dart';
 import 'package:profinch_mobile_application/data/models/wallet_model.dart';
 import 'package:profinch_mobile_application/features/accounts/provider/account_provider.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
+import 'package:profinch_mobile_application/features/Transactions/provider/transaction_provider.dart';
 
 enum WalletTransactionType { topup, transfer, payment }
 
@@ -43,6 +44,19 @@ class WalletProvider extends ChangeNotifier {
   double get accountBalance {
     final userId = _authProvider.currentUser?.id ?? '';
     return _accountProvider.getTotalBalance(userId);
+  }
+
+  // Used only by sendFromWallet, which doesn't receive an accountId —
+  // wallet payments don't move bank balance, but are still tagged to
+  // the user's primary account for transaction history bookkeeping.
+  String get _myAccountId {
+    final userId = _authProvider.currentUser?.id ?? '';
+    return _accountProvider.accounts
+        .firstWhere(
+          (a) => a.userId == userId,
+          orElse: () => _accountProvider.accounts.first,
+        )
+        .id;
   }
 
   final List<WalletTransaction> _history = [
@@ -129,6 +143,12 @@ class WalletProvider extends ChangeNotifier {
       isCredit: true,
     ));
 
+    TransactionProvider.instance.recordWalletTopUp(
+      accountId: accountId,
+      amount: amount,
+      balanceAfter: _accountProvider.getAccountById(accountId).availableBalance,
+    );
+
     _isLoading = false;
     notifyListeners();
     return true;
@@ -166,6 +186,12 @@ class WalletProvider extends ChangeNotifier {
       type: WalletTransactionType.transfer,
       isCredit: false,
     ));
+
+    TransactionProvider.instance.recordWalletTransferToBank(
+      accountId: accountId,
+      amount: amount,
+      balanceAfter: _accountProvider.getAccountById(accountId).availableBalance,
+    );
 
     _isLoading = false;
     notifyListeners();
@@ -207,6 +233,13 @@ class WalletProvider extends ChangeNotifier {
       date: DateTime.now(),
       isCredit: false,
     ));
+
+    TransactionProvider.instance.recordWalletPayment(
+      accountId: _myAccountId,
+      amount: amount,
+      receiverName: receiverName,
+      balanceAfter: _accountProvider.getAccountById(_myAccountId).availableBalance,
+    );
 
     _isLoading = false;
     notifyListeners();

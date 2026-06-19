@@ -23,7 +23,7 @@ class SettingsTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
       ),
 
-      tileColor: AppColors.lightblue,
+      tileColor: AppColors.light,
 
       leading: CircleAvatar(
         backgroundColor: const Color(0xffEEF3FF),

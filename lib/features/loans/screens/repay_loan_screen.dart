@@ -7,6 +7,7 @@ import '../../../core/constants/colors.dart';
 import '../../../data/models/loan_model.dart';
 import '../../accounts/provider/account_provider.dart';
 import '../provider/loan_provider.dart';
+import '../../Transactions/provider/transaction_provider.dart';
 
 class RepayLoanScreen extends StatefulWidget {
   final LoanModel loan;
@@ -132,6 +133,15 @@ class _RepayLoanScreenState extends State<RepayLoanScreen> {
                   );
 
                   loanProvider.repayLoan(widget.loan.id, widget.loan.emiAmount);
+
+                  TransactionProvider.instance.recordEmiDeduction(
+                    accountId: selectedAccountId!,
+                    amount: widget.loan.emiAmount,
+                    loanId: widget.loan.id,
+                    balanceAfter: accountProvider
+                        .getAccountById(selectedAccountId!)
+                        .availableBalance,
+                  );
 
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("EMI Paid Successfully")),

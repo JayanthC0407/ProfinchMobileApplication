@@ -23,13 +23,24 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
   final countryController = TextEditingController();
   final ibanController = TextEditingController();
   final swiftController = TextEditingController();
+  String? nicknameError;
+  String? accountError;
+  String? bankError;
+  String? ifscError;
+  String? countryError;
+  String? ibanError;
+  String? swiftError;
 
   Color get _typeColor {
     switch (widget.beneficiaryType) {
-      case 'PBI': return const Color(0xFF2563B0);
-      case 'LOCAL': return const Color(0xFF2563B0);
-      case 'INTERNATIONAL': return const Color(0xFF2563B0);
-      default: return const Color(0xFF4338CA);
+      case 'PBI':
+        return const Color(0xFF2563B0);
+      case 'LOCAL':
+        return const Color(0xFF2563B0);
+      case 'INTERNATIONAL':
+        return const Color(0xFF2563B0);
+      default:
+        return const Color(0xFF4338CA);
     }
   }
 
@@ -48,6 +59,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
     required IconData icon,
     TextInputType keyboardType = TextInputType.text,
     String? hint,
+    String? errorText,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,28 +89,168 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
               hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: AppFontSize.body(context)),
               prefixIcon: Icon(icon, color: Colors.grey.shade400, size: 18),
               border: InputBorder.none,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 14,
+              ),
             ),
           ),
         ),
+        if (errorText != null)
+          Padding(
+            padding: const EdgeInsets.only(top: 6, left: 4),
+            child: Text(
+              errorText,
+              style: const TextStyle(
+                color: Colors.red,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
       ],
     );
   }
 
+  void _addBeneficiary() {
+    setState(() {
+      nicknameError = null;
+      accountError = null;
+      bankError = null;
+      ifscError = null;
+      countryError = null;
+      ibanError = null;
+      swiftError = null;
+    });
+
+    bool isValid = true;
+
+    if (nicknameController.text.trim().isEmpty) {
+      nicknameError = "Please enter nickname";
+      isValid = false;
+    }
+
+    if (accountController.text.trim().isEmpty) {
+      accountError = "Please enter account number";
+      isValid = false;
+    }
+
+    if (widget.beneficiaryType != "PBI" && bankController.text.trim().isEmpty) {
+      bankError = "Please enter bank name";
+      isValid = false;
+    }
+
+    if (widget.beneficiaryType == "LOCAL" &&
+        ifscController.text.trim().isEmpty) {
+      ifscError = "Please enter IFSC code";
+      isValid = false;
+    }
+
+    if (widget.beneficiaryType == "INTERNATIONAL") {
+      if (countryController.text.trim().isEmpty) {
+        countryError = "Please enter country";
+        isValid = false;
+      }
+
+      if (ibanController.text.trim().isEmpty) {
+        ibanError = "Please enter IBAN";
+        isValid = false;
+      }
+
+      if (swiftController.text.trim().isEmpty) {
+        swiftError = "Please enter SWIFT code";
+        isValid = false;
+      }
+    }
+
+    if (!isValid) {
+      setState(() {});
+      return;
+    }
+
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    final beneficiaryProvider = Provider.of<BeneficiaryProvider>(
+      context,
+      listen: false,
+    );
+
+    beneficiaryProvider.addBeneficiary(
+      BeneficiaryModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+
+        userId: authProvider.currentUser!.id,
+
+        nickname: nicknameController.text,
+
+        beneficiaryType: widget.beneficiaryType,
+
+        accountNumber: accountController.text,
+
+        bankName: bankController.text,
+
+        ifscCode: ifscController.text,
+
+        country: countryController.text,
+
+        ibanNumber: ibanController.text,
+
+        swiftCode: swiftController.text,
+
+        isVerified: true,
+      ),
+    );
+
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final beneficiaryProvider =
-        Provider.of<BeneficiaryProvider>(context, listen: false);
+    // ignore: unused_local_variable
+    final beneficiaryProvider = Provider.of<BeneficiaryProvider>(
+      context,
+      listen: false,
+    );
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FA),
+
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          color: Colors.white,
+
+          child: SizedBox(
+            width: double.infinity,
+
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: _typeColor,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+
+              onPressed: _addBeneficiary,
+
+              child: const Text(
+                "Add Beneficiary",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ),
+        ),
+      ),
+
       body: Column(
         children: [
           // Header
           Container(
-             width: double.infinity,
+            width: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -171,6 +323,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                       children: [
                         _field(
                           controller: nicknameController,
+                          errorText: nicknameError,
                           label: "Nickname",
                           icon: Icons.badge_outlined,
                           hint: "e.g. John Doe",
@@ -178,6 +331,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                         const SizedBox(height: 16),
                         _field(
                           controller: accountController,
+                          errorText: accountError,
                           label: "Account Number",
                           icon: Icons.credit_card_outlined,
                           keyboardType: TextInputType.number,
@@ -187,6 +341,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                           const SizedBox(height: 16),
                           _field(
                             controller: bankController,
+                            errorText: bankError,
                             label: "Bank Name",
                             icon: Icons.account_balance_outlined,
                             hint: "e.g. HDFC Bank",
@@ -196,6 +351,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                           const SizedBox(height: 16),
                           _field(
                             controller: ifscController,
+                            errorText: ifscError,
                             label: "IFSC Code",
                             icon: Icons.tag_outlined,
                             hint: "e.g. HDFC0001234",
@@ -205,6 +361,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                           const SizedBox(height: 16),
                           _field(
                             controller: countryController,
+                            errorText: countryError,
                             label: "Country",
                             icon: Icons.public_outlined,
                             hint: "e.g. United States",
@@ -212,6 +369,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                           const SizedBox(height: 16),
                           _field(
                             controller: ibanController,
+                            errorText: ibanError,
                             label: "IBAN Number",
                             icon: Icons.numbers_outlined,
                             hint: "e.g. GB29 NWBK 6016 1331 9268 19",
@@ -219,6 +377,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                           const SizedBox(height: 16),
                           _field(
                             controller: swiftController,
+                            errorText: swiftError,
                             label: "SWIFT Code",
                             icon: Icons.swap_horiz_outlined,
                             hint: "e.g. CITIUS33",
@@ -264,6 +423,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 100),
                 ],
               ),
             ),
