@@ -43,6 +43,8 @@ import 'package:profinch_mobile_application/features/rewards/screens/reward_scre
 
 import 'package:profinch_mobile_application/features/bills/screens/bills_screen.dart';
 
+import 'package:profinch_mobile_application/features/notifications/provider/notification_provider.dart';
+import 'package:profinch_mobile_application/features/notifications/screens/notification_screen.dart';
 
 void main() {
   runApp(
@@ -56,6 +58,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => BeneficiaryProvider()),
         ChangeNotifierProvider(create: (_) => LoanProvider()),
         ChangeNotifierProvider(create: (_) => TransferProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ],
       child: const MyApp(),
     ),
@@ -118,14 +121,16 @@ class MyApp extends StatelessWidget {
         AppRoutes.currencyConverter: (context) =>
             const CurrencyConverterScreen(),
         AppRoutes.sipCalculator: (context) => const SipCalculatorScreen(),
-       // AppRoutes.emiCalculator: (context) => const EmiCalculatorScreen(),
 
-       AppRoutes.applyCard: (context) => const ApplyCardScreen(),
-        
+        // AppRoutes.emiCalculator: (context) => const EmiCalculatorScreen(),
+        AppRoutes.applyCard: (context) => const ApplyCardScreen(),
+
         AppRoutes.transferMoney: (context) => const TransferMoneyScreen(),
         AppRoutes.rewards: (context) => const RewardsScreen(),
 
         AppRoutes.bills: (context) => const BillsScreen(),
+
+        AppRoutes.notifications: (context) => const NotificationScreen(),
       },
     );
   }
