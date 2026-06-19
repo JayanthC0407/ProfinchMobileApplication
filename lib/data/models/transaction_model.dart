@@ -13,7 +13,7 @@ enum TransactionCategory {
   refund,
   loan,
   termDeposit,
-  wallet,
+  wallet,   // ← NEW: covers wallet top-up, wallet-to-bank, wallet payments
 }
 
 class TransactionModel {

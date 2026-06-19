@@ -13,6 +13,10 @@ class CategoryFilterSheet extends StatelessWidget {
     required this.onSelected,
   });
 
+  // ── All categories including wallet and billPayment ────────────
+  // wallet was added to TransactionCategory for wallet flows.
+  // billPayment was already present; now it surfaces real data
+  // from bill payments.
   static const _categories = [
     (TransactionCategory.salary,      'Salary',     Icons.account_balance_outlined),
     (TransactionCategory.food,        'Food',       Icons.restaurant_outlined),
@@ -26,7 +30,7 @@ class CategoryFilterSheet extends StatelessWidget {
     (TransactionCategory.refund,      'Refund',     Icons.replay_outlined),
     (TransactionCategory.loan,        'Loan',       Icons.payments_outlined),
     (TransactionCategory.termDeposit, 'Term Dep.',  Icons.savings_outlined),
-    (TransactionCategory.wallet,      'Wallet',     Icons.account_balance_wallet_outlined),
+    (TransactionCategory.wallet,      'Wallet',     Icons.account_balance_wallet_outlined), // ← NEW
   ];
 
   @override
@@ -51,7 +55,7 @@ class CategoryFilterSheet extends StatelessWidget {
                 style: TextStyle(
                   fontSize: AppFontSize.large(context),
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF1A1A2E),
+                  color: const Color(0xFF1A1A2E),
                 ),
               ),
               if (selected != null)
@@ -67,7 +71,7 @@ class CategoryFilterSheet extends StatelessWidget {
 
           const SizedBox(height: 16),
 
-          // ── Category grid ─────────────────────────────────────
+          // ── Category grid (4 columns) ──────────────────────────
           GridView.count(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),

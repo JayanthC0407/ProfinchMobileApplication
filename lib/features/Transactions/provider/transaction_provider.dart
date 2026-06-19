@@ -8,10 +8,10 @@ class TransactionProvider extends ChangeNotifier {
   // ── Singleton ─────────────────────────────────────────────────
   // One shared instance for the whole app. Any flow — UPI payment,
   // account transfer, debit card withdrawal, loan reimbursement,
-  // term deposit, EMI deduction — can call TransactionProvider.instance
-  // .addTransaction(...) (or one of the convenience recorders below)
-  // and it will show up immediately on the Dashboard and in
-  // Transaction History, and survive navigating away and back.
+  // term deposit, EMI deduction, bill payment, wallet — can call
+  // TransactionProvider.instance.addTransaction(...) (or one of the
+  // convenience recorders below) and it will immediately appear on
+  // the Dashboard and in Transaction History.
   TransactionProvider._internal();
   static final TransactionProvider instance = TransactionProvider._internal();
 
@@ -36,7 +36,7 @@ class TransactionProvider extends ChangeNotifier {
       _dateRange != null ||
       _searchQuery.isNotEmpty;
 
-  // ── All transactions, newest first (ignores active filters) ─────
+  // ── All transactions, newest first (ignores active filters) ────
   // Used by the Dashboard, which should always show the latest
   // activity regardless of whatever filters are set on the
   // Transaction History screen.
@@ -269,7 +269,7 @@ class TransactionProvider extends ChangeNotifier {
     );
   }
 
-  /// Term deposit redeemed/matured — maturity amount credited back.
+  /// Term deposit matured and proceeds credited back to the account.
   void recordTermDepositRedemption({
     required String accountId,
     required double amount,
@@ -280,8 +280,8 @@ class TransactionProvider extends ChangeNotifier {
       accountId: accountId,
       title: 'Term Deposit Redeemed',
       description: depositId != null
-          ? 'Maturity amount credited for term deposit $depositId'
-          : 'Maturity amount credited',
+          ? 'Maturity proceeds for $depositId'
+          : 'Term deposit maturity proceeds',
       amount: amount,
       type: TransactionType.credit,
       category: TransactionCategory.termDeposit,
@@ -307,7 +307,32 @@ class TransactionProvider extends ChangeNotifier {
     );
   }
 
-  /// Money moved from bank account into the wallet.
+  // ── Bill payment recorder ──────────────────────────────────────
+  /// Called by BillsProvider.payBill() once a bill is successfully
+  /// paid. Maps every BillCategory to TransactionCategory.billPayment
+  /// so it appears correctly in Transaction History and filtering.
+  void recordBillPayment({
+    required String accountId,
+    required double amount,
+    required String billerName,      // e.g. "Home Electricity"
+    required String providerName,    // e.g. "BESCOM"
+    required String billCategory,    // human-readable label, e.g. "Electricity"
+    double? balanceAfter,
+  }) {
+    addTransaction(
+      accountId: accountId,
+      title: '$billCategory Bill — $providerName',
+      description: 'Bill payment for $billerName',
+      amount: amount,
+      type: TransactionType.debit,
+      category: TransactionCategory.billPayment,
+      receiverName: billerName,
+      balanceAfter: balanceAfter,
+    );
+  }
+
+  // ── Wallet recorders ───────────────────────────────────────────
+  /// Bank → Wallet top-up (debit from bank account).
   void recordWalletTopUp({
     required String accountId,
     required double amount,
@@ -315,8 +340,8 @@ class TransactionProvider extends ChangeNotifier {
   }) {
     addTransaction(
       accountId: accountId,
-      title: 'Wallet Top-up',
-      description: 'Money added to wallet from bank account',
+      title: 'Wallet Top-Up',
+      description: 'Funds transferred from bank account to wallet',
       amount: amount,
       type: TransactionType.debit,
       category: TransactionCategory.wallet,
@@ -324,7 +349,7 @@ class TransactionProvider extends ChangeNotifier {
     );
   }
 
-  /// Wallet balance moved back into the bank account.
+  /// Wallet → Bank transfer (credit back to bank account).
   void recordWalletTransferToBank({
     required String accountId,
     required double amount,
@@ -332,8 +357,8 @@ class TransactionProvider extends ChangeNotifier {
   }) {
     addTransaction(
       accountId: accountId,
-      title: 'Wallet to Bank Transfer',
-      description: 'Wallet balance transferred to bank account',
+      title: 'Wallet to Bank',
+      description: 'Funds transferred from wallet to bank account',
       amount: amount,
       type: TransactionType.credit,
       category: TransactionCategory.wallet,
@@ -341,8 +366,7 @@ class TransactionProvider extends ChangeNotifier {
     );
   }
 
-  /// A payment made using wallet balance (doesn't move bank balance,
-  /// but still shows up as activity in transaction history).
+  /// Payment made from wallet (scan, send).
   void recordWalletPayment({
     required String accountId,
     required double amount,
@@ -351,13 +375,14 @@ class TransactionProvider extends ChangeNotifier {
   }) {
     addTransaction(
       accountId: accountId,
-      title: receiverName != null ? 'Wallet Payment to $receiverName' : 'Wallet Payment',
+      title: 'Wallet Payment',
       description: receiverName != null
-          ? 'Paid via wallet to $receiverName'
-          : 'Paid using wallet balance',
+          ? 'Paid to $receiverName via wallet'
+          : 'Payment from wallet',
       amount: amount,
       type: TransactionType.debit,
       category: TransactionCategory.wallet,
+      receiverName: receiverName,
       balanceAfter: balanceAfter,
     );
   }

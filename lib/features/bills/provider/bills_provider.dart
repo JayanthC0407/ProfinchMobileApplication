@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/features/accounts/provider/account_provider.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
+// ← NEW: import the shared transaction sink
+import 'package:profinch_mobile_application/features/Transactions/provider/transaction_provider.dart';
 
 enum BillCategory {
   electricity,
@@ -221,8 +223,10 @@ class BillsProvider extends ChangeNotifier {
 
     await Future.delayed(const Duration(seconds: 2));
 
+    // 1. Debit the bank account
     _accountProvider.debitAccount(accountId, biller.dueAmount);
 
+    // 2. Add to bills' own payment history (for BillPaymentHistoryScreen)
     _history.add(BillPaymentRecord(
       id: 'BPM${DateTime.now().millisecondsSinceEpoch}',
       billerName: '${biller.category.label} - ${biller.providerName}',
@@ -231,6 +235,19 @@ class BillsProvider extends ChangeNotifier {
       paidDate: DateTime.now(),
     ));
 
+    // 3. ← NEW: Push into the shared TransactionProvider so this payment
+    //    shows up in Transaction History with category "Bill Payment",
+    //    is searchable, filterable, and contributes to the debit summary.
+    TransactionProvider.instance.recordBillPayment(
+      accountId: accountId,
+      amount: biller.dueAmount,
+      billerName: biller.nickname,
+      providerName: biller.providerName,
+      billCategory: biller.category.label,
+      balanceAfter: _accountProvider.getAccountById(accountId).availableBalance,
+    );
+
+    // 4. Mark biller as paid and reset due amount / advance due date
     _billers[index] = BillerModel(
       id: biller.id,
       nickname: biller.nickname,
