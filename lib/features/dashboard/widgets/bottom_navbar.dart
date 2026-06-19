@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
 import 'package:profinch_mobile_application/features/accounts/provider/account_provider.dart';
@@ -75,11 +76,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
       selectedItemColor: AppColors.primary,
       unselectedItemColor: Colors.grey,
       type: BottomNavigationBarType.fixed,
-      selectedLabelStyle: const TextStyle(
-        fontSize: 11,
+      selectedLabelStyle:  TextStyle(
+        fontSize: AppFontSize.small(context),
         fontWeight: FontWeight.w600,
       ),
-      unselectedLabelStyle: const TextStyle(fontSize: 11),
+      unselectedLabelStyle: TextStyle(fontSize: AppFontSize.small(context)),
       onTap: _onTap,
       items: const [
         BottomNavigationBarItem(

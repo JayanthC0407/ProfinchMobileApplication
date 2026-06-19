@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
-
-// ✅ Keep both — UPI imports (your branch) + AccountProvider (main branch)
 import 'package:profinch_mobile_application/features/upi/provider/upi_provider.dart';
 import 'package:profinch_mobile_application/features/upi/screens/receive_money_screen.dart';
 import 'package:profinch_mobile_application/features/upi/screens/scan_qr_screen.dart';
 import 'package:profinch_mobile_application/features/upi/screens/upi_home_screen.dart';
 import 'package:profinch_mobile_application/features/accounts/provider/account_provider.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/dashboard_provider.dart';
@@ -71,18 +70,18 @@ class DashboardScreen extends StatelessWidget {
                           children: [
                             Text(
                               "Hello, ${user.username} 👋",
-                              style: const TextStyle(
-                                fontSize: 18,
+                              style: TextStyle(
+                                fontSize: AppFontSize.large(context),
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
                             ),
                             const SizedBox(height: 3),
-                            const Text(
+                            Text(
                               "Welcome Back",
                               style: TextStyle(
                                 color: Colors.white70,
-                                fontSize: 13,
+                                fontSize: AppFontSize.body(context),
                               ),
                             ),
                           ],
@@ -106,11 +105,11 @@ class DashboardScreen extends StatelessWidget {
                               color: Colors.red,
                               shape: BoxShape.circle,
                             ),
-                            child: const Text(
+                            child: Text(
                               '3',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 9,
+                                fontSize: AppFontSize.xs(context),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -209,18 +208,21 @@ class DashboardScreen extends StatelessWidget {
                 // ── QUICK ACCESS HEADER ───────────────────────────
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text(
                       "Quick Access",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: AppFontSize.large(context),
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
                     Text(
                       "Edit",
-                      style: TextStyle(color: Colors.white70, fontSize: 14),
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: AppFontSize.body(context),
+                      ),
                     ),
                   ],
                 ),
@@ -273,7 +275,12 @@ class DashboardScreen extends StatelessWidget {
                       },
                     ),
 
-                    const FeatureItem(icon: Icons.receipt_long, title: "Bills"),
+                    FeatureItem(
+                      icon: Icons.receipt_long,
+                      title: "Bills",
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.bills),
+                    ),
 
                     FeatureItem(
                       icon: Icons.card_giftcard,
@@ -334,11 +341,11 @@ class DashboardScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       "Recent Transactions",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: AppFontSize.large(context),
                         color: Colors.white,
                       ),
                     ),
@@ -351,7 +358,10 @@ class DashboardScreen extends StatelessWidget {
                       ),
                       child: const Text(
                         "See All",
-                        style: TextStyle(color: Colors.white70, fontSize: 14),
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: AppFontSize.body(context),
+                        ),
                       ),
                     ),
                   ],

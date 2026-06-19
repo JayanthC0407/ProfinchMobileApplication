@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/colors.dart';
@@ -252,15 +254,15 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
 
                   child: Column(
                     children: [
-                      const Text("Monthly EMI", style: TextStyle(fontSize: 16)),
+                       Text("Monthly EMI", style: TextStyle(fontSize: AppFontSize.medium(context)),),
 
                       const SizedBox(height: 8),
 
                       Text(
                         "₹${emiAmount.toStringAsFixed(2)}",
 
-                        style: const TextStyle(
-                          fontSize: 26,
+                        style:  TextStyle(
+                          fontSize: RT.fs(context, 26),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
