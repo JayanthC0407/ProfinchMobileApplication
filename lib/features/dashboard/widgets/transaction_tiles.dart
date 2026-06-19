@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 
 class TransactionTile extends StatelessWidget {
 
@@ -50,9 +51,9 @@ class TransactionTile extends StatelessWidget {
 
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 17,
+                    fontSize: AppFontSize.large(context),
                   ),
                 ),
 
@@ -73,7 +74,7 @@ class TransactionTile extends StatelessWidget {
             style: TextStyle(
               color: amountColor,
               fontWeight: FontWeight.bold,
-              fontSize: 16,
+              fontSize: AppFontSize.medium(context),
             ),
           )
         ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/data/models/account_model.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 
 class AccountCard extends StatelessWidget {
 
@@ -31,9 +32,9 @@ class AccountCard extends StatelessWidget {
 
             Text(
               account.accountType,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: AppFontSize.large(context),
               ),
             ),
 

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 
 class EmiCalculatorScreen extends StatefulWidget {
   const EmiCalculatorScreen({super.key});
@@ -190,9 +191,9 @@ class _CalcHeader extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style:  TextStyle(
                     color: AppColors.lightblue,
-                    fontSize: 28,
+                    fontSize: AppFontSize.xxl(context),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -290,9 +291,9 @@ class _CalcButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
-            fontSize: 16,
+            fontSize: AppFontSize.medium(context),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -327,9 +328,9 @@ class _ResultHero extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
-              fontSize: 28,
+              fontSize: AppFontSize.xxl(context),
               fontWeight: FontWeight.bold,
             ),
           ),
