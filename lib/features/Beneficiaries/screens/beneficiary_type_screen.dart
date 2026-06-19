@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
-import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'add_beneficiary_screen.dart';
 
 class BeneficiaryTypeScreen extends StatelessWidget {
@@ -66,13 +64,13 @@ class BeneficiaryTypeScreen extends StatelessWidget {
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 4),
                     child: Text(
                       "Add Beneficiary",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: RT.fs(context, 24),
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                         letterSpacing: -0.4,
                       ),
@@ -83,7 +81,7 @@ class BeneficiaryTypeScreen extends StatelessWidget {
                     child: Text(
                       "Choose the type of beneficiary",
                       style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.65), fontSize: AppFontSize.body(context)),
+                          color: Colors.white.withValues(alpha: 0.65), fontSize: 13),
                     ),
                   ),
                 ],
@@ -140,8 +138,8 @@ class BeneficiaryTypeScreen extends StatelessWidget {
                             children: [
                               Text(
                                 t['title'] as String,
-                                style: TextStyle(
-                                  fontSize: AppFontSize.medium(context),
+                                style: const TextStyle(
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xFF111827),
                                 ),
@@ -149,8 +147,8 @@ class BeneficiaryTypeScreen extends StatelessWidget {
                               const SizedBox(height: 3),
                               Text(
                                 t['subtitle'] as String,
-                                style: TextStyle(
-                                  fontSize: AppFontSize.small(context),
+                                style: const TextStyle(
+                                  fontSize: 12,
                                   color: Color(0xFF6B7280),
                                 ),
                               ),

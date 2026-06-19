@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 
 class BeneficiaryCard extends StatelessWidget {
   final String name;
@@ -80,7 +79,7 @@ class BeneficiaryCard extends StatelessWidget {
                     child: Text(
                       name[0].toUpperCase(),
                       style: TextStyle(
-                        fontSize: AppFontSize.large(context),
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: _typeColor,
                       ),
@@ -94,8 +93,8 @@ class BeneficiaryCard extends StatelessWidget {
                     children: [
                       Text(
                         name,
-                        style: TextStyle(
-                          fontSize: AppFontSize.medium(context),
+                        style: const TextStyle(
+                          fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: Color(0xFF111827),
                         ),
@@ -103,8 +102,8 @@ class BeneficiaryCard extends StatelessWidget {
                       const SizedBox(height: 3),
                       Text(
                         "••••  ••••  ••••  ${accountNumber.substring(accountNumber.length - 4)}",
-                        style: TextStyle(
-                          fontSize: AppFontSize.small(context),
+                        style: const TextStyle(
+                          fontSize: 12,
                           color: Color(0xFF6B7280),
                           letterSpacing: 1.2,
                         ),
@@ -126,7 +125,7 @@ class BeneficiaryCard extends StatelessWidget {
                       Text(
                         type,
                         style: TextStyle(
-                          fontSize: AppFontSize.small(context),
+                          fontSize: 11,
                           fontWeight: FontWeight.w600,
                           color: _typeColor,
                         ),

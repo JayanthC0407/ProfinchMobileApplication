@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 
 class FeatureItem extends StatelessWidget {
   final IconData icon;
@@ -38,8 +37,8 @@ class FeatureItem extends StatelessWidget {
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: AppFontSize.small(context),
+            style: const TextStyle(
+              fontSize: 11,
               color: Colors.white,
               fontWeight: FontWeight.w500,
             ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 
 class ProfileHeader extends StatelessWidget {
 
@@ -48,9 +47,9 @@ class ProfileHeader extends StatelessWidget {
 
                 Text(
                   username,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
-                    fontSize: RT.fs(context, 24),
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -58,9 +57,9 @@ class ProfileHeader extends StatelessWidget {
 
                 Text(
                   email,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white70,
-                    fontSize: RT.fs(context, 15),
+                    fontSize: 15,
                   ),
                 ),
               ],

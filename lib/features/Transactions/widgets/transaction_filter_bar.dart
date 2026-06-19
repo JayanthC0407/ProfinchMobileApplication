@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
-import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/features/Transactions/provider/transaction_provider.dart';
 
 class TransactionFilterBar extends StatelessWidget {
@@ -17,16 +16,16 @@ class TransactionFilterBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        _chip(context, 'All', TransactionFilter.all),
+        _chip('All', TransactionFilter.all),
         const SizedBox(width: 8),
-        _chip(context, 'Credit', TransactionFilter.credit),
+        _chip('Credit', TransactionFilter.credit),
         const SizedBox(width: 8),
-        _chip(context, 'Debit', TransactionFilter.debit),
+        _chip('Debit', TransactionFilter.debit),
       ],
     );
   }
 
-  Widget _chip(BuildContext context, String label, TransactionFilter filter) {
+  Widget _chip(String label, TransactionFilter filter) {
     final isSelected = selected == filter;
     Color chipColor;
     if (isSelected) {
@@ -53,7 +52,7 @@ class TransactionFilterBar extends StatelessWidget {
         child: Text(
           label,
           style: TextStyle(
-            fontSize: AppFontSize.body(context),
+            fontSize: 13,
             fontWeight: FontWeight.w600,
             color: isSelected ? Colors.white : Colors.grey.shade600,
           ),

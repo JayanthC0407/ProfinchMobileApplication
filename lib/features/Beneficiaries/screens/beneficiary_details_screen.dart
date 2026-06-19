@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
-import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/models/beneficiary_model.dart';
@@ -29,7 +27,7 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
   //   }
   // }
 
-  Widget _detailRow(String label, String value, BuildContext context) {
+  Widget _detailRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
@@ -38,8 +36,8 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
             flex: 2,
             child: Text(
               label,
-              style: TextStyle(
-                fontSize: AppFontSize.body(context),
+              style: const TextStyle(
+                fontSize: 13,
                 color: Color(0xFF6B7280),
               ),
             ),
@@ -49,8 +47,8 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
             child: Text(
               value.isEmpty ? "—" : value,
               textAlign: TextAlign.right,
-              style:  TextStyle(
-                fontSize: AppFontSize.medium(context),
+              style: const TextStyle(
+                fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF111827),
               ),
@@ -93,11 +91,11 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
                           onPressed: () => Navigator.pop(context),
                         ),
                         const Spacer(),
-                        Text(
+                        const Text(
                           "Details",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: AppFontSize.medium(context),
+                            fontSize: 16,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -117,8 +115,8 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
                     child: Center(
                       child: Text(
                         beneficiary.nickname[0].toUpperCase(),
-                        style:  TextStyle(
-                          fontSize: AppFontSize.xxl(context),
+                        style: const TextStyle(
+                          fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -128,9 +126,9 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   Text(
                     beneficiary.nickname,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
-                      fontSize: RT.fs(context, 20),
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -145,9 +143,9 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
                     ),
                     child: Text(
                       beneficiary.beneficiaryType,
-                      style:  TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
-                        fontSize: AppFontSize.small(context),
+                        fontSize: 12,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -183,17 +181,15 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
                         _detailRow(
                           "Account Number",
                           "••••  ••••  ••••  ${beneficiary.accountNumber.substring(beneficiary.accountNumber.length > 4 ? beneficiary.accountNumber.length - 4 : 0)}",
-                          context,
                         ),
                         const Divider(height: 1, color: Color(0xFFF3F4F6)),
-                        _detailRow("Bank", beneficiary.bankName, context),
+                        _detailRow("Bank", beneficiary.bankName),
                         const Divider(height: 1, color: Color(0xFFF3F4F6)),
-                        _detailRow("IFSC Code", beneficiary.ifscCode, context),
+                        _detailRow("IFSC Code", beneficiary.ifscCode),
                         const Divider(height: 1, color: Color(0xFFF3F4F6)),
                         _detailRow(
                           "Verified",
                           beneficiary.isVerified ? "✓ Verified" : "Pending",
-                          context,
                         ),
                       ],
                     ),
@@ -242,10 +238,10 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
                         );
                       },
                       icon: const Icon(Icons.delete_outline, size: 18),
-                      label:  Text(
+                      label: const Text(
                         "Remove Beneficiary",
                         style: TextStyle(
-                            fontSize: AppFontSize.body(context), fontWeight: FontWeight.w600),
+                            fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),

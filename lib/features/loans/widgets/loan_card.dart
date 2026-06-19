@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import '../../../data/models/loan_model.dart';
 
 class LoanCard extends StatelessWidget {
@@ -108,15 +107,15 @@ class LoanCard extends StatelessWidget {
                     children: [
                       Text(
                         loan.loanType,
-                        style:  TextStyle(
-                          fontSize: AppFontSize.medium(context),
+                        style: const TextStyle(
+                          fontSize: 15,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
                         "ID: ${loan.id.substring(loan.id.length > 8 ? loan.id.length - 8 : 0)}",
                         style: TextStyle(
-                          fontSize: AppFontSize.small(context),
+                          fontSize: 11,
                           color: Colors.grey.shade400,
                         ),
                       ),
@@ -134,7 +133,7 @@ class LoanCard extends StatelessWidget {
                     loan.status,
                     style: TextStyle(
                       color: _statusColor,
-                      fontSize: AppFontSize.small(context),
+                      fontSize: 11,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -186,7 +185,7 @@ class LoanCard extends StatelessWidget {
                 Text(
                   "${(progress * 100).toStringAsFixed(0)}% paid",
                   style: TextStyle(
-                    fontSize: AppFontSize.small(context),
+                    fontSize: 11,
                     color: Colors.grey.shade500,
                     fontWeight: FontWeight.w500,
                   ),
@@ -218,13 +217,13 @@ class _InfoChip extends StatelessWidget {
       children: [
         Text(
           label,
-          style: TextStyle(fontSize: AppFontSize.xs(context), color: Colors.grey.shade400),
+          style: TextStyle(fontSize: 10, color: Colors.grey.shade400),
         ),
         const SizedBox(height: 2),
         Text(
           value,
           style: TextStyle(
-            fontSize: AppFontSize.body(context),
+            fontSize: 13,
             fontWeight: FontWeight.w600,
             color: valueColor,
           ),

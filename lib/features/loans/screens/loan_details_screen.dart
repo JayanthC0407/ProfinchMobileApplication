@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:profinch_mobile_application/features/loans/screens/loan_statement_screen.dart';
 import 'package:profinch_mobile_application/features/loans/screens/repay_loan_screen.dart';
 import '../../../core/constants/colors.dart';
@@ -62,9 +61,9 @@ class LoanDetailsScreen extends StatelessWidget {
                   Text(
                     loan.loanType,
 
-                    style:  TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
-                      fontSize: RT.fs(context, 24),
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -74,9 +73,9 @@ class LoanDetailsScreen extends StatelessWidget {
                   Text(
                     "₹${loan.outstandingAmount.toStringAsFixed(2)}",
 
-                    style:  TextStyle(
+                    style: const TextStyle(
                       color: Colors.white,
-                      fontSize: RT.fs(context, 30),
+                      fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

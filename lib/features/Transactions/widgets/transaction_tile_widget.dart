@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/data/models/transaction_model.dart';
 
 class TransactionTileWidget extends StatelessWidget {
@@ -134,8 +133,8 @@ class TransactionTileWidget extends StatelessWidget {
                 children: [
                   Text(
                     transaction.title,
-                    style: TextStyle(
-                      fontSize: AppFontSize.body(context),
+                    style: const TextStyle(
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: Color(0xFF1A1A2E),
                     ),
@@ -170,7 +169,7 @@ class TransactionTileWidget extends StatelessWidget {
                         child: Text(
                           formattedDate,
                           style: TextStyle(
-                            fontSize: AppFontSize.body(context),
+                            fontSize: 11,
                             color: Colors.grey.shade500,
                           ),
                           maxLines: 1,
@@ -192,7 +191,7 @@ class TransactionTileWidget extends StatelessWidget {
                 Text(
                   '$amountPrefix$formattedAmount',
                   style: TextStyle(
-                    fontSize: AppFontSize.body(context),
+                    fontSize: 14,
                     fontWeight: FontWeight.w700,
                     color: amountColor,
                   ),
@@ -201,7 +200,7 @@ class TransactionTileWidget extends StatelessWidget {
                 Text(
                   isCredit ? 'Credit' : 'Debit',
                   style: TextStyle(
-                    fontSize: AppFontSize.body(context),
+                    fontSize: 11,
                     color: amountColor.withValues(alpha: 0.7),
                   ),
                 ),

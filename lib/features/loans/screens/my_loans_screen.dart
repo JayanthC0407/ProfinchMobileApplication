@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:provider/provider.dart';
 import '../../auth/provider/auth_provider.dart';
 import '../provider/loan_provider.dart';
@@ -54,7 +53,7 @@ class _MyLoansScreenState extends State<MyLoansScreen>
           indicatorWeight: 3,
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white54,
-          labelStyle:  TextStyle(fontWeight: FontWeight.w600, fontSize: AppFontSize.body(context)),
+          labelStyle: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
           tabs: [
             Tab(text: "Active (${activeLoans.length})"),
             Tab(text: "Closed (${closedLoans.length})"),
@@ -103,7 +102,7 @@ class _LoansList extends StatelessWidget {
             Text(
               emptyMessage,
               style: TextStyle(
-                fontSize: AppFontSize.medium(context),
+                fontSize: 16,
                 color: Colors.grey.shade400,
                 fontWeight: FontWeight.w500,
               ),

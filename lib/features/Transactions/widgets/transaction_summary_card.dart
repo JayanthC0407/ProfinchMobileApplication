@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 
 class TransactionSummaryCard extends StatelessWidget {
   final double totalCredit;
@@ -53,14 +52,14 @@ class TransactionSummaryCard extends StatelessWidget {
                     Text(
                       'Income',
                       style: TextStyle(
-                        fontSize: AppFontSize.small(context),
+                        fontSize: 11,
                         color: Colors.grey.shade500,
                       ),
                     ),
                     Text(
                       '₹${formatter.format(totalCredit)}',
                       style: TextStyle(
-                        fontSize: AppFontSize.body(context),
+                        fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: Colors.green.shade700,
                       ),
@@ -101,14 +100,14 @@ class TransactionSummaryCard extends StatelessWidget {
                     Text(
                       'Expenses',
                       style: TextStyle(
-                        fontSize: AppFontSize.small(context),
+                        fontSize: 11,
                         color: Colors.grey.shade500,
                       ),
                     ),
                     Text(
                       '₹${formatter.format(totalDebit)}',
                       style: TextStyle(
-                        fontSize: AppFontSize.body(context),
+                        fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: Colors.red.shade700,
                       ),

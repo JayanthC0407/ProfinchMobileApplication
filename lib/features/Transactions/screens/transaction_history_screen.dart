@@ -9,8 +9,6 @@ import '../widgets/transaction_filter_bar.dart';
 import '../widgets/transaction_summary_card.dart';
 import '../widgets/category_filter_sheet.dart';
 
-import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
-
 class TransactionHistoryScreen extends StatelessWidget {
   const TransactionHistoryScreen({super.key});
 
@@ -90,11 +88,11 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
         backgroundColor: AppColors.primaryDark,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: Text(
+        title: const Text(
           'Transaction History',
           style: TextStyle(
             color: Colors.white,
-            fontSize: AppFontSize.large(context),
+            fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -106,9 +104,9 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
                       provider.clearAllFilters();
                       _searchController.clear();
                     },
-                    child: Text(
+                    child: const Text(
                       'Clear',
-                      style: TextStyle(color: Colors.white70, fontSize: AppFontSize.body(context)),
+                      style: TextStyle(color: Colors.white70, fontSize: 13),
                     ),
                   )
                 : const SizedBox.shrink(),
@@ -139,11 +137,11 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
                       child: TextField(
                         controller: _searchController,
                         onChanged: provider.setSearchQuery,
-                        style: TextStyle(fontSize: AppFontSize.body(context)),
+                        style: const TextStyle(fontSize: 14),
                         decoration: InputDecoration(
                           hintText: 'Search transactions...',
                           hintStyle: TextStyle(
-                              color: Colors.grey.shade400, fontSize: AppFontSize.body(context)),
+                              color: Colors.grey.shade400, fontSize: 14),
                           prefixIcon: const Icon(Icons.search,
                               size: 20, color: Colors.grey),
                           suffixIcon: _searchController.text.isNotEmpty
@@ -207,7 +205,7 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
                                   Text(
                                     'Category',
                                     style: TextStyle(
-                                      fontSize: AppFontSize.small(context),
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w600,
                                       color: provider.categoryFilter != null
                                           ? AppColors.primaryDark
@@ -248,7 +246,7 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
                                         ? '${DateFormat('dd MMM').format(provider.dateRange!.start)} - ${DateFormat('dd MMM').format(provider.dateRange!.end)}'
                                         : 'Date',
                                     style: TextStyle(
-                                      fontSize: AppFontSize.small(context),
+                                      fontSize: 12,
                                       fontWeight: FontWeight.w600,
                                       color: provider.dateRange != null
                                           ? AppColors.primaryDark
@@ -288,8 +286,8 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
                             children: [
                               Text(
                                 '${transactions.length} transaction${transactions.length == 1 ? '' : 's'}',
-                                style:  TextStyle(
-                                  fontSize: AppFontSize.body(context),
+                                style: const TextStyle(
+                                  fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xFF1A1A2E),
                                 ),
@@ -306,7 +304,7 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
                                   child: Text(
                                     'Filtered',
                                     style: TextStyle(
-                                      fontSize: AppFontSize.small(context),
+                                      fontSize: 11,
                                       color: AppColors.primaryDark,
                                       fontWeight: FontWeight.w600,
                                     ),
@@ -345,7 +343,7 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
           Text(
             'No transactions found',
             style: TextStyle(
-              fontSize: AppFontSize.medium(context),
+              fontSize: 16,
               fontWeight: FontWeight.w600,
               color: Colors.grey.shade500,
             ),
@@ -353,7 +351,7 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
           const SizedBox(height: 8),
           Text(
             'Try adjusting your filters',
-            style: TextStyle(fontSize: AppFontSize.body(context), color: Colors.grey.shade400),
+            style: TextStyle(fontSize: 13, color: Colors.grey.shade400),
           ),
         ],
       ),

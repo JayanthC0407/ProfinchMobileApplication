@@ -41,8 +41,6 @@ import 'features/loans/screens/loans_screen.dart';
 
 import 'package:profinch_mobile_application/features/rewards/screens/reward_screen.dart';
 
-import 'package:profinch_mobile_application/features/bills/screens/bills_screen.dart';
-
 
 void main() {
   runApp(
@@ -124,8 +122,6 @@ class MyApp extends StatelessWidget {
         
         AppRoutes.transferMoney: (context) => const TransferMoneyScreen(),
         AppRoutes.rewards: (context) => const RewardsScreen(),
-
-        AppRoutes.bills: (context) => const BillsScreen(),
       },
     );
   }
