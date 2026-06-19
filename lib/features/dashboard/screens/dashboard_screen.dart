@@ -349,7 +349,7 @@ class DashboardScreen extends StatelessWidget {
                           builder: (_) => const TransactionHistoryScreen(),
                         ),
                       ),
-                      child: const Text(
+                      child:  Text(
                         "See All",
                         style: TextStyle(color: Colors.white70, fontSize: 14),
                       ),
