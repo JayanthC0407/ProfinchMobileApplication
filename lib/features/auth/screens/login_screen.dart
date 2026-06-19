@@ -26,8 +26,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final bool _isLoading = false;
-  String? _emailError;
-  String? _passwordError;
 
   @override
   void dispose() {
@@ -38,14 +36,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // ── Handlers ───────────────────────────────────────────────────
   Future<void> _handleSignIn() async {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
 
-    setState(() {
-      _emailError = null;
-      _passwordError = null;
-    });
+  if (!_formKey.currentState!.validate()) {
+    return;
+  }
 
   final authProvider = Provider.of<AuthProvider>(
     context,
@@ -99,46 +93,26 @@ class _LoginScreenState extends State<LoginScreen> {
       authProvider.currentUser!.primaryAccountId,
     );
 
-    final email = _emailController.text.trim();
-
-    final password = _passwordController.text.trim();
-
-    final emailExists = authProvider.emailExists(email);
-
-    if (!emailExists) {
-      setState(() {
-        _emailError = "Invalid email address";
-      });
-
-      return;
-    }
-
-    final passwordValid = authProvider.passwordMatches(
-      email: email,
-      password: password,
+    Navigator.pushReplacementNamed(
+      context,
+      AppRoutes.dashboard,
     );
 
-    if (!passwordValid) {
-      setState(() {
-        _passwordError = "Incorrect password";
-      });
+  } else {
 
-      return;
-    }
+    ScaffoldMessenger.of(context).showSnackBar(
 
-    final success = await authProvider.login(email: email, password: password);
-
-    if (!mounted) return;
-
-    if (success) {
-      Provider.of<DashboardProvider>(
-        context,
-        listen: false,
-      ).resetToPrimary(authProvider.currentUser!.primaryAccountId);
-
-      Navigator.pushReplacementNamed(context, AppRoutes.dashboard);
-    }
+      SnackBar(
+        content: const Text('Invalid email or password'),
+        backgroundColor: Colors.red,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
   }
+}
 
   void _handleForgotPassword() {
     // TODO: Navigate to forgot-password screen
@@ -158,60 +132,55 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return BackgroundWrapper(
-      child: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 420),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const AppLogo(),
-                  const SizedBox(height: 32),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 420),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const AppLogo(),
+                    const SizedBox(height: 32),
 
-                  const LoginHeader(),
-                  const SizedBox(height: 28),
+                    const LoginHeader(),
+                    const SizedBox(height: 28),
 
-                  LoginForm(
-                    formKey: _formKey,
-                    emailController: _emailController,
-                    passwordController: _passwordController,
-                    onSubmit: _handleSignIn,
+                    LoginForm(
+                      formKey: _formKey,
+                      emailController: _emailController,
+                      passwordController: _passwordController,
+                      onSubmit: _handleSignIn,
+                    ),
 
-                    emailError: _emailError,
-                    passwordError: _passwordError,
-                  ),
+                    const SizedBox(height: 20),
+                    RememberForgotRow(onForgotPassword: _handleForgotPassword),
+                    const SizedBox(height: 24),
 
-                  const SizedBox(height: 20),
-                  RememberForgotRow(onForgotPassword: _handleForgotPassword),
-                  const SizedBox(height: 24),
+                    SignInButton(
+                      isLoading: _isLoading,
+                      onPressed: _handleSignIn,
+                    ),
+                    const SizedBox(height: 20),
 
-                  SignInButton(isLoading: _isLoading, onPressed: _handleSignIn),
-                  const SizedBox(height: 20),
+                    BiometricButton(onPressed: _handleBiometric),
+                    const SizedBox(height: 28),
 
-                  BiometricButton(onPressed: _handleBiometric),
-                  const SizedBox(height: 28),
-
-                  SignUpRow(
-                    onSignUp: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (ctx) => const SignUpScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 20),
-
-                  const SecurityBadge(),
-                ],
+                    SignUpRow(
+                      onSignUp: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (ctx) => const SignUpScreen()));
+                      },
+                    ),
+                    const SizedBox(height: 20),
+                    
+                    const SecurityBadge(),
+                  ],
+                ),
               ),
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }
