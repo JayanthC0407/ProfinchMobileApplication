@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:profinch_mobile_application/shared/widgets/background_wrapper.dart';
 import 'package:profinch_mobile_application/shared/widgets/logo.dart';
 
@@ -139,10 +141,10 @@ class _OtpScreenState extends State<OtpScreen> {
                   const AppLogo(),
                   const SizedBox(height: 32),
 
-                  const Text(
+                   Text(
                     'Verify OTP',
                     style: TextStyle(
-                      fontSize: 26,
+                      fontSize: RT.fs(context, 26),
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
@@ -151,7 +153,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   Text(
                     'Enter the 6-digit code sent to\n${widget.maskedDestination}',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: AppFontSize.body(context),
                       color: Colors.white.withValues(alpha: 0.8),
                     ),
                   ),
@@ -171,8 +173,8 @@ class _OtpScreenState extends State<OtpScreen> {
                           textAlign: TextAlign.center,
                           keyboardType: TextInputType.number,
                           maxLength: 1,
-                          style: const TextStyle(
-                            fontSize: 20,
+                          style: TextStyle(
+                            fontSize: RT.fs(context, 20),
                             fontWeight: FontWeight.w700,
                             color: Color(0xFF1A1A2E),
                           ),
@@ -227,7 +229,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         Text(
                           'Incorrect OTP. Please try again.',
                           style: TextStyle(
-                              fontSize: 12, color: Colors.red.shade300),
+                              fontSize: AppFontSize.body(context), color: Colors.red.shade300),
                         ),
                       ],
                     ),
@@ -257,10 +259,10 @@ class _OtpScreenState extends State<OtpScreen> {
                                 color: Colors.white,
                               ),
                             )
-                          : const Text(
+                          : Text(
                               'Verify & Continue',
                               style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w600),
+                                  fontSize: AppFontSize.medium(context), fontWeight: FontWeight.w600),
                             ),
                     ),
                   ),
@@ -275,7 +277,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         Text(
                           "Didn't receive the code? ",
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: AppFontSize.body(context),
                             color: Colors.white.withValues(alpha: 0.7),
                           ),
                         ),
@@ -286,7 +288,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                 ? 'Resend OTP'
                                 : 'Resend in ${_secondsLeft}s',
                             style: TextStyle(
-                              fontSize: 13,
+                              fontSize: AppFontSize.body(context),
                               fontWeight: FontWeight.w600,
                               color: _secondsLeft == 0
                                   ? Colors.white
