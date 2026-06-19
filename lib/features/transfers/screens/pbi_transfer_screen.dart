@@ -23,23 +23,84 @@ class _PbiTransferScreenState extends State<PbiTransferScreen> {
   String? selectedAccountId;
   final amountController = TextEditingController();
   final remarksController = TextEditingController();
+  String? amountError;
+  String? accountError;
 
   static const _purposes = [
-    "Self Transfer", "Family Support", "Rent Payment",
-    "Utility Bills", "Education", "Investment", "Others",
+    "Self Transfer",
+    "Family Support",
+    "Rent Payment",
+    "Utility Bills",
+    "Education",
+    "Investment",
+    "Others",
   ];
 
   @override
   Widget build(BuildContext context) {
-    final accounts = Provider.of<AccountProvider>(context)
-        .getAccountsByUserId(
-            Provider.of<AuthProvider>(context).currentUser!.id);
+    final accounts = Provider.of<AccountProvider>(
+      context,
+    ).getAccountsByUserId(Provider.of<AuthProvider>(context).currentUser!.id);
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FA),
+
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          color: Colors.white,
+
+          child: _ContinueButton(
+            onPressed: () {
+              setState(() {
+                amountError = null;
+                accountError = null;
+              });
+
+              bool isValid = true;
+
+              if (amountController.text.trim().isEmpty) {
+                amountError = "Please enter transfer amount";
+                isValid = false;
+              }
+
+              if (selectedAccountId == null) {
+                accountError = "Please select an account";
+                isValid = false;
+              }
+
+              if (!isValid) {
+                setState(() {});
+                return;
+              }
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => TransferConfirmationScreen(
+                    beneficiary: widget.beneficiary,
+
+                    accountId: selectedAccountId!,
+
+                    amount: double.parse(amountController.text),
+
+                    remarks: remarksController.text,
+
+                    transferMode: "PBI",
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+
       body: Column(
         children: [
-          _TransferHeader(title: "PBI Transfer", subtitle: "ProFinch internal transfer"),
+          _TransferHeader(
+            title: "PBI Transfer",
+            subtitle: "ProFinch internal transfer",
+          ),
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(20),
@@ -51,12 +112,56 @@ class _PbiTransferScreenState extends State<PbiTransferScreen> {
                     accountNumber: widget.beneficiary.accountNumber,
                   ),
                   const SizedBox(height: 16),
-                  AmountInputCard(controller: amountController),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AmountInputCard(controller: amountController),
+
+                      if (amountError != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, left: 4),
+                          child: Text(
+                            amountError!,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                   const SizedBox(height: 16),
-                  AccountSelectorWidget(
-                    accounts: accounts,
-                    selectedAccountId: selectedAccountId,
-                    onChanged: (v) => setState(() => selectedAccountId = v),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AccountSelectorWidget(
+                        accounts: accounts,
+                        selectedAccountId: selectedAccountId,
+                        onChanged: (v) {
+                          setState(() {
+                            selectedAccountId = v;
+
+                            if (v != null) {
+                              accountError = null;
+                            }
+                          });
+                        },
+                      ),
+
+                      if (accountError != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, left: 4),
+                          child: Text(
+                            accountError!,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                   const SizedBox(height: 16),
                   _DropdownSection(
@@ -67,21 +172,7 @@ class _PbiTransferScreenState extends State<PbiTransferScreen> {
                   ),
                   const SizedBox(height: 16),
                   _RemarksField(controller: remarksController),
-                  const SizedBox(height: 28),
-                  _ContinueButton(
-                    onPressed: () {
-                      if (selectedAccountId == null || amountController.text.isEmpty) return;
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (_) => TransferConfirmationScreen(
-                          beneficiary: widget.beneficiary,
-                          accountId: selectedAccountId!,
-                          amount: double.parse(amountController.text),
-                          remarks: remarksController.text,
-                          transferMode: "PBI",
-                        ),
-                      ));
-                    },
-                  ),
+                  const SizedBox(height: 100),
                 ],
               ),
             ),
@@ -91,7 +182,6 @@ class _PbiTransferScreenState extends State<PbiTransferScreen> {
     );
   }
 }
-
 
 // ─── Shared private widgets used only in this file ───────────────────────────
 
@@ -104,7 +194,7 @@ class _TransferHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-       width: double.infinity,
+      width: double.infinity,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -145,7 +235,9 @@ class _TransferHeader extends StatelessWidget {
               child: Text(
                 subtitle,
                 style: TextStyle(
-                    color: Colors.white.withOpacity(0.65), fontSize: 13),
+                  color: Colors.white.withOpacity(0.65),
+                  fontSize: 13,
+                ),
               ),
             ),
           ],
@@ -194,14 +286,17 @@ class _DropdownSection extends StatelessWidget {
             child: DropdownButton<String>(
               value: value,
               isExpanded: true,
-              icon: const Icon(Icons.keyboard_arrow_down_rounded,
-                  color: Color(0xFF2563B0)),
+              icon: const Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: Color(0xFF2563B0),
+              ),
               items: items
-                  .map((item) => DropdownMenuItem(
-                        value: item,
-                        child: Text(item,
-                            style: const TextStyle(fontSize: 14)),
-                      ))
+                  .map(
+                    (item) => DropdownMenuItem(
+                      value: item,
+                      child: Text(item, style: const TextStyle(fontSize: 14)),
+                    ),
+                  )
                   .toList(),
               onChanged: onChanged,
             ),
@@ -245,11 +340,16 @@ class _RemarksField extends StatelessWidget {
             decoration: InputDecoration(
               hintText: "Add a note...",
               hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
-              prefixIcon: Icon(Icons.notes_outlined,
-                  color: Colors.grey.shade400, size: 18),
+              prefixIcon: Icon(
+                Icons.notes_outlined,
+                color: Colors.grey.shade400,
+                size: 18,
+              ),
               border: InputBorder.none,
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 12,
+              ),
             ),
           ),
         ),

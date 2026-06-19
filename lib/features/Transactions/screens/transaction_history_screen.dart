@@ -16,8 +16,8 @@ class TransactionHistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => TransactionProvider(),
+    return ChangeNotifierProvider.value(
+      value: TransactionProvider.instance,
       child: const _TransactionHistoryView(),
     );
   }

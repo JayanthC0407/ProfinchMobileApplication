@@ -26,6 +26,8 @@ class _InternationalTransferScreenState
   String purpose = "Personal Transfer";
   final amountController = TextEditingController();
   final remarksController = TextEditingController();
+  String? amountError;
+  String? accountError;
 
   static const _currencies = ["USD", "EUR", "GBP"];
   static const _purposes = ["Personal Transfer", "Education", "Business"];
@@ -40,6 +42,57 @@ class _InternationalTransferScreenState
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FA),
+
+      bottomNavigationBar: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          color: Colors.white,
+
+          child: _ContinueButton(
+            onPressed: () {
+              setState(() {
+                amountError = null;
+                accountError = null;
+              });
+
+              bool isValid = true;
+
+              if (amountController.text.trim().isEmpty) {
+                amountError = "Please enter transfer amount";
+                isValid = false;
+              }
+
+              if (selectedAccountId == null) {
+                accountError = "Please select an account";
+                isValid = false;
+              }
+
+              if (!isValid) {
+                setState(() {});
+                return;
+              }
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => TransferConfirmationScreen(
+                    beneficiary: widget.beneficiary,
+
+                    accountId: selectedAccountId!,
+
+                    amount: double.parse(amountController.text),
+
+                    remarks: remarksController.text,
+
+                    transferMode: "INTERNATIONAL",
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+
       body: Column(
         children: [
           _TransferHeader(
@@ -95,7 +148,25 @@ class _InternationalTransferScreenState
                     ),
                   ),
                   const SizedBox(height: 16),
-                  AmountInputCard(controller: amountController),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AmountInputCard(controller: amountController),
+
+                      if (amountError != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, left: 4),
+                          child: Text(
+                            amountError!,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
                   const SizedBox(height: 16),
                   // Currency selector
                   Text(
@@ -154,10 +225,36 @@ class _InternationalTransferScreenState
                     }).toList(),
                   ),
                   const SizedBox(height: 16),
-                  AccountSelectorWidget(
-                    accounts: accounts,
-                    selectedAccountId: selectedAccountId,
-                    onChanged: (v) => setState(() => selectedAccountId = v),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AccountSelectorWidget(
+                        accounts: accounts,
+                        selectedAccountId: selectedAccountId,
+                        onChanged: (v) {
+                          setState(() {
+                            selectedAccountId = v;
+
+                            if (v != null) {
+                              accountError = null;
+                            }
+                          });
+                        },
+                      ),
+
+                      if (accountError != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8, left: 4),
+                          child: Text(
+                            accountError!,
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
                   const SizedBox(height: 16),
                   _DropdownSection(
@@ -198,7 +295,7 @@ class _InternationalTransferScreenState
                       ],
                     ),
                   ),
-                  const SizedBox(height: 28),
+                  const SizedBox(height: 100),
                   _ContinueButton(
                     onPressed: () {
                       if (selectedAccountId == null ||

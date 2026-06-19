@@ -7,12 +7,17 @@ class LoginForm extends StatefulWidget {
   final TextEditingController passwordController;
   final VoidCallback onSubmit;
 
+  final String? emailError;
+  final String? passwordError;
+
   const LoginForm({
     super.key,
-    required this.formKey, 
+    required this.formKey,
     required this.emailController,
     required this.passwordController,
     required this.onSubmit,
+    this.emailError,
+    this.passwordError,
   });
 
   @override
@@ -111,6 +116,36 @@ class _LoginFormState extends State<LoginForm> {
         children: [
           // ── Email ──────────────────────────────────────────────
           _fieldLabel('Email address'),
+          if (widget.emailError != null) ...[
+            const SizedBox(height: 6),
+
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(10),
+
+              decoration: BoxDecoration(
+                color: Colors.red.shade50,
+                borderRadius: BorderRadius.circular(10),
+              ),
+
+              child: Row(
+                children: [
+                  const Icon(Icons.error_outline, color: Colors.red, size: 18),
+
+                  const SizedBox(width: 8),
+
+                  Expanded(
+                    child: Text(
+                      widget.emailError!,
+                      style: const TextStyle(color: Colors.red, fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 8),
+          ],
           const SizedBox(height: 8),
           TextFormField(
             controller: widget.emailController,
@@ -128,6 +163,36 @@ class _LoginFormState extends State<LoginForm> {
 
           // ── Password ───────────────────────────────────────────
           _fieldLabel('Password'),
+          if (widget.passwordError != null) ...[
+            const SizedBox(height: 6),
+
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(10),
+
+              decoration: BoxDecoration(
+                color: Colors.red.shade50,
+                borderRadius: BorderRadius.circular(10),
+              ),
+
+              child: Row(
+                children: [
+                  const Icon(Icons.error_outline, color: Colors.red, size: 18),
+
+                  const SizedBox(width: 8),
+
+                  Expanded(
+                    child: Text(
+                      widget.passwordError!,
+                      style: const TextStyle(color: Colors.red, fontSize: 12),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 8),
+          ],
           const SizedBox(height: 8),
           TextFormField(
             controller: widget.passwordController,

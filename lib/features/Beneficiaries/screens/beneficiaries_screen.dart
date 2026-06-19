@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
@@ -140,7 +142,7 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                               ),
                             ),
                             Icon(Icons.arrow_forward_ios_rounded,
-                                color: Colors.white.withValues(alpha:0.7), size: 14),
+                                color: Colors.white.withValues(alpha: 0.7), size: 14),
                           ],
                         ),
                       ),

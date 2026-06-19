@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/data/dummy/dummy_accounts.dart';
+import 'package:profinch_mobile_application/data/models/account_model.dart';
+import 'package:profinch_mobile_application/features/accounts/provider/account_provider.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
+import 'package:profinch_mobile_application/features/Transactions/provider/transaction_provider.dart';
 
 enum UpiPaymentStatus { idle, processing, success, failed }
 
@@ -20,8 +22,9 @@ class RecentUpiContact {
 
 class UpiProvider extends ChangeNotifier {
   final AuthProvider _authProvider;
+  final AccountProvider _accountProvider;
 
-  UpiProvider(this._authProvider);
+  UpiProvider(this._authProvider, this._accountProvider);
 
   UpiPaymentStatus _status = UpiPaymentStatus.idle;
   String _lastTransactionId = '';
@@ -40,15 +43,20 @@ class UpiProvider extends ChangeNotifier {
   String get myName =>
       _authProvider.currentUser?.username ?? 'Card Holder';
 
-  // ── Balance from AccountModel matched to logged-in user ────────
-  double get accountBalance {
-  final userId = _authProvider.currentUser?.id ?? '';
-  final account = DummyAccounts.allAccounts.firstWhere(
-    (a) => a.userId == userId,
-    orElse: () => DummyAccounts.allAccounts.first,
-  );
-  return account.availableBalance;
-}
+  // ── Account matched to logged-in user (read via AccountProvider, ──
+  // the single shared source of truth, so balance changes here are
+  // reflected everywhere else in the app — Dashboard, transfers, etc.)
+  AccountModel get _myAccount {
+    final userId = _authProvider.currentUser?.id ?? '';
+    return _accountProvider.accounts.firstWhere(
+      (a) => a.userId == userId,
+      orElse: () => _accountProvider.accounts.first,
+    );
+  }
+
+  String get _myAccountId => _myAccount.id;
+
+  double get accountBalance => _myAccount.availableBalance;
 
   // ── Recent UPI contacts ────────────────────────────────────────
   final List<RecentUpiContact> recentContacts = const [
@@ -102,6 +110,18 @@ class UpiProvider extends ChangeNotifier {
       _status = UpiPaymentStatus.success;
       _lastTransactionId =
           'TXN${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}';
+
+      final accountId = _myAccountId;
+      _accountProvider.debitAccount(accountId, amount);
+
+      TransactionProvider.instance.recordUpiPayment(
+        accountId: accountId,
+        amount: amount,
+        isCredit: false,
+        receiverName: receiverName,
+        receiverAccount: receiverUpiId,
+        balanceAfter: _accountProvider.getAccountById(accountId).availableBalance,
+      );
     } else {
       _status = UpiPaymentStatus.failed;
     }

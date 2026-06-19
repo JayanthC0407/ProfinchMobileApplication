@@ -5,16 +5,26 @@ import 'package:profinch_mobile_application/data/dummy/dummy_transactions.dart';
 enum TransactionFilter { all, credit, debit }
 
 class TransactionProvider extends ChangeNotifier {
+  // ── Singleton ─────────────────────────────────────────────────
+  // One shared instance for the whole app. Any flow — UPI payment,
+  // account transfer, debit card withdrawal, loan reimbursement,
+  // term deposit, EMI deduction — can call TransactionProvider.instance
+  // .addTransaction(...) (or one of the convenience recorders below)
+  // and it will show up immediately on the Dashboard and in
+  // Transaction History, and survive navigating away and back.
+  TransactionProvider._internal();
+  static final TransactionProvider instance = TransactionProvider._internal();
+
   final List<TransactionModel> _allTransactions =
       List.from(DummyTransactions.allTransactions);
 
-  // ── Active filters ─────────────────────────────────────────────
+  // ── Active filters ────────────────────────────────────────────
   TransactionFilter _typeFilter = TransactionFilter.all;
   TransactionCategory? _categoryFilter;
   DateTimeRange? _dateRange;
   String _searchQuery = '';
 
-  // ── Getters ────────────────────────────────────────────────────
+  // ── Getters ───────────────────────────────────────────────────
   TransactionFilter get typeFilter => _typeFilter;
   TransactionCategory? get categoryFilter => _categoryFilter;
   DateTimeRange? get dateRange => _dateRange;
@@ -26,7 +36,22 @@ class TransactionProvider extends ChangeNotifier {
       _dateRange != null ||
       _searchQuery.isNotEmpty;
 
-  // ── Filtered transactions ──────────────────────────────────────
+  // ── All transactions, newest first (ignores active filters) ─────
+  // Used by the Dashboard, which should always show the latest
+  // activity regardless of whatever filters are set on the
+  // Transaction History screen.
+  List<TransactionModel> get allTransactionsSorted {
+    final sorted = List<TransactionModel>.from(_allTransactions);
+    sorted.sort((a, b) => b.date.compareTo(a.date));
+    return sorted;
+  }
+
+  /// Latest [count] transactions — used by the Dashboard's
+  /// "Recent Transactions" section.
+  List<TransactionModel> recentTransactions({int count = 5}) =>
+      allTransactionsSorted.take(count).toList();
+
+  // ── Filtered transactions ─────────────────────────────────────
   List<TransactionModel> get filteredTransactions {
     List<TransactionModel> result = List.from(_allTransactions);
 
@@ -74,7 +99,7 @@ class TransactionProvider extends ChangeNotifier {
       .where((t) => t.type == TransactionType.debit)
       .fold(0.0, (sum, t) => sum + t.amount);
 
-  // ── Filter setters ─────────────────────────────────────────────
+  // ── Filter setters ────────────────────────────────────────────
   void setTypeFilter(TransactionFilter filter) {
     _typeFilter = filter;
     notifyListeners();
@@ -101,5 +126,239 @@ class TransactionProvider extends ChangeNotifier {
     _dateRange = null;
     _searchQuery = '';
     notifyListeners();
+  }
+
+  // ── Record a new transaction ────────────────────────────────────
+  // The generic entry point. Call this from any flow once it has
+  // actually succeeded (after the API/local update confirms it),
+  // never optimistically before that.
+  TransactionModel addTransaction({
+    required String accountId,
+    required String title,
+    required String description,
+    required double amount,
+    required TransactionType type,
+    required TransactionCategory category,
+    double? balanceAfter,
+    String? receiverName,
+    String? receiverAccount,
+    DateTime? date,
+  }) {
+    final txn = TransactionModel(
+      id: 'TXN${DateTime.now().microsecondsSinceEpoch}',
+      accountId: accountId,
+      title: title,
+      description: description,
+      amount: amount,
+      type: type,
+      category: category,
+      date: date ?? DateTime.now(),
+      referenceNumber: 'REF${DateTime.now().microsecondsSinceEpoch}',
+      balanceAfter: balanceAfter ?? 0.0,
+      receiverName: receiverName,
+      receiverAccount: receiverAccount,
+    );
+    _allTransactions.insert(0, txn);
+    notifyListeners();
+    return txn;
+  }
+
+  // ── Convenience recorders for each flow ─────────────────────────
+  // Thin wrappers around addTransaction so the call site at each
+  // flow's "success" step stays short, and category/type can't be
+  // set inconsistently by accident.
+
+  /// UPI send or receive (Pay to anyone, Receive Money, Scan & Pay).
+  void recordUpiPayment({
+    required String accountId,
+    required double amount,
+    required bool isCredit,
+    String? receiverName,
+    String? receiverAccount,
+    double? balanceAfter,
+  }) {
+    addTransaction(
+      accountId: accountId,
+      title: isCredit ? 'UPI Received' : 'UPI Transfer',
+      description: isCredit
+          ? 'Received from ${receiverName ?? 'UPI contact'}'
+          : 'Sent to ${receiverName ?? 'UPI contact'}',
+      amount: amount,
+      type: isCredit ? TransactionType.credit : TransactionType.debit,
+      category: TransactionCategory.upi,
+      receiverName: receiverName,
+      receiverAccount: receiverAccount,
+      balanceAfter: balanceAfter,
+    );
+  }
+
+  /// Account-to-account / beneficiary transfer (NEFT, IMPS, etc.).
+  void recordAccountTransfer({
+    required String accountId,
+    required double amount,
+    required String receiverName,
+    String? receiverAccount,
+    double? balanceAfter,
+  }) {
+    addTransaction(
+      accountId: accountId,
+      title: 'Money Transfer',
+      description: 'Transferred to $receiverName',
+      amount: amount,
+      type: TransactionType.debit,
+      category: TransactionCategory.transfer,
+      receiverName: receiverName,
+      receiverAccount: receiverAccount,
+      balanceAfter: balanceAfter,
+    );
+  }
+
+  /// Debit card ATM cash withdrawal.
+  void recordCardWithdrawal({
+    required String accountId,
+    required double amount,
+    double? balanceAfter,
+  }) {
+    addTransaction(
+      accountId: accountId,
+      title: 'ATM Withdrawal',
+      description: 'Cash withdrawal using debit card',
+      amount: amount,
+      type: TransactionType.debit,
+      category: TransactionCategory.atm,
+      balanceAfter: balanceAfter,
+    );
+  }
+
+  /// Loan amount disbursed/reimbursed to the account.
+  void recordLoanReimbursement({
+    required String accountId,
+    required double amount,
+    String? loanId,
+    double? balanceAfter,
+  }) {
+    addTransaction(
+      accountId: accountId,
+      title: 'Loan Disbursement',
+      description:
+          loanId != null ? 'Loan amount credited for $loanId' : 'Loan amount credited',
+      amount: amount,
+      type: TransactionType.credit,
+      category: TransactionCategory.loan,
+      balanceAfter: balanceAfter,
+    );
+  }
+
+  /// Money moved out of the account into a new term deposit.
+  void recordTermDepositDeduction({
+    required String accountId,
+    required double amount,
+    String? depositId,
+    double? balanceAfter,
+  }) {
+    addTransaction(
+      accountId: accountId,
+      title: 'Term Deposit',
+      description: depositId != null
+          ? 'Amount moved to term deposit $depositId'
+          : 'Amount moved to term deposit',
+      amount: amount,
+      type: TransactionType.debit,
+      category: TransactionCategory.termDeposit,
+      balanceAfter: balanceAfter,
+    );
+  }
+
+  /// Term deposit redeemed/matured — maturity amount credited back.
+  void recordTermDepositRedemption({
+    required String accountId,
+    required double amount,
+    String? depositId,
+    double? balanceAfter,
+  }) {
+    addTransaction(
+      accountId: accountId,
+      title: 'Term Deposit Redeemed',
+      description: depositId != null
+          ? 'Maturity amount credited for term deposit $depositId'
+          : 'Maturity amount credited',
+      amount: amount,
+      type: TransactionType.credit,
+      category: TransactionCategory.termDeposit,
+      balanceAfter: balanceAfter,
+    );
+  }
+
+  /// Monthly EMI deduction against a loan.
+  void recordEmiDeduction({
+    required String accountId,
+    required double amount,
+    String? loanId,
+    double? balanceAfter,
+  }) {
+    addTransaction(
+      accountId: accountId,
+      title: 'EMI Deduction',
+      description: loanId != null ? 'EMI for $loanId' : 'Monthly EMI deduction',
+      amount: amount,
+      type: TransactionType.debit,
+      category: TransactionCategory.emi,
+      balanceAfter: balanceAfter,
+    );
+  }
+
+  /// Money moved from bank account into the wallet.
+  void recordWalletTopUp({
+    required String accountId,
+    required double amount,
+    double? balanceAfter,
+  }) {
+    addTransaction(
+      accountId: accountId,
+      title: 'Wallet Top-up',
+      description: 'Money added to wallet from bank account',
+      amount: amount,
+      type: TransactionType.debit,
+      category: TransactionCategory.wallet,
+      balanceAfter: balanceAfter,
+    );
+  }
+
+  /// Wallet balance moved back into the bank account.
+  void recordWalletTransferToBank({
+    required String accountId,
+    required double amount,
+    double? balanceAfter,
+  }) {
+    addTransaction(
+      accountId: accountId,
+      title: 'Wallet to Bank Transfer',
+      description: 'Wallet balance transferred to bank account',
+      amount: amount,
+      type: TransactionType.credit,
+      category: TransactionCategory.wallet,
+      balanceAfter: balanceAfter,
+    );
+  }
+
+  /// A payment made using wallet balance (doesn't move bank balance,
+  /// but still shows up as activity in transaction history).
+  void recordWalletPayment({
+    required String accountId,
+    required double amount,
+    String? receiverName,
+    double? balanceAfter,
+  }) {
+    addTransaction(
+      accountId: accountId,
+      title: receiverName != null ? 'Wallet Payment to $receiverName' : 'Wallet Payment',
+      description: receiverName != null
+          ? 'Paid via wallet to $receiverName'
+          : 'Paid using wallet balance',
+      amount: amount,
+      type: TransactionType.debit,
+      category: TransactionCategory.wallet,
+      balanceAfter: balanceAfter,
+    );
   }
 }
