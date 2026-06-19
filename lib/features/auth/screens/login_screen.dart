@@ -67,9 +67,9 @@ class _LoginScreenState extends State<LoginScreen> {
           maskedDestination: masked,
           onVerified: (otp) async {
             // TODO: replace with real OTP verification API call.
-            // Dummy rule for now: any 6-digit OTP equal to "123456" passes.
+            // Dummy rule for now: any 6-digit OTP equal to "111111" passes.
             await Future.delayed(const Duration(milliseconds: 800));
-            return otp == '123456';
+            return otp == '111111';
           },
           onResend: () async {
             // TODO: trigger real OTP resend API call.
