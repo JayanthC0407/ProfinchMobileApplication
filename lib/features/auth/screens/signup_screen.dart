@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/shared/widgets/background_wrapper.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_up_widgets/signup_button.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_up_widgets/signup_form.dart';
@@ -90,19 +91,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 24),
 
                 // ── Heading ───────────────────────────────────────
-                const Text(
+                Text(
                   'Register your account',
                   style: TextStyle(
-                    fontSize: 26,
+                    fontSize: AppFontSize.xxl(context),
                     fontWeight: FontWeight.w700,
                     color: AppColors.light,
                     letterSpacing: -0.5,
                   ),
                 ),
                 const SizedBox(height: 6),
-                const Text(
+                Text(
                   'Fill in the details below to get started',
-                  style: TextStyle(fontSize: 14, color: AppColors.light),
+                  style: TextStyle(fontSize: AppFontSize.body(context), color: AppColors.light),
                 ),
                 const SizedBox(height: 28),
 

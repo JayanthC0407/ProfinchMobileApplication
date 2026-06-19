@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:profinch_mobile_application/features/auth/screens/login_screen.dart';
 
 
@@ -144,10 +146,10 @@ class _SplashScreenState extends State<SplashScreen>
                       const SizedBox(height: 24),
 
                       // Bank name
-                      const Text(
+                      Text(
                         'ProFinch Bank',
                         style: TextStyle(
-                          fontSize: 32,
+                          fontSize: RT.fs(context, 32),
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
                           letterSpacing: -0.5,
@@ -160,7 +162,7 @@ class _SplashScreenState extends State<SplashScreen>
                       Text(
                         'Banking made simple',
                         style: TextStyle(
-                          fontSize: 15,
+                          fontSize: AppFontSize.large(context),
                           color: Colors.white.withValues(alpha: 0.8),
                           letterSpacing: 0.3,
                         ),
@@ -195,7 +197,7 @@ class _SplashScreenState extends State<SplashScreen>
                       Text(
                         'v1.0.0',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppFontSize.small(context),
                           color: Colors.white.withValues(alpha: 0.5),
                         ),
                       ),
