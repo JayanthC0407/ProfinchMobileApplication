@@ -1,6 +1,8 @@
 // ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/routes/app_routes.dart';
@@ -72,13 +74,13 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                       ],
                     ),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.fromLTRB(20, 0, 20, 4),
                     child: Text(
                       "Beneficiaries",
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 24,
+                        fontSize: RT.fs(context, 24),
                         fontWeight: FontWeight.bold,
                         letterSpacing: -0.4,
                       ),
@@ -89,7 +91,7 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                     child: Text(
                       "${allBeneficiaries.length} saved recipient${allBeneficiaries.length == 1 ? '' : 's'}",
                       style: TextStyle(
-                          color: Colors.white.withValues(alpha:0.65), fontSize: 13),
+                          color: Colors.white.withValues(alpha: 0.65), fontSize: AppFontSize.body(context)),
                     ),
                   ),
                   // Transfer Money quick action inside header
@@ -123,18 +125,18 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text(
+                                  Text(
                                     "Transfer Money",
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 14,
+                                        fontSize: AppFontSize.body(context),
                                         fontWeight: FontWeight.w600),
                                   ),
                                   Text(
                                     "Send to a beneficiary",
                                     style: TextStyle(
-                                        color: Colors.white.withValues(alpha: 0.65),
-                                        fontSize: 12),
+                                        color: Colors.white.withValues(alpha:0.65),
+                                        fontSize: AppFontSize.small(context)),
                                   ),
                                 ],
                               ),
@@ -179,7 +181,7 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                       child: Text(
                         f,
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: AppFontSize.small(context),
                           fontWeight: FontWeight.w600,
                           color: active ? Colors.white : Colors.grey.shade600,
                         ),
@@ -204,7 +206,7 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                         Text(
                           "No beneficiaries yet",
                           style: TextStyle(
-                              fontSize: 15,
+                              fontSize: AppFontSize.medium(context),
                               color: Colors.grey.shade400,
                               fontWeight: FontWeight.w500),
                         ),
@@ -212,7 +214,7 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                         Text(
                           "Tap + to add one",
                           style: TextStyle(
-                              fontSize: 13, color: Colors.grey.shade400),
+                              fontSize: AppFontSize.body(context), color: Colors.grey.shade400),
                         ),
                       ],
                     ),
@@ -245,9 +247,9 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
         onPressed: () =>
             Navigator.pushNamed(context, AppRoutes.beneficiaryType),
         icon: const Icon(Icons.person_add_alt_1_outlined, size: 20),
-        label: const Text(
+        label: Text(
           "Add Beneficiary",
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: AppFontSize.body(context)),
         ),
       ),
     );

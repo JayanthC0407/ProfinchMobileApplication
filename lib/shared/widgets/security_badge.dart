@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 
 class SecurityBadge extends StatelessWidget {
   const SecurityBadge({super.key});
@@ -19,7 +20,7 @@ class SecurityBadge extends StatelessWidget {
           Text(
             '256-bit SSL encrypted  ·  Bank-grade security',
             style: TextStyle(
-              fontSize: 11,
+              fontSize: AppFontSize.xs(context),
               color: AppColors.light.withValues(alpha: 0.7),
             ),
           ),

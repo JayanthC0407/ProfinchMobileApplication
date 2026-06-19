@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/models/beneficiary_model.dart';
@@ -66,7 +67,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
         Text(
           label.toUpperCase(),
           style: TextStyle(
-            fontSize: 11,
+            fontSize: AppFontSize.small(context),
             fontWeight: FontWeight.w600,
             color: const Color.fromARGB(255, 36, 34, 34),
             letterSpacing: 0.6,
@@ -82,10 +83,10 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
           child: TextField(
             controller: controller,
             keyboardType: keyboardType,
-            style: const TextStyle(fontSize: 14, color: Color(0xFF111827)),
+            style: TextStyle(fontSize: AppFontSize.body(context), color: Color(0xFF111827)),
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+              hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: AppFontSize.body(context)),
               prefixIcon: Icon(icon, color: Colors.grey.shade400, size: 18),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(
@@ -277,9 +278,9 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
                     child: Text(
                       "Add ${widget.beneficiaryType} Beneficiary",
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
-                        fontSize: 22,
+                        fontSize: AppFontSize.xl(context),
                         fontWeight: FontWeight.bold,
                         letterSpacing: -0.3,
                       ),
@@ -290,9 +291,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                     child: Text(
                       "Fill in the details below to add",
                       style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.65),
-                        fontSize: 13,
-                      ),
+                          color: Colors.white.withValues(alpha: 0.65), fontSize: AppFontSize.body(context)),
                     ),
                   ),
                 ],
@@ -385,6 +384,43 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                           ),
                         ],
                       ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: _typeColor,
+                        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        elevation: 0,
+                      ),
+                      onPressed: () {
+                        beneficiaryProvider.addBeneficiary(
+                          BeneficiaryModel(
+                            id: DateTime.now()
+                                .millisecondsSinceEpoch
+                                .toString(),
+                            userId: authProvider.currentUser!.id,
+                            nickname: nicknameController.text,
+                            beneficiaryType: widget.beneficiaryType,
+                            accountNumber: accountController.text,
+                            bankName: bankController.text,
+                            ifscCode: ifscController.text,
+                            isVerified: true,
+                          ),
+                        );
+                        Navigator.pop(context);
+                      },
+                      child: Text(
+                        "Add Beneficiary",
+                        style: TextStyle(
+                            fontSize: AppFontSize.medium(context), fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 100),
