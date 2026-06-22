@@ -94,7 +94,9 @@ class DashboardScreen extends StatelessWidget {
                         final unread = notifProvider.unreadCount(user.id);
                         return GestureDetector(
                           onTap: () => Navigator.pushNamed(
-                              context, AppRoutes.notifications),
+                            context,
+                            AppRoutes.notifications,
+                          ),
                           child: Stack(
                             clipBehavior: Clip.none,
                             children: [
@@ -140,6 +142,8 @@ class DashboardScreen extends StatelessWidget {
                   accountType: selectedAccount.accountType,
                   accounts: userAccounts,
                   selectedAccountId: selectedAccount.id,
+                  isBalanceHidden: provider.isBalanceHidden,
+                  onToggleVisibility: provider.toggleBalanceVisibility,
                   onChanged: (accountId) {
                     if (accountId == null) return;
                     provider.selectAccount(accountId);
@@ -169,8 +173,10 @@ class DashboardScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (_) => ChangeNotifierProvider(
-                              create: (ctx) =>
-                                  UpiProvider(ctx.read<AuthProvider>(), ctx.read<AccountProvider>()),
+                              create: (ctx) => UpiProvider(
+                                ctx.read<AuthProvider>(),
+                                ctx.read<AccountProvider>(),
+                              ),
                               child: const UpiHomeScreen(),
                             ),
                           ),
@@ -183,8 +189,10 @@ class DashboardScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (_) => ChangeNotifierProvider(
-                              create: (ctx) =>
-                                  UpiProvider(ctx.read<AuthProvider>(), ctx.read<AccountProvider>()),
+                              create: (ctx) => UpiProvider(
+                                ctx.read<AuthProvider>(),
+                                ctx.read<AccountProvider>(),
+                              ),
                               child: const ReceiveMoneyScreen(),
                             ),
                           ),
@@ -197,8 +205,10 @@ class DashboardScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (_) => ChangeNotifierProvider(
-                              create: (ctx) =>
-                                  UpiProvider(ctx.read<AuthProvider>(), ctx.read<AccountProvider>()),
+                              create: (ctx) => UpiProvider(
+                                ctx.read<AuthProvider>(),
+                                ctx.read<AccountProvider>(),
+                              ),
                               child: const ScanQrScreen(),
                             ),
                           ),
@@ -367,7 +377,7 @@ class DashboardScreen extends StatelessWidget {
                           builder: (_) => const TransactionHistoryScreen(),
                         ),
                       ),
-                      child:  Text(
+                      child: Text(
                         "See All",
                         style: TextStyle(
                           color: Colors.white70,
@@ -388,8 +398,8 @@ class DashboardScreen extends StatelessWidget {
                 AnimatedBuilder(
                   animation: TransactionProvider.instance,
                   builder: (context, _) {
-                    final recent =
-                        TransactionProvider.instance.recentTransactions(count: 2);
+                    final recent = TransactionProvider.instance
+                        .recentTransactions(count: 2);
                     return Column(
                       children: recent
                           .map(
@@ -398,7 +408,8 @@ class DashboardScreen extends StatelessWidget {
                               onTap: () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (_) => const TransactionHistoryScreen(),
+                                  builder: (_) =>
+                                      const TransactionHistoryScreen(),
                                 ),
                               ),
                             ),

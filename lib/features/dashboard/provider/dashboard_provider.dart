@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class DashboardProvider extends ChangeNotifier {
-
   // ── Account selection ──────────────────────────────────────────
   String? selectedAccountId;
 
@@ -21,6 +20,14 @@ class DashboardProvider extends ChangeNotifier {
 
   void toggleMoreServices() {
     _showMoreServices = !_showMoreServices;
+    notifyListeners();
+  }
+
+  bool _isBalanceHidden = true;
+  bool get isBalanceHidden => _isBalanceHidden;
+
+  void toggleBalanceVisibility() {
+    _isBalanceHidden = !_isBalanceHidden;
     notifyListeners();
   }
 

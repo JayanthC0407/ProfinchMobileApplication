@@ -6,7 +6,7 @@ build/
 .android/
 .flutter-plugins-dependencies/
 .flutter-plugins-dependencies
-.windows/
-.macos/
-.linux/
+windows/
+macos/
+linux/
 .packages
