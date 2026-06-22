@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 
 class FeatureItem extends StatelessWidget {
   final IconData icon;
@@ -16,17 +17,17 @@ class FeatureItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,            // ← wraps column with tap
+      onTap: onTap,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
 
           CircleAvatar(
             radius: 22,
-            backgroundColor: Colors.white,
+            backgroundColor: AppColors.light,
             child: Icon(
               icon,
-              color: Colors.blue,
+              color: AppColors.accent,
               size: 20,
             ),
           ),
@@ -38,9 +39,7 @@ class FeatureItem extends StatelessWidget {
             textAlign: TextAlign.center,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontSize: AppFontSize.small(context),
-              color: Colors.white,
+            style: AppTextStyles.small(context, color: AppColors.light).copyWith(
               fontWeight: FontWeight.w500,
             ),
           ),

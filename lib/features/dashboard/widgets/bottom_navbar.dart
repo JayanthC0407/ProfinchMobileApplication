@@ -14,7 +14,7 @@ class BottomNavBar extends StatefulWidget {
 
   const BottomNavBar({
     super.key,
-    this.currentIndex = 0, // default to Home
+    this.currentIndex = 0,
   });
 
   @override
@@ -22,25 +22,15 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-  /* late int _currentIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    _currentIndex = widget.currentIndex;
-  }
-   */
   void _onTap(int index) {
-    if (index == widget.currentIndex) return; // already on this tab
-
-    // setState(() => _currentIndex = index);
+    if (index == widget.currentIndex) return;
 
     switch (index) {
       case 0:
         Navigator.pushNamedAndRemoveUntil(
           context,
           AppRoutes.dashboard,
-          (route) => false, // clears navigation stack
+          (route) => false,
         );
         break;
       case 1:
@@ -51,7 +41,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
           context,
           MaterialPageRoute(
             builder: (_) => ChangeNotifierProvider(
-              create: (ctx) => UpiProvider(ctx.read<AuthProvider>(), ctx.read<AccountProvider>()),
+              create: (ctx) => UpiProvider(
+                  ctx.read<AuthProvider>(), ctx.read<AccountProvider>()),
               child: const ScanQrScreen(),
             ),
           ),
@@ -60,7 +51,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
       case 3:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (_) => const RewardsScreen(initialTab: 2)),
+          MaterialPageRoute(
+              builder: (_) => const RewardsScreen(initialTab: 2)),
         );
         break;
       case 4:
@@ -71,16 +63,20 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    // BottomNavigationBar label styles only respect fontSize/fontWeight;
+    // color is driven by selectedItemColor / unselectedItemColor below.
+    final smallSize = AppFontSize.small(context);
+
     return BottomNavigationBar(
       currentIndex: widget.currentIndex,
       selectedItemColor: AppColors.primary,
-      unselectedItemColor: Colors.grey,
+      unselectedItemColor: AppColors.grey500,
       type: BottomNavigationBarType.fixed,
-      selectedLabelStyle:  TextStyle(
-        fontSize: AppFontSize.small(context),
+      selectedLabelStyle: TextStyle(
+        fontSize: smallSize,
         fontWeight: FontWeight.w600,
       ),
-      unselectedLabelStyle: TextStyle(fontSize: AppFontSize.small(context)),
+      unselectedLabelStyle: TextStyle(fontSize: smallSize),
       onTap: _onTap,
       items: const [
         BottomNavigationBarItem(

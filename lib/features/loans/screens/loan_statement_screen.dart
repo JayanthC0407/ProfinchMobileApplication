@@ -64,7 +64,7 @@ class LoanStatementScreen
                   ),
 
                   color:
-                      AppColors.lightblue,
+                      AppColors.lightBlue,
 
                   child: ListTile(
                     leading:

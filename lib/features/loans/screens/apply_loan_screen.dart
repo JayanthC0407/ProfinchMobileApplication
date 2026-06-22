@@ -247,7 +247,7 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
                   padding: const EdgeInsets.all(16),
 
                   decoration: BoxDecoration(
-                    color: AppColors.lightblue,
+                    color: AppColors.lightBlue,
 
                     borderRadius: BorderRadius.circular(12),
                   ),
