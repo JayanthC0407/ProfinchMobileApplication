@@ -192,7 +192,7 @@ class _CalcHeader extends StatelessWidget {
                 Text(
                   title,
                   style:  TextStyle(
-                    color: AppColors.lightblue,
+                    color: AppColors.lightBlue,
                     fontSize: AppFontSize.xxl(context),
                     fontWeight: FontWeight.bold,
                   ),

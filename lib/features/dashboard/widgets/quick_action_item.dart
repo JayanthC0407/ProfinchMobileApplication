@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 
 class QuickActionItem extends StatelessWidget {
-
   final IconData icon;
   final String title;
   final VoidCallback? onTap;
@@ -15,24 +16,23 @@ class QuickActionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return GestureDetector(
       onTap: onTap,
       child: Column(
         children: [
-      
+
           CircleAvatar(
             radius: 26,
-            backgroundColor: const Color(0xffEEF3FF),
+            backgroundColor: AppColors.iconBackground,
             child: Icon(
               icon,
-              color: const Color.fromARGB(255, 30, 137, 224),
+              color: AppColors.accent,
             ),
           ),
-      
+
           const SizedBox(height: 10),
-      
-          Text(title),
+
+          Text(title, style: AppTextStyles.small(context)),
         ],
       ),
     );

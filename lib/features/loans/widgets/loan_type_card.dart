@@ -19,7 +19,7 @@ class LoanTypeCard extends StatelessWidget {
 
     return Card(
       elevation: 4,
-      color: AppColors.lightblue,
+      color: AppColors.lightBlue,
 
       child: ListTile(
         leading: Icon(

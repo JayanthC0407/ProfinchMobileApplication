@@ -29,7 +29,7 @@ class LoansScreen extends StatelessWidget {
         activeLoans.isNotEmpty ? activeLoans.first.emiAmount : 0.0;
 
     return Scaffold(
-      backgroundColor: AppColors.lightblue,
+      backgroundColor: AppColors.lightBlue,
       body: Column(
         children: [
           // ── Fixed gradient header ──────────────────────────────────────
