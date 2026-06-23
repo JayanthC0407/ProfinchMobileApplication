@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
+import 'package:profinch_mobile_application/features/insurance/screens/insurance_screen.dart';
 import 'package:profinch_mobile_application/features/upi/provider/upi_provider.dart';
 import 'package:profinch_mobile_application/features/upi/screens/receive_money_screen.dart';
 import 'package:profinch_mobile_application/features/upi/screens/scan_qr_screen.dart';
@@ -334,9 +335,13 @@ class DashboardScreen extends StatelessWidget {
                         title: "Invest.",
                       ),
 
-                      const FeatureItem(
+                       FeatureItem(
                         icon: Icons.security,
                         title: "Insurance",
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => const InsuranceScreen()),
+                        ),
                       ),
 
                       FeatureItem(
