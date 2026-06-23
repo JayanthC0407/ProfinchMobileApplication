@@ -127,8 +127,6 @@ class MyApp extends StatelessWidget {
         AppRoutes.currencyConverter: (context) =>
             const CurrencyConverterScreen(),
         AppRoutes.sipCalculator: (context) => const SipCalculatorScreen(),
-
-        // AppRoutes.emiCalculator: (context) => const EmiCalculatorScreen(),
         AppRoutes.applyCard: (context) => const ApplyCardScreen(),
 
         AppRoutes.transferMoney: (context) => const TransferMoneyScreen(),

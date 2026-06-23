@@ -299,7 +299,7 @@ class _CalcHeader extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    color: AppColors.lightblue,
+                    color: AppColors.lightBlue,
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                   ),

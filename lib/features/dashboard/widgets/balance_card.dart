@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
-import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 
 class BalanceCard extends StatelessWidget {
@@ -25,6 +25,14 @@ class BalanceCard extends StatelessWidget {
     required this.onChanged,
   });
 
+  // Card-specific colours — these purples/navies are unique to this widget
+  // and don't belong in AppColors.
+  static const _cardGradientEnd    = Color.fromARGB(255, 205, 211, 233);
+  static const _labelColor         = Color.fromARGB(179, 4, 27, 107);
+  static const _amountColor        = Color.fromARGB(255, 31, 4, 122);
+  static const _dropdownBg         = Color.fromARGB(255, 8, 18, 162);
+  static const _accountNumberColor = Color.fromARGB(179, 55, 3, 133);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,10 +40,7 @@ class BalanceCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
         gradient: const LinearGradient(
-          colors: [
-            Color.fromARGB(255, 255, 255, 255),
-            Color.fromARGB(255, 205, 211, 233),
-          ],
+          colors: [AppColors.light, _cardGradientEnd],
         ),
       ),
       child: Column(
@@ -46,13 +51,10 @@ class BalanceCard extends StatelessWidget {
             children: [
               Text(
                 "Total Balance",
-                style: TextStyle(
-                  color: Color.fromARGB(179, 4, 27, 107),
-                  fontSize: AppFontSize.large(context),
-                ),
+                style: AppTextStyles.title(context, color: _labelColor),
               ),
 
-              // 👁 Eye toggle button (replaces 3 dots)
+              // 👁 Eye toggle button
               GestureDetector(
                 onTap: onToggleVisibility,
                 child: Icon(
@@ -69,8 +71,8 @@ class BalanceCard extends StatelessWidget {
           Text(
             isBalanceHidden ? '₹ ••••••' : '₹ ${balance.toStringAsFixed(2)}',
             style: TextStyle(
-              color: Color.fromARGB(255, 31, 4, 122),
-              fontSize: RT.fs(context, 34),
+              color: _amountColor,
+              fontSize: RT.fs(context, 34),   // display size — kept as RT.fs
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -81,17 +83,11 @@ class BalanceCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),
-              color: const Color.fromARGB(
-                255,
-                8,
-                18,
-                162,
-              ).withValues(alpha: 0.15),
+              color: _dropdownBg.withValues(alpha: 0.15),
             ),
             child: DropdownButton<String>(
               value: selectedAccountId,
               underline: const SizedBox(),
-
               items: accounts.map<DropdownMenuItem<String>>((account) {
                 return DropdownMenuItem<String>(
                   value: account.id,
@@ -108,7 +104,7 @@ class BalanceCard extends StatelessWidget {
             isBalanceHidden
                 ? '•••• •••• ${accountNumber.substring(accountNumber.length - 4)}'
                 : accountNumber,
-            style: const TextStyle(color: Color.fromARGB(179, 55, 3, 133)),
+            style: AppTextStyles.body(context, color: _accountNumberColor),
           ),
         ],
       ),
