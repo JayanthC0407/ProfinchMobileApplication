@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 
@@ -58,8 +59,8 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
           colorScheme: ColorScheme.light(
             primary: AppColors.primaryDark,
             onPrimary: Colors.white,
-            surface: Colors.white,
-            onSurface: const Color(0xFF1A1A2E),
+            surface: AppColors.light,
+            onSurface: AppColors.textPrimary,
           ),
         ),
         child: child!,
@@ -85,18 +86,14 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F6FA),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.primaryDark,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.white),
         title: Text(
           'Transaction History',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: AppFontSize.large(context),
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTextStyles.whiteTitle(context),
         ),
         actions: [
           Consumer<TransactionProvider>(
@@ -108,7 +105,7 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
                     },
                     child: Text(
                       'Clear',
-                      style: TextStyle(color: Colors.white70, fontSize: AppFontSize.body(context)),
+                      style: AppTextStyles.whiteBody(context, color: AppColors.light.withValues(alpha: 0.7)),
                     ),
                   )
                 : const SizedBox.shrink(),
@@ -133,17 +130,16 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
                     Container(
                       height: 42,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: AppColors.light,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: TextField(
                         controller: _searchController,
                         onChanged: provider.setSearchQuery,
-                        style: TextStyle(fontSize: AppFontSize.body(context)),
+                        style: AppTextStyles.body(context),
                         decoration: InputDecoration(
                           hintText: 'Search transactions...',
-                          hintStyle: TextStyle(
-                              color: Colors.grey.shade400, fontSize: AppFontSize.body(context)),
+                          hintStyle: AppTextStyles.bodySecondary(context, color: Colors.grey.shade400),
                           prefixIcon: const Icon(Icons.search,
                               size: 20, color: Colors.grey),
                           suffixIcon: _searchController.text.isNotEmpty
@@ -206,9 +202,7 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
                                   const SizedBox(width: 4),
                                   Text(
                                     'Category',
-                                    style: TextStyle(
-                                      fontSize: AppFontSize.small(context),
-                                      fontWeight: FontWeight.w600,
+                                    style: AppTextStyles.smallBold(context,
                                       color: provider.categoryFilter != null
                                           ? AppColors.primaryDark
                                           : Colors.white,
@@ -247,9 +241,7 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
                                     provider.dateRange != null
                                         ? '${DateFormat('dd MMM').format(provider.dateRange!.start)} - ${DateFormat('dd MMM').format(provider.dateRange!.end)}'
                                         : 'Date',
-                                    style: TextStyle(
-                                      fontSize: AppFontSize.small(context),
-                                      fontWeight: FontWeight.w600,
+                                    style: AppTextStyles.smallBold(context,
                                       color: provider.dateRange != null
                                           ? AppColors.primaryDark
                                           : Colors.white,
@@ -288,11 +280,7 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
                             children: [
                               Text(
                                 '${transactions.length} transaction${transactions.length == 1 ? '' : 's'}',
-                                style:  TextStyle(
-                                  fontSize: AppFontSize.body(context),
-                                  fontWeight: FontWeight.w600,
-                                  color: Color(0xFF1A1A2E),
-                                ),
+                                style:  AppTextStyles.bodyBold(context),
                               ),
                               if (provider.hasActiveFilters)
                                 Container(
@@ -305,11 +293,7 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
                                   ),
                                   child: Text(
                                     'Filtered',
-                                    style: TextStyle(
-                                      fontSize: AppFontSize.small(context),
-                                      color: AppColors.primaryDark,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                    style: AppTextStyles.smallBold(context, color: AppColors.primaryDark),
                                   ),
                                 ),
                             ],
@@ -344,16 +328,12 @@ class _TransactionHistoryViewState extends State<_TransactionHistoryView> {
           const SizedBox(height: 16),
           Text(
             'No transactions found',
-            style: TextStyle(
-              fontSize: AppFontSize.medium(context),
-              fontWeight: FontWeight.w600,
-              color: Colors.grey.shade500,
-            ),
+            style: AppTextStyles.labelBold(context, color: Colors.grey.shade500),
           ),
           const SizedBox(height: 8),
           Text(
             'Try adjusting your filters',
-            style: TextStyle(fontSize: AppFontSize.body(context), color: Colors.grey.shade400),
+            style: AppTextStyles.bodySecondary(context, color: Colors.grey.shade400),
           ),
         ],
       ),
