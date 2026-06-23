@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:profinch_mobile_application/data/models/card_model.dart';
 
 class ApplyCardScreen extends StatefulWidget {
@@ -31,7 +33,7 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: selected ? AppColors.primaryDark : Colors.white,
+          color: selected ? AppColors.primaryDark :AppColors.light,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: selected ? AppColors.primaryDark : Colors.grey.shade200,
@@ -54,13 +56,13 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
               height: 44,
               decoration: BoxDecoration(
                 color: selected
-                    ? Colors.white.withValues(alpha: 0.15)
+                    ? AppColors.light.withValues(alpha: 0.15)
                     : AppColors.primaryDark.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
                 icon,
-                color: selected ? Colors.white : AppColors.primaryDark,
+                color: selected ? AppColors.light : AppColors.primaryDark,
                 size: 22,
               ),
             ),
@@ -72,17 +74,17 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: 15,
+                      fontSize: AppFontSize.body(context),
                       fontWeight: FontWeight.w700,
-                      color: selected ? Colors.white : const Color(0xFF1A1A2E),
+                      color: selected ? AppColors.light : AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
                     style: TextStyle(
-                      fontSize: 12,
-                      color: selected ? Colors.white70 : Colors.grey.shade500,
+                      fontSize: AppFontSize.small(context),
+                      color: selected ? AppColors.light.withValues(alpha: 0.7) : Colors.grey.shade500,
                     ),
                   ),
                 ],
@@ -90,7 +92,7 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
             ),
             if (selected)
               const Icon(Icons.check_circle_rounded,
-                  color: Colors.white, size: 20),
+                  color: AppColors.light, size: 20),
           ],
         ),
       ),
@@ -106,7 +108,7 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
         duration: const Duration(milliseconds: 180),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: selected ? AppColors.primaryDark : Colors.white,
+          color: selected ? AppColors.primaryDark : AppColors.light,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
             color: selected ? AppColors.primaryDark : Colors.grey.shade300,
@@ -115,9 +117,9 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
         child: Text(
           network,
           style: TextStyle(
-            fontSize: 13,
+            fontSize: AppFontSize.small(context), //13
             fontWeight: FontWeight.w600,
-            color: selected ? Colors.white : Colors.grey.shade600,
+            color: selected ? AppColors.light : Colors.grey.shade600,
           ),
         ),
       ),
@@ -143,7 +145,7 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(fontSize: 13, color: Color(0xFF444466)),
+              style: TextStyle(fontSize: AppFontSize.body(context), color: Color(0xFF444466)), //13
             ),
           ),
         ],
@@ -178,12 +180,12 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
                   color: Color(0xFF2E7D32), size: 36),
             ),
             const SizedBox(height: 16),
-            const Text(
+            Text(
               'Application Submitted!',
               style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF1A1A2E),
+                fontSize: AppFontSize.large(context),
+                fontWeight: FontWeight.w700, 
+                color: AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 8),
@@ -191,7 +193,7 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
               'Your ${_selectedType == CardType.debit ? 'Debit' : 'Credit'} Card application is under review. You\'ll be notified within 3–5 business days.',
               textAlign: TextAlign.center,
               style:
-                  TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                  TextStyle(fontSize: AppFontSize.body(context), color: Colors.grey.shade600), //13
             ),
             const SizedBox(height: 20),
             SizedBox(
@@ -203,7 +205,7 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryDark,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppColors.light,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -222,18 +224,14 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F6FA),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.primaryDark,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
+        iconTheme: const IconThemeData(color: AppColors.light),
+        title: Text(
           'Apply for Card',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTextStyles.whiteTitle(context),
         ),
       ),
       body: SingleChildScrollView(
@@ -248,7 +246,7 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF1A1A2E), Color(0xFF0F3460)],
+                  colors: [AppColors.textPrimary, Color(0xFF0F3460)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -259,12 +257,12 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           'New Card',
                           style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
+                            color: AppColors.light,
+                            fontSize: AppFontSize.large(context),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
@@ -272,14 +270,14 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
                         Text(
                           'Choose the card that fits your needs and apply in seconds.',
                           style:
-                              TextStyle(color: Colors.white60, fontSize: 13),
+                              TextStyle(color: AppColors.light.withValues(alpha: 0.60), fontSize: AppFontSize.body(context)), //13
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(width: 12),
                   Icon(Icons.credit_card_rounded,
-                      size: 48, color: Colors.white24),
+                      size: 48, color: AppColors.light.withValues(alpha: 0.24)),
                 ],
               ),
             ),
@@ -287,12 +285,12 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
             const SizedBox(height: 24),
 
             // ── Card type ─────────────────────────────────────────
-            const Text(
+            Text(
               'Select Card Type',
               style: TextStyle(
-                fontSize: 15,
+                fontSize: AppFontSize.body(context),
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF1A1A2E),
+                color: AppColors.textPrimary
               ),
             ),
             const SizedBox(height: 12),
@@ -313,12 +311,12 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
             const SizedBox(height: 24),
 
             // ── Network ───────────────────────────────────────────
-            const Text(
+            Text(
               'Select Network',
               style: TextStyle(
-                fontSize: 15,
+                fontSize: AppFontSize.body(context),
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF1A1A2E),
+                color: AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 12),
@@ -338,18 +336,18 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
               width: double.infinity,
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: AppColors.light,
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'What you get',
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: AppFontSize.body(context),
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF1A1A2E),
+                      color: AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -381,7 +379,7 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
                 onPressed: _isSubmitting ? null : _submitApplication,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryDark,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppColors.light,
                   disabledBackgroundColor:
                       AppColors.primaryDark.withValues(alpha: 0.5),
                   shape: RoundedRectangleBorder(
@@ -395,13 +393,13 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
                         height: 22,
                         child: CircularProgressIndicator(
                           strokeWidth: 2.5,
-                          color: Colors.white,
+                          color: AppColors.light,
                         ),
                       )
-                    : const Text(
+                    : Text(
                         'Submit Application',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: AppFontSize.medium(context),
                           fontWeight: FontWeight.w700,
                         ),
                       ),
@@ -414,8 +412,8 @@ class _ApplyCardScreenState extends State<ApplyCardScreen> {
               child: Text(
                 'Application is subject to bank approval & KYC verification.',
                 textAlign: TextAlign.center,
-                style:
-                    TextStyle(fontSize: 11, color: Colors.grey.shade400),
+                style: AppTextStyles.caption(context,
+                    color: Colors.grey.shade400),
               ),
             ),
 

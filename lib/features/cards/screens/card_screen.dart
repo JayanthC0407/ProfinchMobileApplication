@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:provider/provider.dart';
 
 import 'package:profinch_mobile_application/core/constants/colors.dart';
@@ -36,22 +38,18 @@ class _CardsScreenState extends State<CardsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F6FA),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.primaryDark,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text(
+        iconTheme: const IconThemeData(color: AppColors.light),
+        title: Text(
           'My Cards',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
+          style: AppTextStyles.whiteTitle(context),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.add, color: Colors.white),
+            icon: const Icon(Icons.add, color: AppColors.light),
             onPressed: () {
               Navigator.pushNamed(context, AppRoutes.applyCard);
             },
@@ -59,13 +57,13 @@ class _CardsScreenState extends State<CardsScreen>
         ],
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: Colors.white,
+          indicatorColor: AppColors.light,
           indicatorWeight: 3,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white54,
-          labelStyle: const TextStyle(
+          labelColor: AppColors.light,
+          unselectedLabelColor: AppColors.light.withValues(alpha: 0.54),
+          labelStyle: TextStyle(
             fontWeight: FontWeight.w600,
-            fontSize: 14,
+            fontSize: AppFontSize.body(context),
           ),
           tabs: const [
             Tab(text: 'Debit Card'),
@@ -125,7 +123,7 @@ class _CardsScreenState extends State<CardsScreen>
               _buildQuickAction(
                 icon: Icons.block_outlined,
                 label: 'Block Card',
-                color: Colors.red,
+                color: AppColors.error,
                 onTap: () => _showBlockCardDialog(context, card),
               ),
             ],
@@ -151,12 +149,12 @@ class _CardsScreenState extends State<CardsScreen>
           const SizedBox(height: 20),
 
           // ── Card settings ──────────────────────────────────────
-          const Text(
+          Text(
             'Card Settings',
             style: TextStyle(
-              fontSize: 16,
+              fontSize: AppFontSize.medium(context),
               fontWeight: FontWeight.w700,
-              color: Color(0xFF1A1A2E),
+              color: AppColors.textPrimary,
             ),
           ),
 
@@ -205,7 +203,7 @@ class _CardsScreenState extends State<CardsScreen>
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 14),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.light,
             borderRadius: BorderRadius.circular(14),
           ),
           child: Column(
@@ -215,7 +213,7 @@ class _CardsScreenState extends State<CardsScreen>
               Text(
                 label,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: AppFontSize.small(context),
                   fontWeight: FontWeight.w500,
                   color: color,
                 ),
@@ -236,7 +234,7 @@ class _CardsScreenState extends State<CardsScreen>
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.light,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -245,10 +243,10 @@ class _CardsScreenState extends State<CardsScreen>
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Daily ATM Limit',
                 style: TextStyle(
-                  fontSize: 13,
+                  fontSize: AppFontSize.body(context),
                   color: Colors.grey,
                   fontWeight: FontWeight.w500,
                 ),
@@ -256,10 +254,10 @@ class _CardsScreenState extends State<CardsScreen>
               const SizedBox(height: 4),
               Text(
                 '₹${card.atmLimit.toStringAsFixed(0)}',
-                style: const TextStyle(
-                  fontSize: 20,
+                style: TextStyle(
+                  fontSize: AppFontSize.large(context), 
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFF1A1A2E),
+                  color: AppColors.textPrimary,
                 ),
               ),
             ],
@@ -281,7 +279,7 @@ class _CardsScreenState extends State<CardsScreen>
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
-          colors: [Color(0xFF1A1A2E), Color(0xFF7C3AED), Color(0xFF0F3460)],
+          colors: [AppColors.textPrimary, Color(0xFF7C3AED), Color(0xFF0F3460)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -296,30 +294,30 @@ class _CardsScreenState extends State<CardsScreen>
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Reward Points',
-                    style: TextStyle(fontSize: 13, color: Colors.white70),
+                    style: TextStyle(fontSize: AppFontSize.body(context), color: AppColors.light.withValues(alpha: 0.7)),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     '${card.rewardPoints} pts',
-                    style: const TextStyle(
-                      fontSize: 24,
+                    style: TextStyle(
+                      fontSize: AppFontSize.xl(context),
                       fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                      color: AppColors.light,
                     ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     '≈ ₹${(card.rewardPoints / 10).toStringAsFixed(0)} cashback value',
-                    style: const TextStyle(fontSize: 12, color: Colors.white54),
+                    style: TextStyle(fontSize: AppFontSize.small(context), color: AppColors.light.withValues(alpha: 0.54)),
                   ),
                 ],
               ),
               Container(
                 padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.15),
+                  color: AppColors.light.withValues(alpha: 0.15),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -348,7 +346,7 @@ class _CardsScreenState extends State<CardsScreen>
               label: const Text('Redeem Points'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
+                foregroundColor: AppColors.light,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
@@ -382,7 +380,7 @@ class _CardsScreenState extends State<CardsScreen>
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
-              foregroundColor: Colors.white,
+              foregroundColor: AppColors.light,
             ),
             child: const Text('Confirm'),
           ),
@@ -412,7 +410,7 @@ class _CardsScreenState extends State<CardsScreen>
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
+              foregroundColor: AppColors.light,
             ),
             child: const Text('Block'),
           ),
@@ -441,9 +439,9 @@ class _CardsScreenState extends State<CardsScreen>
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Set ATM Limit',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+                style: TextStyle(fontSize: AppFontSize.large(context), fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: 20),
               ...limits.map(
@@ -466,7 +464,7 @@ class _CardsScreenState extends State<CardsScreen>
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryDark,
-                    foregroundColor: Colors.white,
+                    foregroundColor: AppColors.light,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
