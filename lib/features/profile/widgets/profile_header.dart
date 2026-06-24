@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 
 class ProfileHeader extends StatelessWidget {
@@ -21,7 +22,12 @@ class ProfileHeader extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(20, 28, 20, 24),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E2640),
+        gradient: LinearGradient(
+                  colors: [
+                    AppColors.primaryDark,
+                    AppColors.primary,
+                  ],
+                ),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: const Color(0xFF2E3A57),
@@ -89,7 +95,7 @@ class ProfileHeader extends StatelessWidget {
                       color: const Color(0xFF4CD964),
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: const Color(0xFF1E2640),
+                        color: Colors.white,
                         width: 2,
                       ),
                     ),
@@ -122,7 +128,7 @@ class ProfileHeader extends StatelessWidget {
           Text(
             email,
             style: TextStyle(
-              color: const Color(0xFF8A9BB5),
+              color: Colors.white,
               fontSize: AppFontSize.small(context),
             ),
           ),
@@ -147,7 +153,7 @@ class ProfileHeader extends StatelessWidget {
                 _buildChip(
                   icon: Icons.account_balance_rounded,
                   label: accountType,
-                  color: const Color(0xFF4A90D9),
+                  color: Colors.white,
                 ),
               ],
             ],

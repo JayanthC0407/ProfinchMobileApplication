@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 
 class HelpSupportScreen extends StatefulWidget {
@@ -59,9 +60,9 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        backgroundColor: const Color(0xFF0F1322),
+        backgroundColor: AppColors.lightBlue,
         appBar: AppBar(
-          backgroundColor: const Color(0xFF0F1322),
+          backgroundColor: AppColors.lightBlue,
           elevation: 0,
           scrolledUnderElevation: 0,
           leading: GestureDetector(
@@ -69,18 +70,18 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
             child: Container(
               margin: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: const Color(0xFF1E2640),
+                color: AppColors.lightBlue,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: const Color(0xFF2E3A57)),
+                border: Border.all(color: AppColors.lightBlue),
               ),
               child: const Icon(Icons.arrow_back_ios_new_rounded,
-                  color: Colors.white, size: 18),
+                  color: Colors.black, size: 18),
             ),
           ),
           title: Text(
             'Help & Support',
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontSize: AppFontSize.large(context),
               fontWeight: FontWeight.w700,
             ),
@@ -183,7 +184,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
               Text(
                 'FREQUENTLY ASKED QUESTIONS',
                 style: TextStyle(
-                  color: const Color(0xFF8A9BB5),
+                  color: AppColors.textPrimary,
                   fontSize: AppFontSize.xs(context),
                   fontWeight: FontWeight.w600,
                   letterSpacing: 1.2,
@@ -246,13 +247,13 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                           vertical: isExpanded ? 16 : 14),
                       decoration: BoxDecoration(
                         color: isExpanded
-                            ? const Color(0xFF4A90D9).withOpacity(0.06)
-                            : const Color(0xFF1E2640),
+                            ? AppColors.background
+                            : AppColors.background,
                         borderRadius: BorderRadius.circular(14),
                         border: Border.all(
                           color: isExpanded
                               ? const Color(0xFF4A90D9).withOpacity(0.3)
-                              : const Color(0xFF2E3A57),
+                              : AppColors.background,
                         ),
                       ),
                       child: Column(
@@ -266,7 +267,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                                   style: TextStyle(
                                     color: isExpanded
                                         ? const Color(0xFF4A90D9)
-                                        : Colors.white,
+                                        : AppColors.textDark,
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
                                     height: 1.4,
@@ -278,7 +279,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                                 isExpanded
                                     ? Icons.keyboard_arrow_up_rounded
                                     : Icons.keyboard_arrow_down_rounded,
-                                color: const Color(0xFF8A9BB5),
+                                color: AppColors.textPrimary,
                                 size: 20,
                               ),
                             ],
@@ -306,9 +307,9 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1E2640),
+                  color: AppColors.background,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFF2E3A57)),
+                  border: Border.all(color:AppColors.background),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,7 +321,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                         SizedBox(width: 8),
                         Text('Banking Ombudsman',
                             style: TextStyle(
-                                color: Colors.white,
+                                color: AppColors.textDark,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14)),
                       ],
@@ -357,9 +358,14 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
           decoration: BoxDecoration(
-            color: const Color(0xFF1E2640),
+            gradient: LinearGradient(
+                  colors: [
+                    AppColors.primaryDark,
+                    AppColors.primary,
+                  ],
+                ),
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0xFF2E3A57)),
+            border: Border.all(color: Colors.white),
           ),
           child: Column(
             children: [
@@ -382,7 +388,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
               Text(sub,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                      color: Color(0xFF8A9BB5), fontSize: 10)),
+                      color: AppColors.light, fontSize: 10)),
             ],
           ),
         ),
@@ -393,7 +399,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
   void _showCallOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E2640),
+      backgroundColor: AppColors.lightBlue,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -405,7 +411,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
           children: [
             const Text('Call Us',
                 style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 20,
                     fontWeight: FontWeight.w700)),
             const SizedBox(height: 20),
@@ -425,9 +431,9 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFF0F1322),
+        color: AppColors.light,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFF2E3A57)),
+        border: Border.all(color: AppColors.light),
       ),
       child: Row(
         children: [
@@ -440,13 +446,13 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
               children: [
                 Text(title,
                     style: const TextStyle(
-                        color: Colors.white,
+                        color: AppColors.textDark,
                         fontWeight: FontWeight.w600,
                         fontSize: 13)),
                 const SizedBox(height: 2),
                 Text('$number  •  $hours',
                     style: const TextStyle(
-                        color: Color(0xFF8A9BB5), fontSize: 11)),
+                        color: AppColors.navyDark, fontSize: 11)),
               ],
             ),
           ),
@@ -460,7 +466,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
   void _showLiveChat(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E2640),
+      backgroundColor: AppColors.lightBlue,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -482,7 +488,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
             const SizedBox(height: 16),
             const Text('Live Chat',
                 style: TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textDark,
                     fontSize: 20,
                     fontWeight: FontWeight.w700)),
             const SizedBox(height: 8),
@@ -490,7 +496,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
               'An agent is available now. Average wait time is 2 minutes.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: Color(0xFF8A9BB5), fontSize: 13, height: 1.5),
+                  color: AppColors.textPrimary, fontSize: 13, height: 1.5),
             ),
             const SizedBox(height: 24),
             SizedBox(
@@ -518,7 +524,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
   void _showEmailSupport(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E2640),
+      backgroundColor: AppColors.lightBlue,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -530,12 +536,12 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
           children: [
             const Text('Email Support',
                 style: TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textDark,
                     fontSize: 20,
                     fontWeight: FontWeight.w700)),
             const SizedBox(height: 8),
             const Text('We aim to respond within 24 hours.',
-                style: TextStyle(color: Color(0xFF8A9BB5), fontSize: 13)),
+                style: TextStyle(color: AppColors.textPrimary, fontSize: 13)),
             const SizedBox(height: 20),
             _emailCard('General', 'support@profinch.in'),
             const SizedBox(height: 10),
@@ -552,9 +558,9 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFF0F1322),
+        color: AppColors.light,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFF2E3A57)),
+        border: Border.all(color: AppColors.light),
       ),
       child: Row(
         children: [
@@ -567,18 +573,18 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
               children: [
                 Text(label,
                     style: const TextStyle(
-                        color: Colors.white,
+                        color: AppColors.textDark,
                         fontWeight: FontWeight.w600,
                         fontSize: 13)),
                 const SizedBox(height: 2),
                 Text(email,
                     style: const TextStyle(
-                        color: Color(0xFF4A90D9), fontSize: 12)),
+                        color: AppColors.textPrimary, fontSize: 12)),
               ],
             ),
           ),
           const Icon(Icons.copy_rounded,
-              color: Color(0xFF8A9BB5), size: 16),
+              color:AppColors.textPrimary, size: 16),
         ],
       ),
     );
@@ -590,7 +596,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E2640),
+      backgroundColor:AppColors.lightBlue,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
@@ -606,12 +612,12 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
           children: [
             const Text('Raise a Support Ticket',
                 style: TextStyle(
-                    color: Colors.white,
+                    color: AppColors.textDark,
                     fontSize: 20,
                     fontWeight: FontWeight.w700)),
             const SizedBox(height: 4),
             const Text('We will respond within 24 hours.',
-                style: TextStyle(color: Color(0xFF8A9BB5), fontSize: 13)),
+                style: TextStyle(color: AppColors.textPrimary, fontSize: 13)),
             const SizedBox(height: 20),
             _ticketField(subjectController, 'Subject'),
             const SizedBox(height: 12),
@@ -644,19 +650,19 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
     return TextField(
       controller: ctrl,
       maxLines: maxLines,
-      style: const TextStyle(color: Colors.white, fontSize: 14),
+      style: const TextStyle(color: AppColors.textDark, fontSize: 14),
       decoration: InputDecoration(
         labelText: label,
-        labelStyle: const TextStyle(color: Color(0xFF8A9BB5), fontSize: 13),
+        labelStyle: const TextStyle(color: AppColors.textPrimary, fontSize: 13),
         filled: true,
-        fillColor: const Color(0xFF0F1322),
+        fillColor: AppColors.surfaceLight,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF2E3A57)),
+          borderSide: const BorderSide(color: AppColors.background),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF2E3A57)),
+          borderSide: const BorderSide(color: AppColors.background),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),

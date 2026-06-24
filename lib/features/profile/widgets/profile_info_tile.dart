@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 
 class ProfileInfoTile extends StatelessWidget {
@@ -28,10 +29,10 @@ class ProfileInfoTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E2640),
+        color: AppColors.light,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color(0xFF2E3A57),
+          color: AppColors.light,
           width: 1,
         ),
       ),
@@ -62,7 +63,7 @@ class ProfileInfoTile extends StatelessWidget {
                 Text(
                   title,
                   style: TextStyle(
-                    color: const Color(0xFF8A9BB5),
+                    color: Colors.blueGrey,
                     fontSize: AppFontSize.xs(context),
                     fontWeight: FontWeight.w500,
                     letterSpacing: 0.8,
@@ -72,7 +73,7 @@ class ProfileInfoTile extends StatelessWidget {
                 Text(
                   value,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: AppFontSize.body(context),
                     fontWeight: FontWeight.w600,
                   ),
