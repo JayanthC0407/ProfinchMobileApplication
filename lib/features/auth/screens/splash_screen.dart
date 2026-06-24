@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:profinch_mobile_application/features/auth/screens/login_screen.dart';
 
@@ -124,7 +125,7 @@ class _SplashScreenState extends State<SplashScreen>
                         width: 90,
                         height: 90,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: AppColors.light,
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: [
                             BoxShadow(
@@ -151,7 +152,7 @@ class _SplashScreenState extends State<SplashScreen>
                         style: TextStyle(
                           fontSize: RT.fs(context, 32),
                           fontWeight: FontWeight.w700,
-                          color: Colors.white,
+                          color: AppColors.light,
                           letterSpacing: -0.5,
                         ),
                       ),
@@ -163,7 +164,7 @@ class _SplashScreenState extends State<SplashScreen>
                         'Banking made simple',
                         style: TextStyle(
                           fontSize: AppFontSize.large(context),
-                          color: Colors.white.withValues(alpha: 0.8),
+                          color: AppColors.light.withValues(alpha: 0.8),
                           letterSpacing: 0.3,
                         ),
                       ),
@@ -187,7 +188,7 @@ class _SplashScreenState extends State<SplashScreen>
                         child: CircularProgressIndicator(
                           strokeWidth: 2.5,
                           valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.white.withValues(alpha: 0.7),
+                            AppColors.light.withValues(alpha: 0.7),
                           ),
                         ),
                       ),
@@ -196,10 +197,7 @@ class _SplashScreenState extends State<SplashScreen>
 
                       Text(
                         'v1.0.0',
-                        style: TextStyle(
-                          fontSize: AppFontSize.small(context),
-                          color: Colors.white.withValues(alpha: 0.5),
-                        ),
+                        style: AppTextStyles.whiteCaption(context,color: AppColors.light.withValues(alpha: 0.5)),
                       ),
                     ],
                   ),

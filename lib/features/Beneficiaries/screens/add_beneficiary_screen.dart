@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:provider/provider.dart';
 
 import '../../../data/models/beneficiary_model.dart';
@@ -84,10 +85,10 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
           child: TextField(
             controller: controller,
             keyboardType: keyboardType,
-            style: TextStyle(fontSize: AppFontSize.body(context), color: AppColors.textDark ),
+            style: AppTextStyles.body(context, color: AppColors.textDark),
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: AppFontSize.body(context)),
+              hintStyle: AppTextStyles.bodySecondary(context, color: Colors.grey.shade400),
               prefixIcon: Icon(icon, color: Colors.grey.shade400, size: 18),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:profinch_mobile_application/shared/widgets/background_wrapper.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_up_widgets/signup_button.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_up_widgets/signup_form.dart';
@@ -103,7 +104,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 6),
                 Text(
                   'Fill in the details below to get started',
-                  style: TextStyle(fontSize: AppFontSize.body(context), color: AppColors.light),
+                  style: AppTextStyles.whiteBody(context),
                 ),
                 const SizedBox(height: 28),
 

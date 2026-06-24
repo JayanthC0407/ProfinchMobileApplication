@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
 
 import '../widgets/calculator_card.dart';
@@ -11,7 +13,7 @@ class CalculatorMenuScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF0F4FF),
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.light,
         elevation: 0,
         centerTitle: false,
         titleSpacing: 0,
@@ -35,12 +37,12 @@ class CalculatorMenuScreen extends StatelessWidget {
             ),
           ),
         ),
-        title: const Padding(
+        title: Padding(
           padding: EdgeInsets.only(left: 8),
           child: Text(
             "Financial Calculators",
             style: TextStyle(
-              fontSize: 18,
+              fontSize: AppFontSize.large(context),
               fontWeight: FontWeight.w700,
               color: Color(0xFF0D1B3E),
               letterSpacing: 0.2,
@@ -75,12 +77,12 @@ class CalculatorMenuScreen extends StatelessWidget {
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         "Smart Tools",
                         style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 12,
+                          color: AppColors.light.withValues(alpha: 0.7),
+                          fontSize: AppFontSize.small(context),
                           fontWeight: FontWeight.w500,
                           letterSpacing: 0.8,
                         ),
@@ -89,8 +91,8 @@ class CalculatorMenuScreen extends StatelessWidget {
                       Text(
                         "Plan your finances\nwith precision",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 17,
+                          color: AppColors.light,
+                          fontSize: AppFontSize.large(context),
                           fontWeight: FontWeight.w700,
                           height: 1.35,
                         ),
@@ -101,12 +103,12 @@ class CalculatorMenuScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.15),
+                    color: AppColors.light.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: const Icon(
                     Icons.calculate_rounded,
-                    color: Colors.white,
+                    color: AppColors.light,
                     size: 30,
                   ),
                 ),
@@ -116,12 +118,12 @@ class CalculatorMenuScreen extends StatelessWidget {
 
           const SizedBox(height: 24),
 
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(left: 2, bottom: 14),
             child: Text(
               "All Calculators",
               style: TextStyle(
-                fontSize: 13,
+                fontSize: AppFontSize.body(context),
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF7A8BAD),
                 letterSpacing: 0.6,

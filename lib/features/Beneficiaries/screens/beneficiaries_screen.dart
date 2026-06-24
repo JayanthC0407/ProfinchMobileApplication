@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:provider/provider.dart';
 
@@ -91,8 +92,7 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                     child: Text(
                       "${allBeneficiaries.length} saved recipient${allBeneficiaries.length == 1 ? '' : 's'}",
-                      style: TextStyle(
-                          color: AppColors.light.withValues(alpha: 0.65), fontSize: AppFontSize.body(context)),
+                      style: AppTextStyles.whiteBody(context,color: AppColors.light.withValues(alpha: 0.65)),
                     ),
                   ),
                   // Transfer Money quick action inside header
