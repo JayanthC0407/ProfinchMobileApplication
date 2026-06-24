@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,7 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
 
   Color get _typeColor {
     switch (beneficiary.beneficiaryType) {
-      case 'PBI': return const Color(0xFF2563B0);
+      case 'PBI': return AppColors.blueButton;
       case 'LOCAL': return const Color(0xFF0D9488);
       case 'INTERNATIONAL': return const Color(0xFFB45309);
       default: return const Color(0xFF4338CA);
@@ -40,7 +41,7 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
               label,
               style: TextStyle(
                 fontSize: AppFontSize.body(context),
-                color: Color(0xFF6B7280),
+                color: AppColors.textSecondary,
               ),
             ),
           ),
@@ -52,7 +53,7 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
               style:  TextStyle(
                 fontSize: AppFontSize.medium(context),
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF111827),
+                color: AppColors.textDark,
               ),
             ),
           ),
@@ -64,7 +65,7 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           // Header with avatar
@@ -89,14 +90,14 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
                     child: Row(
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          icon: const Icon(Icons.arrow_back, color: AppColors.light),
                           onPressed: () => Navigator.pop(context),
                         ),
                         const Spacer(),
                         Text(
                           "Details",
                           style: TextStyle(
-                            color: Colors.white,
+                            color: AppColors.light,
                             fontSize: AppFontSize.medium(context),
                             fontWeight: FontWeight.w600,
                           ),
@@ -111,7 +112,7 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
                     width: 70,
                     height: 70,
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha:0.2),
+                      color: AppColors.light.withValues(alpha:0.2),
                       shape: BoxShape.circle,
                     ),
                     child: Center(
@@ -120,7 +121,7 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
                         style:  TextStyle(
                           fontSize: AppFontSize.xxl(context),
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: AppColors.light,
                         ),
                       ),
                     ),
@@ -129,7 +130,7 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
                   Text(
                     beneficiary.nickname,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppColors.light,
                       fontSize: RT.fs(context, 20),
                       fontWeight: FontWeight.bold,
                     ),
@@ -140,13 +141,13 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 14, vertical: 4),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: AppColors.light.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
                       beneficiary.beneficiaryType,
                       style:  TextStyle(
-                        color: Colors.white,
+                        color: AppColors.light,
                         fontSize: AppFontSize.small(context),
                         fontWeight: FontWeight.w600,
                       ),
@@ -167,12 +168,12 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.light,
                       borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: const Color(0xFFE5E7EB)),
+                      border: Border.all(color: AppColors.surface),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.04),
+                          color: Colors.black.withValues(alpha: 0.04),
                           blurRadius: 10,
                           offset: const Offset(0, 3),
                         ),
@@ -185,11 +186,11 @@ class BeneficiaryDetailsScreen extends StatelessWidget {
                           "••••  ••••  ••••  ${beneficiary.accountNumber.substring(beneficiary.accountNumber.length > 4 ? beneficiary.accountNumber.length - 4 : 0)}",
                           context,
                         ),
-                        const Divider(height: 1, color: Color(0xFFF3F4F6)),
+                        const Divider(height: 1, color: AppColors.surfaceLight),
                         _detailRow("Bank", beneficiary.bankName, context),
-                        const Divider(height: 1, color: Color(0xFFF3F4F6)),
+                        const Divider(height: 1, color: AppColors.surfaceLight),
                         _detailRow("IFSC Code", beneficiary.ifscCode, context),
-                        const Divider(height: 1, color: Color(0xFFF3F4F6)),
+                        const Divider(height: 1, color: AppColors.surfaceLight),
                         _detailRow(
                           "Verified",
                           beneficiary.isVerified ? "✓ Verified" : "Pending",

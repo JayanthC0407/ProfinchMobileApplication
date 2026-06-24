@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:provider/provider.dart';
 
@@ -34,11 +35,11 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
   Color get _typeColor {
     switch (widget.beneficiaryType) {
       case 'PBI':
-        return const Color(0xFF2563B0);
+        return AppColors.blueButton;
       case 'LOCAL':
-        return const Color(0xFF2563B0);
+        return AppColors.blueButton;
       case 'INTERNATIONAL':
-        return const Color(0xFF2563B0);
+        return AppColors.blueButton;
       default:
         return const Color(0xFF4338CA);
     }
@@ -76,14 +77,14 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
         const SizedBox(height: 6),
         Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: AppColors.light,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(color: const Color.fromARGB(255, 90, 91, 92)),
           ),
           child: TextField(
             controller: controller,
             keyboardType: keyboardType,
-            style: TextStyle(fontSize: AppFontSize.body(context), color: Color(0xFF111827)),
+            style: TextStyle(fontSize: AppFontSize.body(context), color: AppColors.textDark ),
             decoration: InputDecoration(
               hintText: hint,
               hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: AppFontSize.body(context)),
@@ -101,9 +102,9 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
             padding: const EdgeInsets.only(top: 6, left: 4),
             child: Text(
               errorText,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.red,
-                fontSize: 12,
+                fontSize: AppFontSize.small(context),
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -215,12 +216,12 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
     );
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: AppColors.background,
 
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: const EdgeInsets.all(16),
-          color: Colors.white,
+          color: AppColors.light,
 
           child: SizedBox(
             width: double.infinity,
@@ -228,7 +229,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: _typeColor,
-                foregroundColor: Colors.white,
+                foregroundColor: AppColors.light,
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -237,9 +238,9 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
 
               onPressed: _addBeneficiary,
 
-              child: const Text(
+              child: Text(
                 "Add Beneficiary",
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: AppFontSize.body(context), fontWeight: FontWeight.w600),
               ),
             ),
           ),
@@ -255,7 +256,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFF1A3A6B), Color(0xFF2563B0)],
+                colors: [AppColors.navy, AppColors.blueButton],
               ),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(28),
@@ -270,7 +271,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 4, 8, 0),
                     child: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      icon: const Icon(Icons.arrow_back, color: AppColors.light),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
@@ -279,7 +280,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                     child: Text(
                       "Add ${widget.beneficiaryType} Beneficiary",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppColors.light,
                         fontSize: AppFontSize.xl(context),
                         fontWeight: FontWeight.bold,
                         letterSpacing: -0.3,
@@ -291,7 +292,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                     child: Text(
                       "Fill in the details below to add",
                       style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.65), fontSize: AppFontSize.body(context)),
+                          color: AppColors.light.withValues(alpha: 0.65), fontSize: AppFontSize.body(context)),
                     ),
                   ),
                 ],
@@ -308,9 +309,9 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.light,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: const Color(0xFFE5E7EB)),
+                      border: Border.all(color: AppColors.surface),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black,
@@ -392,7 +393,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: _typeColor,
-                        foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        foregroundColor: AppColors.light,
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),

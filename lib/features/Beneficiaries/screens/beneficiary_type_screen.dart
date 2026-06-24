@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'add_beneficiary_screen.dart';
@@ -14,7 +15,7 @@ class BeneficiaryTypeScreen extends StatelessWidget {
         'title': 'ProFinch Bank',
         'subtitle': 'Transfer to ProFinch account holders',
         'icon': Icons.account_balance_outlined,
-        'color': 0xFF2563B0,
+        'color': AppColors.blueButton,
         'bg': 0xFFDBEAFE,
       },
       {
@@ -30,13 +31,13 @@ class BeneficiaryTypeScreen extends StatelessWidget {
         'title': 'International',
         'subtitle': 'SWIFT / IBAN international transfers',
         'icon': Icons.public_outlined,
-        'color': 0xFFB45309,
-        'bg': 0xFFFEF3C7,
+        'color': AppColors.warningDark,
+        'bg': AppColors.warningLight,
       },
     ];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           // Header
@@ -46,7 +47,7 @@ class BeneficiaryTypeScreen extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFF1A3A6B), Color(0xFF2563B0)],
+                colors: [AppColors.navy, AppColors.blueButton],
               ),
               
               borderRadius: BorderRadius.only(
@@ -62,7 +63,7 @@ class BeneficiaryTypeScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(4, 4, 8, 0),
                     child: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      icon: const Icon(Icons.arrow_back, color: AppColors.light),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
@@ -71,7 +72,7 @@ class BeneficiaryTypeScreen extends StatelessWidget {
                     child: Text(
                       "Add Beneficiary",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppColors.light,
                         fontSize: RT.fs(context, 24),
                         fontWeight: FontWeight.bold,
                         letterSpacing: -0.4,
@@ -83,7 +84,7 @@ class BeneficiaryTypeScreen extends StatelessWidget {
                     child: Text(
                       "Choose the type of beneficiary",
                       style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.65), fontSize: AppFontSize.body(context)),
+                          color: AppColors.light.withValues(alpha: 0.65), fontSize: AppFontSize.body(context)),
                     ),
                   ),
                 ],
@@ -111,9 +112,9 @@ class BeneficiaryTypeScreen extends StatelessWidget {
                     margin: const EdgeInsets.only(bottom: 12),
                     padding: const EdgeInsets.all(18),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: AppColors.light,
                       borderRadius: BorderRadius.circular(18),
-                      border: Border.all(color: const Color(0xFFE5E7EB)),
+                      border: Border.all(color: AppColors.surface),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.04),
@@ -143,7 +144,7 @@ class BeneficiaryTypeScreen extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: AppFontSize.medium(context),
                                   fontWeight: FontWeight.w600,
-                                  color: Color(0xFF111827),
+                                  color: AppColors.textDark,
                                 ),
                               ),
                               const SizedBox(height: 3),
@@ -151,7 +152,7 @@ class BeneficiaryTypeScreen extends StatelessWidget {
                                 t['subtitle'] as String,
                                 style: TextStyle(
                                   fontSize: AppFontSize.small(context),
-                                  color: Color(0xFF6B7280),
+                                  color: AppColors.textSecondary,
                                 ),
                               ),
                             ],
