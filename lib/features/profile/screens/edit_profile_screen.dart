@@ -1,170 +1,428 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/features/dashboard/provider/dashboard_provider.dart';
 import 'package:provider/provider.dart';
 import '../../auth/provider/auth_provider.dart';
 import '../../../data/dummy/dummy_accounts.dart';
 
 class EditProfileScreen extends StatefulWidget {
-
   const EditProfileScreen({super.key});
-  
 
   @override
-  State<EditProfileScreen> createState() =>
-      _EditProfileScreenState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _EditProfileScreenState
-    extends State<EditProfileScreen> {
-
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  final _formKey = GlobalKey<FormState>();
   late TextEditingController usernameController;
   late TextEditingController emailController;
   late TextEditingController phoneController;
-  
   String? selectedPrimaryAccountId;
- 
- 
+  bool _isSaving = false;
+
   @override
   void initState() {
     super.initState();
+    final user =
+        Provider.of<AuthProvider>(context, listen: false).currentUser!;
+    usernameController = TextEditingController(text: user.username);
+    emailController = TextEditingController(text: user.email);
+    phoneController = TextEditingController(text: user.phoneNumber);
+    selectedPrimaryAccountId = user.primaryAccountId;
+  }
 
-    final user = Provider.of<AuthProvider>(
-      context,
-      listen: false,
-    ).currentUser!;
+  @override
+  void dispose() {
+    usernameController.dispose();
+    emailController.dispose();
+    phoneController.dispose();
+    super.dispose();
+  }
 
-    usernameController =
-        TextEditingController(text: user.username);
+  Future<void> _save() async {
+    if (!_formKey.currentState!.validate()) return;
 
-    emailController =
-        TextEditingController(text: user.email);
+    setState(() => _isSaving = true);
+    await Future.delayed(const Duration(milliseconds: 800));
 
-    phoneController =
-        TextEditingController(text: user.phoneNumber);
-    
-    selectedPrimaryAccountId =user.primaryAccountId;
-    
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final updatedUser = authProvider.currentUser!.copyWith(
+      username: usernameController.text.trim(),
+      email: emailController.text.trim(),
+      phoneNumber: phoneController.text.trim(),
+      primaryAccountId: selectedPrimaryAccountId,
+    );
+
+    authProvider.updateUser(updatedUser);
+    Provider.of<DashboardProvider>(context, listen: false)
+        .resetToPrimary(selectedPrimaryAccountId!);
+
+    if (mounted) {
+      setState(() => _isSaving = false);
+      _showSuccessSnackbar();
+      Navigator.pop(context);
+    }
+  }
+
+  void _showSuccessSnackbar() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: const Color(0xFF1E2640),
+        behavior: SnackBarBehavior.floating,
+        margin: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        content: const Row(
+          children: [
+            Icon(Icons.check_circle_rounded, color: Color(0xFF4CD964)),
+            SizedBox(width: 10),
+            Text('Profile updated successfully',
+                style: TextStyle(color: Colors.white)),
+          ],
+        ),
+        duration: const Duration(seconds: 2),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-
-    final authProvider =
-        Provider.of<AuthProvider>(context);
-
+    final authProvider = Provider.of<AuthProvider>(context);
     final user = authProvider.currentUser!;
-
-    final accounts =
-    DummyAccounts.allAccounts
+    final accounts = DummyAccounts.allAccounts
         .where((a) => a.userId == user.id)
         .toList();
 
-    return Scaffold(
-
-      appBar: AppBar(
-        title: const Text("Edit Profile"),
-      ),
-
-      body: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          children: [
-
-            TextField(
-              controller: usernameController,
-              decoration: const InputDecoration(
-                labelText: "Username",
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        backgroundColor: const Color(0xFF0F1322),
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF0F1322),
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          leading: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Container(
+              margin: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E2640),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: const Color(0xFF2E3A57)),
               ),
+              child: const Icon(Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white, size: 18),
             ),
-
-            const SizedBox(height: 20),
-
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                labelText: "Email",
-              ),
+          ),
+          title: Text(
+            'Edit Profile',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: AppFontSize.large(context),
+              fontWeight: FontWeight.w700,
             ),
-
-            const SizedBox(height: 20),
-
-            TextField(
-              controller: phoneController,
-              decoration: const InputDecoration(
-                labelText: "Phone Number",
-              ),
-            ),
-
-            const SizedBox(height: 40),
-
-            DropdownButtonFormField<String>(
-              initialValue: selectedPrimaryAccountId,
-              decoration: const InputDecoration(
-                labelText: 'Primary Account',
-              ),
-              items: accounts.map((account) {
-
-                return DropdownMenuItem(
-                  value: account.id,
-                  child: Text(
-                    "${account.accountType} • ${account.accountNumber.substring(account.accountNumber.length - 4)}",
-                  ),
-                );
-
-              }).toList(),
-              onChanged: (value) {
-
-                setState(() {
-                  selectedPrimaryAccountId = value;
-                });
-              },
-            ),
-             
-              const SizedBox(height: 20),
-
-            SizedBox(
-              width: double.infinity,
-              height: 55,
-              
-              child: ElevatedButton(
-                   
-                onPressed: () {
-
-                  final updatedUser = user.copyWith(
-                    username: usernameController.text.trim(),
-                    email: emailController.text.trim(),
-                    phoneNumber: phoneController.text.trim(),
-                    primaryAccountId: selectedPrimaryAccountId,
-                  );
-
-                  authProvider.updateUser(updatedUser);
-
-                    Provider.of<DashboardProvider>(
-                      context,
-                      listen: false,
-                    ).resetToPrimary(
-                      selectedPrimaryAccountId!,
-                    );
-
-                    Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 154, 189, 218),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                ),
-                child: const Text(
-                  "Save Changes",
-                  style: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-            )
-            
-          ],
+          ),
         ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+
+                // ── Avatar section ─────────────────────────────
+                Center(
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: 90,
+                        height: 90,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: const Color(0xFF1E2640),
+                          border: Border.all(
+                              color: const Color(0xFF4A90D9), width: 2),
+                        ),
+                        child: const Icon(Icons.person_rounded,
+                            size: 48, color: Color(0xFF4A90D9)),
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: Container(
+                          width: 28,
+                          height: 28,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF4A90D9),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                color: const Color(0xFF0F1322), width: 2),
+                          ),
+                          child: const Icon(Icons.camera_alt_rounded,
+                              size: 14, color: Colors.white),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                Center(
+                  child: Text(
+                    'Tap to change photo',
+                    style: TextStyle(
+                      color: const Color(0xFF4A90D9),
+                      fontSize: AppFontSize.xs(context),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 28),
+
+                // ── Form fields ────────────────────────────────
+                _sectionLabel('PERSONAL DETAILS', context),
+                const SizedBox(height: 12),
+
+                _buildField(
+                  controller: usernameController,
+                  label: 'Full Name',
+                  icon: Icons.person_rounded,
+                  validator: (v) => v == null || v.trim().isEmpty
+                      ? 'Name cannot be empty'
+                      : null,
+                ),
+
+                const SizedBox(height: 12),
+
+                _buildField(
+                  controller: emailController,
+                  label: 'Email Address',
+                  icon: Icons.email_rounded,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (v) {
+                    if (v == null || v.trim().isEmpty) {
+                      return 'Email cannot be empty';
+                    }
+                    if (!RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$')
+                        .hasMatch(v.trim())) {
+                      return 'Enter a valid email address';
+                    }
+                    return null;
+                  },
+                ),
+
+                const SizedBox(height: 12),
+
+                _buildField(
+                  controller: phoneController,
+                  label: 'Phone Number',
+                  icon: Icons.phone_rounded,
+                  keyboardType: TextInputType.phone,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  validator: (v) {
+                    if (v == null || v.trim().isEmpty) {
+                      return 'Phone cannot be empty';
+                    }
+                    if (v.trim().length < 10) {
+                      return 'Enter a valid 10-digit number';
+                    }
+                    return null;
+                  },
+                ),
+
+                const SizedBox(height: 24),
+
+                _sectionLabel('PRIMARY ACCOUNT', context),
+                const SizedBox(height: 12),
+
+                // ── Account dropdown ───────────────────────────
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1E2640),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: const Color(0xFF2E3A57)),
+                  ),
+                  child: DropdownButtonFormField<String>(
+                    value: selectedPrimaryAccountId,
+                    dropdownColor: const Color(0xFF1E2640),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: AppFontSize.body(context),
+                      fontWeight: FontWeight.w500,
+                    ),
+                    icon: const Icon(Icons.keyboard_arrow_down_rounded,
+                        color: Color(0xFF4A90D9)),
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(
+                          Icons.account_balance_rounded,
+                          color: Color(0xFF4A90D9),
+                          size: 20),
+                      labelText: 'Select Primary Account',
+                      labelStyle: TextStyle(
+                        color: const Color(0xFF8A9BB5),
+                        fontSize: AppFontSize.small(context),
+                      ),
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                    ),
+                    items: accounts.map((account) {
+                      return DropdownMenuItem(
+                        value: account.id,
+                        child: Text(
+                          '${account.accountType}  •  ••••${account.accountNumber.substring(account.accountNumber.length - 4)}',
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (value) =>
+                        setState(() => selectedPrimaryAccountId = value),
+                  ),
+                ),
+
+                const SizedBox(height: 8),
+
+                // ── Info note ──────────────────────────────────
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF4A90D9).withOpacity(0.08),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                        color: const Color(0xFF4A90D9).withOpacity(0.2)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.info_outline_rounded,
+                          color: Color(0xFF4A90D9), size: 16),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'Your primary account is used for salary credits and default transactions.',
+                          style: TextStyle(
+                            color: const Color(0xFF8A9BB5),
+                            fontSize: AppFontSize.xs(context),
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 32),
+
+                // ── Save button ────────────────────────────────
+                SizedBox(
+                  width: double.infinity,
+                  height: 54,
+                  child: ElevatedButton(
+                    onPressed: _isSaving ? null : _save,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF4A90D9),
+                      foregroundColor: Colors.white,
+                      disabledBackgroundColor:
+                          const Color(0xFF4A90D9).withOpacity(0.5),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14)),
+                    ),
+                    child: _isSaving
+                        ? const SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.5,
+                              color: Colors.white,
+                            ),
+                          )
+                        : Text(
+                            'Save Changes',
+                            style: TextStyle(
+                              fontSize: AppFontSize.medium(context),
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _sectionLabel(String label, BuildContext context) {
+    return Text(
+      label,
+      style: TextStyle(
+        color: const Color(0xFF8A9BB5),
+        fontSize: AppFontSize.xs(context),
+        fontWeight: FontWeight.w600,
+        letterSpacing: 1.2,
+      ),
+    );
+  }
+
+  Widget _buildField({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    TextInputType? keyboardType,
+    List<TextInputFormatter>? inputFormatters,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      keyboardType: keyboardType,
+      inputFormatters: inputFormatters,
+      validator: validator,
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: AppFontSize.body(context),
+        fontWeight: FontWeight.w500,
+      ),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(
+          color: const Color(0xFF8A9BB5),
+          fontSize: AppFontSize.small(context),
+        ),
+        prefixIcon: Icon(icon, color: const Color(0xFF4A90D9), size: 20),
+        filled: true,
+        fillColor: const Color(0xFF1E2640),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: Color(0xFF2E3A57)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: Color(0xFF2E3A57)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide:
+              const BorderSide(color: Color(0xFF4A90D9), width: 1.5),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide:
+              const BorderSide(color: Color(0xFFE53935), width: 1),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide:
+              const BorderSide(color: Color(0xFFE53935), width: 1.5),
+        ),
+        errorStyle: const TextStyle(color: Color(0xFFE53935)),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
     );
   }
