@@ -7,7 +7,6 @@ import 'package:profinch_mobile_application/core/routes/app_routes.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
 import 'package:profinch_mobile_application/features/dashboard/provider/dashboard_provider.dart';
 import 'package:profinch_mobile_application/shared/widgets/background_wrapper.dart';
-import 'package:profinch_mobile_application/shared/widgets/logo.dart';
 
 enum PatternScreenMode { setup, login }
 
@@ -86,8 +85,10 @@ class _PatternScreenState extends State<PatternScreen> {
     if (widget.mode == PatternScreenMode.login) {
       final ok = authProvider.verifyPattern(pattern);
       if (ok) {
-        final user = authProvider.currentUser!;
-        context.read<DashboardProvider>().resetToPrimary(user.primaryAccountId);
+        final user = authProvider.currentUser;
+        if (user != null) {
+          context.read<DashboardProvider>().resetToPrimary(user.primaryAccountId);
+        }
         Navigator.pushNamedAndRemoveUntil(
             context, AppRoutes.dashboard, (route) => false);
       } else {
@@ -165,8 +166,6 @@ class _PatternScreenState extends State<PatternScreen> {
       child: SafeArea(
         child: Column(
           children: [
-            const SizedBox(height: 32),
-            const AppLogo(),
             const SizedBox(height: 28),
 
             if (isLogin) ...[
@@ -176,8 +175,7 @@ class _PatternScreenState extends State<PatternScreen> {
                 child: Text(
                   authProvider.currentUser?.username
                           .substring(0, 1)
-                          .toUpperCase() ??
-                      'U',
+                          .toUpperCase() ?? 'AS',
                   style: TextStyle(
                       fontSize: AppFontSize.xl(context),
                       color: Colors.white,
@@ -363,10 +361,10 @@ class _PatternPainter extends CustomPainter {
 
       // Order number on selected dots
       if (isSelected) {
-        final order = selected.indexOf(i) + 1;
+        // final order = selected.indexOf(i) + 1;
         final tp = TextPainter(
           text: TextSpan(
-            text: '$order',
+            // text: '$order',
             style: const TextStyle(
                 color: Colors.white, fontSize: 9, fontWeight: FontWeight.w700),
           ),

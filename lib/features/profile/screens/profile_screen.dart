@@ -8,6 +8,7 @@ import '../widgets/profile_header.dart';
 import '../widgets/profile_info_tile.dart';
 import '../widgets/settings_tile.dart';
 import 'edit_profile_screen.dart';
+import 'security_settings_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
 
@@ -99,7 +100,14 @@ class ProfileScreen extends StatelessWidget {
             SettingsTile(
               title: "Security",
               icon: Icons.lock,
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const SecuritySettingsScreen(),
+                  ),
+                );
+              },
             ),
 
             const SizedBox(height: 16),
