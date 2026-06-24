@@ -9,13 +9,44 @@ class AuthProvider extends ChangeNotifier {
   UserModel? currentUser;
   bool isLoading = false;
 
-  // ── Pattern ───────────────────────────────────────────────────
+  // ── PIN ──────────────────────────────────────────────────────
+  String? _pin;
+  String? _pinEmail; // remember which user set the PIN
+
+  bool get isPinSet => _pin != null && _pin!.isNotEmpty;
+
+  void setPin(String pin) {
+    _pin = pin;
+    _pinEmail = currentUser?.email; // store whose PIN this is
+    notifyListeners();
+  }
+
+  /// Verifies the PIN and restores currentUser from repository if needed.
+  bool verifyPin(String pin) {
+    if (_pin == null || pin != _pin) return false;
+    // Restore currentUser if it was cleared by logout
+    if (currentUser == null && _pinEmail != null) {
+      currentUser = _repository.getUserByEmail(_pinEmail!);
+      notifyListeners();
+    }
+    return true;
+  }
+
+  void clearPin() {
+    _pin = null;
+    _pinEmail = null;
+    notifyListeners();
+  }
+
+  // ── Pattern ──────────────────────────────────────────────────
   List<int>? _pattern;
+  String? _patternEmail;
 
   bool get isPatternSet => _pattern != null && _pattern!.isNotEmpty;
 
   void setPattern(List<int> pattern) {
     _pattern = List<int>.from(pattern);
+    _patternEmail = currentUser?.email;
     notifyListeners();
   }
 
@@ -24,30 +55,17 @@ class AuthProvider extends ChangeNotifier {
     for (int i = 0; i < pattern.length; i++) {
       if (_pattern![i] != pattern[i]) return false;
     }
+    // Restore currentUser if cleared by logout
+    if (currentUser == null && _patternEmail != null) {
+      currentUser = _repository.getUserByEmail(_patternEmail!);
+      notifyListeners();
+    }
     return true;
   }
 
   void clearPattern() {
     _pattern = null;
-    notifyListeners();
-  }
-
-  // ── PIN ───────────────────────────────────────────────────────
-  // In a real app, PIN would be stored encrypted via flutter_secure_storage.
-  // Here we keep it in memory for the dummy phase.
-  String? _pin;
-
-  bool get isPinSet => _pin != null && _pin!.isNotEmpty;
-
-  void setPin(String pin) {
-    _pin = pin;
-    notifyListeners();
-  }
-
-  bool verifyPin(String pin) => pin == _pin;
-
-  void clearPin() {
-    _pin = null;
+    _patternEmail = null;
     notifyListeners();
   }
 
@@ -60,8 +78,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<bool> authenticateWithBiometric() async {
-    final success = await BiometricService.instance.authenticate();
-    return success;
+    return await BiometricService.instance.authenticate();
   }
 
   void setBiometricEnabled(bool value) {
@@ -69,13 +86,16 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ── Existing methods ──────────────────────────────────────────
+  // ── Standard login ────────────────────────────────────────────
   void updateUser(UserModel updatedUser) {
     currentUser = updatedUser;
     notifyListeners();
   }
 
-  Future<bool> login({required String email, required String password}) async {
+  Future<bool> login({
+    required String email,
+    required String password,
+  }) async {
     isLoading = true;
     notifyListeners();
 
@@ -97,13 +117,16 @@ class AuthProvider extends ChangeNotifier {
 
   bool emailExists(String email) => _repository.emailExists(email);
 
-  bool passwordMatches({required String email, required String password}) =>
+  bool passwordMatches({
+    required String email,
+    required String password,
+  }) =>
       _repository.passwordMatches(email: email, password: password);
 
   void logout() {
     currentUser = null;
-    // Note: PIN and biometric preference intentionally kept on logout
-    // so the user can still quick-login with PIN after logging out.
+    // PIN/Pattern/Biometric intentionally kept after logout
+    // so user can still quick-login on next session
     notifyListeners();
   }
 }

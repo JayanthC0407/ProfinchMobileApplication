@@ -3,9 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// ignore: duplicate_ignore
-// ignore: unused_import
-import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
@@ -13,7 +10,6 @@ import 'package:profinch_mobile_application/features/auth/screens/forgot_passwor
 import 'package:profinch_mobile_application/features/auth/screens/otp_screen.dart';
 import 'package:profinch_mobile_application/features/auth/screens/pin_screen.dart';
 import 'package:profinch_mobile_application/features/auth/screens/pattern_screen.dart';
-import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/biometric_button.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/remember_forgot_row.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/sign_in_button.dart';
 import 'package:profinch_mobile_application/features/auth/widgets/sign_in_widgets/sign_up_button.dart';
