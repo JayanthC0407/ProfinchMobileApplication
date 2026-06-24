@@ -40,12 +40,12 @@ class SettingsTile extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: const Color(0xFF1E2640),
+          color: Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isDestructive
                 ? const Color(0xFFE53935).withOpacity(0.2)
-                : const Color(0xFF2E3A57),
+                : Colors.white,
             width: 1,
           ),
         ),
@@ -78,7 +78,7 @@ class SettingsTile extends StatelessWidget {
                     style: TextStyle(
                       color: isDestructive
                           ? const Color(0xFFE53935)
-                          : Colors.white,
+                          : Colors.black,
                       fontSize: AppFontSize.body(context),
                       fontWeight: FontWeight.w600,
                     ),
@@ -88,7 +88,7 @@ class SettingsTile extends StatelessWidget {
                     Text(
                       subtitle!,
                       style: TextStyle(
-                        color: const Color(0xFF8A9BB5),
+                        color: Colors.blueGrey,
                         fontSize: AppFontSize.xs(context),
                       ),
                     ),
@@ -104,7 +104,7 @@ class SettingsTile extends StatelessWidget {
               const Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 14,
-                color: Color(0xFF8A9BB5),
+                color: Colors.black,
               ),
           ],
         ),

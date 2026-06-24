@@ -14,8 +14,15 @@ import 'security_settings_screen.dart';
 import 'privacy_policy_screen.dart';
 import 'help_support_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  String _selectedLanguage = 'English (India)';
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +36,18 @@ class ProfileScreen extends StatelessWidget {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        backgroundColor: AppColors.light,
+        backgroundColor: AppColors.lightBlue,
 
         // ── App bar ──────────────────────────────────────────────
         appBar: AppBar(
-          backgroundColor: AppColors.light,
+          backgroundColor: AppColors.lightBlue,
           elevation: 0,
           scrolledUnderElevation: 0,
 
           leading: IconButton(
             icon: const Icon(
               Icons.arrow_back_ios_new_rounded,
-              color: Color.fromARGB(255, 8, 8, 8),
+              color: Colors.black,
               size: 20,
             ),
             onPressed: () {
@@ -51,9 +58,9 @@ class ProfileScreen extends StatelessWidget {
           title: Text(
             'Profile',
             style: TextStyle(
-              color: const Color.fromARGB(255, 8, 8, 8),
+              color: Colors.black,
               fontSize: AppFontSize.large(context),
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w900,
               letterSpacing: 0.3,
             ),
           ),
@@ -71,7 +78,7 @@ class ProfileScreen extends StatelessWidget {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1E2640),
+                  color: AppColors.blueButton,
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: const Color(0xFF2E3A57), width: 1),
                 ),
@@ -79,14 +86,14 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.edit_rounded,
-                      color: Color(0xFF4A90D9),
+                      color: Colors.white,
                       size: 14,
                     ),
                     const SizedBox(width: 5),
                     Text(
                       'Edit',
                       style: TextStyle(
-                        color: const Color(0xFF4A90D9),
+                        color: Colors.white,
                         fontSize: AppFontSize.small(context),
                         fontWeight: FontWeight.w600,
                       ),
@@ -133,10 +140,10 @@ class ProfileScreen extends StatelessWidget {
                     vertical: 3,
                   ),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF4CD964).withOpacity(0.12),
+                    color: const Color.fromARGB(255, 30, 156, 51).withOpacity(0.12),
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(
-                      color: const Color(0xFF4CD964).withOpacity(0.35),
+                      color: const Color.fromARGB(255, 34, 172, 57).withOpacity(0.35),
                     ),
                   ),
                   child: const Text(
@@ -220,21 +227,21 @@ class ProfileScreen extends StatelessWidget {
 
               SettingsTile(
                 title: 'Language',
-                subtitle: 'English (India)',
+                subtitle: _selectedLanguage,
                 icon: Icons.language_rounded,
                 iconColor: const Color(0xFF4A90D9),
                 iconBgColor: const Color(0xFF4A90D9).withOpacity(0.12),
                 onTap: () => _showLanguagePicker(context),
               ),
 
-              SettingsTile(
-                title: 'Statement Preferences',
-                subtitle: 'Digital — delivered to email',
-                icon: Icons.receipt_long_rounded,
-                iconColor: const Color(0xFF0EA5E9),
-                iconBgColor: const Color(0xFF0EA5E9).withOpacity(0.12),
-                onTap: () => _showStatementPrefs(context),
-              ),
+              // SettingsTile(
+              //   title: 'Statement Preferences',
+              //   subtitle: 'Digital — delivered to email',
+              //   icon: Icons.receipt_long_rounded,
+              //   iconColor: const Color(0xFF0EA5E9),
+              //   iconBgColor: const Color(0xFF0EA5E9).withOpacity(0.12),
+              //   onTap: () => _showStatementPrefs(context),
+              // ),
 
               const SizedBox(height: 24),
 
@@ -329,7 +336,7 @@ class ProfileScreen extends StatelessWidget {
       child: Text(
         label,
         style: TextStyle(
-          color: const Color(0xFF8A9BB5),
+          color: const Color.fromARGB(255, 86, 99, 117),
           fontSize: AppFontSize.xs(context),
           fontWeight: FontWeight.w600,
           letterSpacing: 1.2,
@@ -634,7 +641,7 @@ class ProfileScreen extends StatelessWidget {
   void _showNotificationPrefs(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E2640),
+      backgroundColor: AppColors.lightBlue,
       isScrollControlled: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
@@ -652,159 +659,199 @@ class ProfileScreen extends StatelessWidget {
       'Telugu',
       'Marathi',
     ];
+
+    // Start the sheet's local selection from whatever is already persisted.
+    String sheetSelected = _selectedLanguage;
+
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E2640),
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      builder: (_) => Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Select Language',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: AppFontSize.large(context),
-                fontWeight: FontWeight.w700,
-              ),
+      builder: (_) => StatefulBuilder(
+        builder: (context, setS) => DraggableScrollableSheet(
+          initialChildSize: 0.55,
+          minChildSize: 0.4,
+          maxChildSize: 0.85,
+          expand: false,
+          builder: (_, scrollController) => Container(
+            decoration: BoxDecoration(
+              color: AppColors.lightBlue,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             ),
-            const SizedBox(height: 16),
-            ...languages.map((lang) {
-              final isSelected = lang == 'English (India)';
-              return GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 14,
-                  ),
+            child: Column(
+              children: [
+                // drag handle
+                Container(
+                  margin: const EdgeInsets.only(top: 12),
+                  width: 40, height: 4,
                   decoration: BoxDecoration(
-                    color: isSelected
-                        ? const Color(0xFF4A90D9).withOpacity(0.1)
-                        : const Color(0xFF0F1322),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: isSelected
-                          ? const Color(0xFF4A90D9).withOpacity(0.4)
-                          : const Color(0xFF2E3A57),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        lang,
-                        style: TextStyle(
-                          color: isSelected
-                              ? const Color(0xFF4A90D9)
-                              : Colors.white,
-                          fontWeight: isSelected
-                              ? FontWeight.w600
-                              : FontWeight.w400,
-                          fontSize: 14,
-                        ),
-                      ),
-                      const Spacer(),
-                      if (isSelected)
-                        const Icon(
-                          Icons.check_circle_rounded,
-                          color: Color(0xFF4A90D9),
-                          size: 18,
-                        ),
-                    ],
+                    color: Colors.grey.shade400,
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-              );
-            }),
-          ],
+                // title
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(24, 16, 24, 8),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Select Language',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: AppFontSize.large(context),
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ),
+                // scrollable language list
+                Expanded(
+                  child: ListView.builder(
+                    controller: scrollController,
+                    padding: const EdgeInsets.fromLTRB(24, 8, 24, 24),
+                    itemCount: languages.length,
+                    itemBuilder: (_, i) {
+                      final lang       = languages[i];
+                      final isSelected = lang == sheetSelected;
+                      return GestureDetector(
+                        onTap: () {
+                          // 1. update the sheet highlight immediately
+                          setS(() => sheetSelected = lang);
+                          // 2. persist into ProfileScreen state & close
+                          Future.delayed(const Duration(milliseconds: 180), () {
+                            setState(() => _selectedLanguage = lang);
+                            Navigator.pop(context);
+                          });
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 14,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? const Color(0xFF4A90D9).withValues(alpha: 0.1)
+                                : const Color(0xFF0F1322),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: isSelected
+                                  ? const Color(0xFF4A90D9).withValues(alpha: 0.4)
+                                  : const Color(0xFF2E3A57),
+                            ),
+                          ),
+                          child: Row(children: [
+                            Text(
+                              lang,
+                              style: TextStyle(
+                                color: isSelected
+                                    ? const Color(0xFF4A90D9)
+                                    : Colors.white,
+                                fontWeight: isSelected
+                                    ? FontWeight.w600
+                                    : FontWeight.w400,
+                                fontSize: 14,
+                              ),
+                            ),
+                            const Spacer(),
+                            if (isSelected)
+                              const Icon(Icons.check_circle_rounded,
+                                  color: Color(0xFF4A90D9), size: 18),
+                          ]),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 
-  void _showStatementPrefs(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: const Color(0xFF1E2640),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (_) => Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Statement Delivery',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: AppFontSize.large(context),
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 16),
-            ...['Email (Digital)', 'Post (Physical)', 'Both'].map((opt) {
-              final isSelected = opt == 'Email (Digital)';
-              return GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 14,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? const Color(0xFF4A90D9).withOpacity(0.1)
-                        : const Color(0xFF0F1322),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: isSelected
-                          ? const Color(0xFF4A90D9).withOpacity(0.4)
-                          : const Color(0xFF2E3A57),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        opt,
-                        style: TextStyle(
-                          color: isSelected
-                              ? const Color(0xFF4A90D9)
-                              : Colors.white,
-                          fontSize: 14,
-                          fontWeight: isSelected
-                              ? FontWeight.w600
-                              : FontWeight.w400,
-                        ),
-                      ),
-                      const Spacer(),
-                      if (isSelected)
-                        const Icon(
-                          Icons.check_circle_rounded,
-                          color: Color(0xFF4A90D9),
-                          size: 18,
-                        ),
-                    ],
-                  ),
-                ),
-              );
-            }),
-          ],
-        ),
-      ),
-    );
-  }
+  // void _showStatementPrefs(BuildContext context) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     backgroundColor: const Color(0xFF1E2640),
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+  //     ),
+  //     builder: (_) => Padding(
+  //       padding: const EdgeInsets.all(24),
+  //       child: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Text(
+  //             'Statement Delivery',
+  //             style: TextStyle(
+  //               color: Colors.white,
+  //               fontSize: AppFontSize.large(context),
+  //               fontWeight: FontWeight.w700,
+  //             ),
+  //           ),
+  //           const SizedBox(height: 16),
+  //           ...['Email (Digital)', 'Post (Physical)', 'Both'].map((opt) {
+  //             final isSelected = opt == 'Email (Digital)';
+  //             return GestureDetector(
+  //               onTap: () => Navigator.pop(context),
+  //               child: Container(
+  //                 margin: const EdgeInsets.only(bottom: 8),
+  //                 padding: const EdgeInsets.symmetric(
+  //                   horizontal: 16,
+  //                   vertical: 14,
+  //                 ),
+  //                 decoration: BoxDecoration(
+  //                   color: isSelected
+  //                       ? const Color(0xFF4A90D9).withOpacity(0.1)
+  //                       : const Color(0xFF0F1322),
+  //                   borderRadius: BorderRadius.circular(12),
+  //                   border: Border.all(
+  //                     color: isSelected
+  //                         ? const Color(0xFF4A90D9).withOpacity(0.4)
+  //                         : const Color(0xFF2E3A57),
+  //                   ),
+  //                 ),
+  //                 child: Row(
+  //                   children: [
+  //                     Text(
+  //                       opt,
+  //                       style: TextStyle(
+  //                         color: isSelected
+  //                             ? const Color(0xFF4A90D9)
+  //                             : Colors.white,
+  //                         fontSize: 14,
+  //                         fontWeight: isSelected
+  //                             ? FontWeight.w600
+  //                             : FontWeight.w400,
+  //                       ),
+  //                     ),
+  //                     const Spacer(),
+  //                     if (isSelected)
+  //                       const Icon(
+  //                         Icons.check_circle_rounded,
+  //                         color: Color(0xFF4A90D9),
+  //                         size: 18,
+  //                       ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             );
+  //           }),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   void _showRating(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E2640),
+      backgroundColor: AppColors.lightBlue,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -815,7 +862,7 @@ class ProfileScreen extends StatelessWidget {
   void _confirmLogout(BuildContext context, AuthProvider authProvider) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E2640),
+      backgroundColor: AppColors.lightBlue,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -841,7 +888,7 @@ class ProfileScreen extends StatelessWidget {
             const Text(
               'Log Out',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
               ),
@@ -851,7 +898,7 @@ class ProfileScreen extends StatelessWidget {
               'You will be signed out of your account. Any unsaved changes will be lost.',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Color(0xFF8A9BB5),
+                color: Color.fromARGB(255, 24, 40, 63),
                 fontSize: 13,
                 height: 1.5,
               ),
@@ -863,7 +910,7 @@ class ProfileScreen extends StatelessWidget {
                   child: OutlinedButton(
                     onPressed: () => Navigator.pop(context),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: Colors.white,
+                      foregroundColor: Colors.black,
                       side: const BorderSide(color: Color(0xFF2E3A57)),
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
@@ -938,7 +985,7 @@ class _NotificationPrefsSheetState extends State<_NotificationPrefsSheet> {
           Text(
             'Notification Preferences',
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontSize: AppFontSize.large(context),
               fontWeight: FontWeight.w700,
             ),
@@ -1003,7 +1050,7 @@ class _NotificationPrefsSheetState extends State<_NotificationPrefsSheet> {
         children: [
           Text(
             label,
-            style: const TextStyle(color: Colors.white, fontSize: 14),
+            style: const TextStyle(color: Colors.black, fontSize: 14),
           ),
           Switch(
             value: value,
@@ -1037,7 +1084,7 @@ class _RatingSheetState extends State<_RatingSheet> {
           const Text(
             'Rate ProFinch',
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.w700,
             ),
@@ -1045,7 +1092,7 @@ class _RatingSheetState extends State<_RatingSheet> {
           const SizedBox(height: 8),
           const Text(
             'Your feedback helps us improve',
-            style: TextStyle(color: Color(0xFF8A9BB5), fontSize: 13),
+            style: TextStyle(color: Color.fromARGB(255, 53, 83, 128), fontSize: 13),
           ),
           const SizedBox(height: 24),
           Row(
