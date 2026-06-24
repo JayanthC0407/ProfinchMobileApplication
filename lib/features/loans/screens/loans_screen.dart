@@ -38,7 +38,7 @@ class LoansScreen extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFF1A3A6B), Color(0xFF2563B0)],
+                colors: [AppColors.navy, AppColors.blueButton],
               ),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(28),
@@ -57,13 +57,13 @@ class LoansScreen extends StatelessWidget {
                       children: [
                         IconButton(
                           icon: const Icon(Icons.arrow_back,
-                              color: Colors.white),
+                              color: AppColors.light),
                           onPressed: () => Navigator.pop(context),
                         ),
                         const Spacer(),
                         IconButton(
                           icon: const Icon(Icons.notifications_outlined,
-                              color: Colors.white),
+                              color: AppColors.light),
                           onPressed: () {},
                         ),
                       ],
@@ -75,7 +75,7 @@ class LoansScreen extends StatelessWidget {
                     child: Text(
                       "Loans",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppColors.light,
                         fontSize: RT.fs(context, 26),
                         fontWeight: FontWeight.bold,
                         letterSpacing: -0.5,
@@ -87,7 +87,7 @@ class LoansScreen extends StatelessWidget {
                     child: Text(
                       "Manage your borrowings",
                       style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.65),
+                        color: AppColors.light.withValues(alpha: 0.65),
                         fontSize: AppFontSize.body(context),
                       ),
                     ),
@@ -100,7 +100,7 @@ class LoansScreen extends StatelessWidget {
                         _SummaryCard(
                           label: "Active Loans",
                           value: "${activeLoans.length}",
-                          valueColor: const Color(0xFF2563B0),
+                          valueColor: AppColors.blueButton,
                         ),
                         const SizedBox(width: 10),
                         _SummaryCard(
@@ -152,7 +152,7 @@ class LoansScreen extends StatelessWidget {
                         _MenuCard(
                           icon: Icons.account_balance_outlined,
                           iconBg: AppColors.light,
-                          iconColor: const Color(0xFF2563B0),
+                          iconColor: AppColors.blueButton,
                           title: "My Loans",
                           subtitle: "View active & closed loans",
                           badge: activeLoans.isNotEmpty
@@ -218,7 +218,7 @@ class _SummaryCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.light,
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
@@ -280,7 +280,7 @@ class _MenuCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+      color: AppColors.light,
       borderRadius: BorderRadius.circular(16),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
@@ -374,10 +374,10 @@ class _PromoBanner extends StatelessWidget {
             width: 36,
             height: 36,
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.15),
+              color: AppColors.light.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: const Icon(Icons.percent, color: Colors.white, size: 18),
+            child: const Icon(Icons.percent, color: AppColors.light, size: 18),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -387,7 +387,7 @@ class _PromoBanner extends StatelessWidget {
                 Text(
                   "Special offer: 8.5% p.a.",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppColors.light,
                     fontWeight: FontWeight.w600,
                     fontSize: AppFontSize.body(context),
                   ),
@@ -396,7 +396,7 @@ class _PromoBanner extends StatelessWidget {
                 Text(
                   "Home loans till June 30",
                   style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.65),
+                    color: AppColors.light.withValues(alpha: 0.65),
                     fontSize: AppFontSize.small(context),
                   ),
                 ),
@@ -407,13 +407,13 @@ class _PromoBanner extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.2),
+              color: AppColors.light.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               "Apply →",
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.light,
                 fontSize: AppFontSize.small(context),
                 fontWeight: FontWeight.w600,
               ),

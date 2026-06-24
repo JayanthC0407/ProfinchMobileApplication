@@ -10,8 +10,6 @@ import '../widgets/transaction_filter_bar.dart';
 import '../widgets/transaction_summary_card.dart';
 import '../widgets/category_filter_sheet.dart';
 
-import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
-
 class TransactionHistoryScreen extends StatelessWidget {
   const TransactionHistoryScreen({super.key});
 

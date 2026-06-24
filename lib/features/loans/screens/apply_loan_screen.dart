@@ -365,27 +365,27 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
 
                                 child: Icon(
                                   Icons.check,
-                                  color: Colors.white,
+                                  color: AppColors.light,
                                   size: 42,
                                 ),
                               ),
 
                               const SizedBox(height: 20),
 
-                              const Text(
+                              Text(
                                 "Success",
                                 style: TextStyle(
-                                  fontSize: 24,
+                                  fontSize: AppFontSize.xl(context),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
 
                               const SizedBox(height: 10),
 
-                              const Text(
+                              Text(
                                 "Loan Applied Successfully",
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 15),
+                                style: TextStyle(fontSize: AppFontSize.medium(context)),
                               ),
 
                               const SizedBox(height: 24),
@@ -395,9 +395,9 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
 
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFF2563B0),
+                                    backgroundColor: AppColors.blueButton,
 
-                                    foregroundColor: Colors.white,
+                                    foregroundColor: AppColors.light,
 
                                     padding: const EdgeInsets.symmetric(
                                       vertical: 14,
