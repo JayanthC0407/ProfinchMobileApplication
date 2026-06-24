@@ -42,6 +42,38 @@ class _AccountStatementScreenState extends State<AccountStatementScreen> {
         .toList();
   }
 
+  Map<String, double> _computeRunningBalances() {
+    // All transactions for this account, oldest first
+    final allForAccount =
+        TransactionProvider.instance.allTransactionsSorted
+            .where((t) => t.accountId == widget.account.id)
+            .toList()
+          ..sort((a, b) => a.date.compareTo(b.date));
+
+    if (allForAccount.isEmpty) return {};
+
+    double runningBalance = widget.account.availableBalance;
+    for (final t in allForAccount.reversed) {
+      if (t.type == TransactionType.credit) {
+        runningBalance -= t.amount;
+      } else {
+        runningBalance += t.amount;
+      }
+    }
+
+    final computed = <String, double>{};
+    for (final t in allForAccount) {
+      if (t.type == TransactionType.credit) {
+        runningBalance += t.amount;
+      } else {
+        runningBalance -= t.amount;
+      }
+      computed[t.id] = runningBalance;
+    }
+
+    return computed;
+  }
+
   Future<void> _pickDate({required bool isFrom}) async {
     final initial = isFrom ? _fromDate : _toDate;
     final picked = await showDatePicker(
@@ -113,6 +145,12 @@ class _AccountStatementScreenState extends State<AccountStatementScreen> {
       //   ₹ (U+20B9 rupee)    → "Rs."  (replaced only in PDF, not in UI)
       String rs(double amount) => 'Rs. ${amount.toStringAsFixed(2)}';
 
+      // Use computed balances — not the stale t.balanceAfter values
+      final balanceMap = _computeRunningBalances();
+      // PDF shows oldest-first so running balance reads top-to-bottom
+      final txnOldestFirst = List<TransactionModel>.from(transactions)
+        ..sort((a, b) => a.date.compareTo(b.date));
+
       final doc = pw.Document();
       doc.addPage(
         pw.MultiPage(
@@ -133,6 +171,10 @@ class _AccountStatementScreenState extends State<AccountStatementScreen> {
               'Period   : ${_formatDate(_fromDate)} to ${_formatDate(_toDate)}',
               style: baseStyle,
             ),
+            pw.Text(
+              'Current Balance : Rs. ${widget.account.availableBalance.toStringAsFixed(2)}',
+              style: boldStyle,
+            ),
             pw.SizedBox(height: 16),
             pw.Table.fromTextArray(
               headers: ['Date', 'Description', 'Type', 'Amount', 'Balance'],
@@ -141,17 +183,15 @@ class _AccountStatementScreenState extends State<AccountStatementScreen> {
               headerDecoration: const pw.BoxDecoration(
                 color: PdfColors.blueGrey100,
               ),
-              data: transactions
-                  .map(
-                    (t) => [
+              data: txnOldestFirst
+                .map((t) => [
                       _formatDate(t.date),
                       t.title,
                       t.type == TransactionType.credit ? 'CR' : 'DR',
                       rs(t.amount),
-                      rs(t.balanceAfter),
-                    ],
-                  )
-                  .toList(),
+                      rs(balanceMap[t.id] ?? widget.account.availableBalance),
+                    ])
+                .toList(),
             ),
           ],
         ),
@@ -206,6 +246,7 @@ class _AccountStatementScreenState extends State<AccountStatementScreen> {
   @override
   Widget build(BuildContext context) {
     final transactions = _filteredTransactions;
+    final balanceMap = _computeRunningBalances();
     final totalCredit = transactions
         .where((t) => t.type == TransactionType.credit)
         .fold(0.0, (sum, t) => sum + t.amount);
@@ -394,6 +435,7 @@ class _AccountStatementScreenState extends State<AccountStatementScreen> {
                         transaction: t,
                         amountColor: _amountColor(t.type),
                         formatDate: _formatDate,
+                        computedBalance: balanceMap[t.id],
                       ),
                     ),
                 ],
@@ -574,11 +616,13 @@ class _StatementRow extends StatelessWidget {
   final TransactionModel transaction;
   final Color amountColor;
   final String Function(DateTime) formatDate;
+  final double? computedBalance;
 
   const _StatementRow({
     required this.transaction,
     required this.amountColor,
     required this.formatDate,
+    this.computedBalance,
   });
 
   @override
@@ -628,7 +672,7 @@ class _StatementRow extends StatelessWidget {
               ),
               const SizedBox(height: 2),
               Text(
-                'Bal: ₹ ${transaction.balanceAfter.toStringAsFixed(2)}',
+                'Bal: ₹ ${(computedBalance ?? transaction.balanceAfter).toStringAsFixed(2)}',
                 style: AppTextStyles.caption(context),
               ),
             ],

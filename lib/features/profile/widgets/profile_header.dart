@@ -1,71 +1,188 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 
 class ProfileHeader extends StatelessWidget {
-
   final String username;
   final String email;
+  final bool isKycVerified;
+  final String accountType;
 
   const ProfileHeader({
     super.key,
     required this.username,
     required this.email,
+    this.isKycVerified = false,
+    this.accountType = '',
   });
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
-      padding: const EdgeInsets.all(24),
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(20, 28, 20, 24),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(28),
-        gradient: const LinearGradient(
-          colors: [
-            Color(0xff001F8B),
-            Color(0xff0052FF),
-          ],
+        color: const Color(0xFF1E2640),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: const Color(0xFF2E3A57),
+          width: 1,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.3),
+            blurRadius: 16,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
-      child: Row(
+      child: Column(
         children: [
+          // ── Avatar with gradient ring ──────────────────────────
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              // Outer gradient ring
+              Container(
+                width: 88,
+                height: 88,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF4A90D9), Color(0xFF001F8B)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+              ),
+              // White gap
+              Container(
+                width: 82,
+                height: 82,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF1E2640),
+                ),
+              ),
+              // Avatar
+              Container(
+                width: 76,
+                height: 76,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Color(0xFF2A3550),
+                ),
+                child: const Icon(
+                  Icons.person_rounded,
+                  size: 40,
+                  color: Color(0xFF4A90D9),
+                ),
+              ),
+              // KYC badge
+              if (isKycVerified)
+                Positioned(
+                  bottom: 2,
+                  right: 2,
+                  child: Container(
+                    width: 22,
+                    height: 22,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF4CD964),
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: const Color(0xFF1E2640),
+                        width: 2,
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.check,
+                      size: 12,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+            ],
+          ),
 
-          const CircleAvatar(
-            radius: 34,
-            backgroundColor: Colors.white,
-            child: Icon(
-              Icons.person,
-              size: 38,
-              color: Colors.blue,
+          const SizedBox(height: 16),
+
+          // ── Name ───────────────────────────────────────────────
+          Text(
+            username,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: AppFontSize.xl(context),
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.2,
             ),
           ),
 
-          const SizedBox(width: 18),
+          const SizedBox(height: 4),
 
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          // ── Email ──────────────────────────────────────────────
+          Text(
+            email,
+            style: TextStyle(
+              color: const Color(0xFF8A9BB5),
+              fontSize: AppFontSize.small(context),
+            ),
+          ),
 
-                Text(
-                  username,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: RT.fs(context, 24),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
+          const SizedBox(height: 16),
 
-                Text(
-                  email,
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: RT.fs(context, 15),
-                  ),
+          // ── KYC + Account type chips ───────────────────────────
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildChip(
+                icon: isKycVerified
+                    ? Icons.verified_rounded
+                    : Icons.pending_rounded,
+                label: isKycVerified ? 'KYC Verified' : 'KYC Pending',
+                color: isKycVerified
+                    ? const Color(0xFF4CD964)
+                    : const Color(0xFFFFA500),
+              ),
+              if (accountType.isNotEmpty) ...[
+                const SizedBox(width: 10),
+                _buildChip(
+                  icon: Icons.account_balance_rounded,
+                  label: accountType,
+                  color: const Color(0xFF4A90D9),
                 ),
               ],
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildChip({
+    required IconData icon,
+    required String label,
+    required Color color,
+  }) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withOpacity(0.35), width: 1),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 13, color: color),
+          const SizedBox(width: 5),
+          Text(
+            label,
+            style: TextStyle(
+              color: color,
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.2,
             ),
-          )
+          ),
         ],
       ),
     );

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 
 class BeneficiaryTransferTile extends StatelessWidget {
   final String name;
@@ -6,29 +8,36 @@ class BeneficiaryTransferTile extends StatelessWidget {
   final String accountNumber;
   final VoidCallback onTap;
 
+  /// When cooling is active this is > 0. The tile renders a lock badge
+  /// and the caller blocks navigation. Pass 0 for unrestricted beneficiaries.
+  final int coolingSecondsRemaining;
+
   const BeneficiaryTransferTile({
     super.key,
     required this.name,
     required this.type,
     required this.accountNumber,
     required this.onTap,
+    this.coolingSecondsRemaining = 0,
   });
+
+  bool get _isCooling => coolingSecondsRemaining > 0;
 
   Color get _typeColor {
     switch (type) {
-      case 'PBI': return const Color(0xFF2563B0);
-      case 'LOCAL': return const Color(0xFF0D9488);
-      case 'INTERNATIONAL': return const Color(0xFFB45309);
-      default: return const Color(0xFF4338CA);
+      case 'PBI':           return AppColors.blueButton;
+      case 'LOCAL':         return AppColors.success;
+      case 'INTERNATIONAL': return AppColors.warningDark;
+      default:              return const Color(0xFF4338CA);
     }
   }
 
   Color get _typeBg {
     switch (type) {
-      case 'PBI': return const Color(0xFFDBEAFE);
-      case 'LOCAL': return const Color(0xFFCCFBF1);
+      case 'PBI':           return const Color(0xFFDBEAFE);
+      case 'LOCAL':         return const Color(0xFFCCFBF1);
       case 'INTERNATIONAL': return const Color(0xFFFEF3C7);
-      default: return const Color(0xFFE0E7FF);
+      default:              return const Color(0xFFE0E7FF);
     }
   }
 
@@ -37,12 +46,17 @@ class BeneficiaryTransferTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
       decoration: BoxDecoration(
-        color: Colors.white,
+        // Dimmed background while cooling
+        color: _isCooling ? AppColors.surfaceLight : AppColors.light,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFE5E7EB)),
+        border: Border.all(
+          color: _isCooling
+              ? AppColors.warning.withValues(alpha: 0.4)
+              : AppColors.grey200,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha:0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -58,67 +72,101 @@ class BeneficiaryTransferTile extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             child: Row(
               children: [
+                // Avatar
                 Container(
                   width: 42,
                   height: 42,
                   decoration: BoxDecoration(
-                    color: _typeBg,
+                    color: _isCooling
+                        ? AppColors.warning.withValues(alpha: 0.12)
+                        : _typeBg,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(
-                    child: Text(
-                      name[0].toUpperCase(),
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        color: _typeColor,
-                      ),
-                    ),
+                    child: _isCooling
+                        ? Icon(Icons.lock_clock_outlined,
+                            size: 20,
+                            color: AppColors.warning)
+                        : Text(
+                            name[0].toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold,
+                              color: _typeColor,
+                            ),
+                          ),
                   ),
                 ),
                 const SizedBox(width: 12),
+
+                // Name + account / cooling label
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         name,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: Color(0xFF111827),
-                        ),
+                        style: AppTextStyles.bodyBold(context,
+                            color: _isCooling
+                                ? AppColors.textSecondary
+                                : AppColors.textDark),
                       ),
                       const SizedBox(height: 2),
-                      Text(
-                        "••••  ${accountNumber.substring(accountNumber.length - 4)}",
-                        style: const TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF9CA3AF),
-                          letterSpacing: 1,
-                        ),
-                      ),
+                      _isCooling
+                          ? Text(
+                              'Available in $coolingSecondsRemaining sec',
+                              style: AppTextStyles.small(context,
+                                  color: AppColors.warning),
+                            )
+                          : Text(
+                              '••••  ${accountNumber.substring(accountNumber.length - 4)}',
+                              style: AppTextStyles.small(context)
+                                  .copyWith(letterSpacing: 1),
+                            ),
                     ],
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: _typeBg,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    type,
-                    style: TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: _typeColor,
+
+                // Type badge or lock badge
+                if (_isCooling)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColors.warningLight,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      'Cooling',
+                      style: AppTextStyles.smallBold(context,
+                          color: AppColors.warningDark),
+                    ),
+                  )
+                else
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: _typeBg,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      type,
+                      style: AppTextStyles.smallBold(context,
+                          color: _typeColor),
                     ),
                   ),
-                ),
+
                 const SizedBox(width: 8),
-                Icon(Icons.arrow_forward_ios_rounded,
-                    size: 14, color: Colors.grey.shade400),
+                Icon(
+                  _isCooling
+                      ? Icons.lock_outline_rounded
+                      : Icons.arrow_forward_ios_rounded,
+                  size: 14,
+                  color: _isCooling
+                      ? AppColors.warning
+                      : AppColors.grey400,
+                ),
               ],
             ),
           ),
