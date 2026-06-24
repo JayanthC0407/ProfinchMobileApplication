@@ -50,7 +50,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                 : Colors.red.shade600;
 
     return Scaffold(
-      backgroundColor: AppColors.lightblue,
+      backgroundColor: AppColors.lightBlue,
       appBar: AppBar(
         backgroundColor: AppColors.primaryDark,
         elevation: 0,
@@ -159,6 +159,7 @@ class _SecuritySettingsScreenState extends State<SecuritySettingsScreen> {
                       await authProvider.checkBiometricAvailable();
                   if (!mounted) return;
                   if (!available) {
+                    // ignore: use_build_context_synchronously
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content:
                           const Text('Biometric not available on this device'),
