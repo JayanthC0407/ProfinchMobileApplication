@@ -308,6 +308,7 @@ class _EStatementSheetState extends State<_EStatementSheet> {
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: _months.length,
+                // ignore: unnecessary_underscores
                 separatorBuilder: (_, __) => const SizedBox(width: 8),
                 itemBuilder: (_, i) {
                   final selected = i == _selectedIndex;

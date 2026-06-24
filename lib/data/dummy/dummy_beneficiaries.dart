@@ -1,11 +1,9 @@
 import '../models/beneficiary_model.dart';
 
 class DummyBeneficiaries {
-
   DummyBeneficiaries._();
 
-  static final List<BeneficiaryModel>
-      beneficiaries = [
+  static final List<BeneficiaryModel> beneficiaries = [
 
     BeneficiaryModel(
       id: 'BEN001',
@@ -16,6 +14,7 @@ class DummyBeneficiaries {
       bankName: 'ProFinch Bank',
       ifscCode: 'PRFN0000017',
       isVerified: true,
+      addedAt: DateTime(2000), // pre-existing — cooling never applies
     ),
 
     BeneficiaryModel(
@@ -27,6 +26,7 @@ class DummyBeneficiaries {
       bankName: 'HDFC Bank',
       ifscCode: 'HDFC0001234',
       isVerified: true,
+      addedAt: DateTime(2000), // pre-existing — cooling never applies
     ),
   ];
 }
