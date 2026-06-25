@@ -34,6 +34,10 @@ dependencies:
   provider: ^6.1.2
   intl: ^0.19.0
   qr_flutter: ^4.1.0
+  local_auth: ^2.3.0
+  pdf: ^3.10.8
+  path_provider: ^2.1.2
+  file_saver: ^0.2.14
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -67,6 +71,8 @@ flutter:
     - images/loginPhoneBg.jpg
     - images/logoPhone.jpg
     - images/avatar.jpg
+    - assets/fonts/NotoSans-Regular.ttf
+    - assets/fonts/NotoSans-Bold.ttf
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

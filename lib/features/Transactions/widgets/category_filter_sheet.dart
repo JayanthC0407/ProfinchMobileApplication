@@ -30,7 +30,8 @@ class CategoryFilterSheet extends StatelessWidget {
     (TransactionCategory.refund,      'Refund',     Icons.replay_outlined),
     (TransactionCategory.loan,        'Loan',       Icons.payments_outlined),
     (TransactionCategory.termDeposit, 'Term Dep.',  Icons.savings_outlined),
-    (TransactionCategory.wallet,      'Wallet',     Icons.account_balance_wallet_outlined), // ← NEW
+    (TransactionCategory.wallet,      'Wallet',     Icons.account_balance_wallet_outlined),
+    (TransactionCategory.insurance,   'Insurance',  Icons.health_and_safety_outlined), // ← NEW
   ];
 
   @override

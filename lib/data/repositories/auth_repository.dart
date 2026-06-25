@@ -21,4 +21,13 @@ class AuthRepository {
       (user) => user.email == email && user.password == password,
     );
   }
+
+  /// Looks up a user by email — used to restore session after PIN/Pattern login.
+  UserModel? getUserByEmail(String email) {
+    try {
+      return DummyUsers.allUsers.firstWhere((u) => u.email == email);
+    } catch (_) {
+      return null;
+    }
+  }
 }

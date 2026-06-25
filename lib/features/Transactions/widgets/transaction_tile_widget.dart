@@ -27,7 +27,8 @@ class TransactionTileWidget extends StatelessWidget {
       case TransactionCategory.refund:      return Icons.replay_outlined;
       case TransactionCategory.loan:        return Icons.payments_outlined;
       case TransactionCategory.termDeposit: return Icons.savings_outlined;
-      case TransactionCategory.wallet:      return Icons.account_balance_wallet_outlined; // ← NEW
+      case TransactionCategory.wallet:      return Icons.account_balance_wallet_outlined; 
+      case TransactionCategory.insurance:   return Icons.health_and_safety_outlined;// ← NEW
     }
   }
 
@@ -46,7 +47,8 @@ class TransactionTileWidget extends StatelessWidget {
       case TransactionCategory.refund:      return const Color(0xFFE8F5E9);
       case TransactionCategory.loan:        return const Color(0xFFFBE9E7);
       case TransactionCategory.termDeposit: return const Color(0xFFE0F2F1);
-      case TransactionCategory.wallet:      return const Color(0xFFEDE7F6); // ← NEW
+      case TransactionCategory.wallet:      return const Color(0xFFEDE7F6); 
+       case TransactionCategory.insurance:   return const Color(0xFFE8F4FD);// ← NEW
     }
   }
 
@@ -65,7 +67,8 @@ class TransactionTileWidget extends StatelessWidget {
       case TransactionCategory.refund:      return Colors.green.shade700;
       case TransactionCategory.loan:        return Colors.deepOrange.shade700;
       case TransactionCategory.termDeposit: return Colors.teal.shade700;
-      case TransactionCategory.wallet:      return Colors.deepPurple.shade700; // ← NEW
+      case TransactionCategory.wallet:      return Colors.deepPurple.shade700;
+      case TransactionCategory.insurance:   return Colors.lightBlue.shade700; // ← NEW
     }
   }
 
@@ -84,7 +87,8 @@ class TransactionTileWidget extends StatelessWidget {
       case TransactionCategory.refund:      return 'Refund';
       case TransactionCategory.loan:        return 'Loan';
       case TransactionCategory.termDeposit: return 'Term Deposit';
-      case TransactionCategory.wallet:      return 'Wallet';  // ← NEW
+      case TransactionCategory.wallet:      return 'Wallet';
+      case TransactionCategory.insurance:   return 'Insurance';  // ← NEW
     }
   }
 

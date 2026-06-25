@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/routes/app_routes.dart';
@@ -19,8 +21,24 @@ class TransferMoneyScreen extends StatefulWidget {
 class _TransferMoneyScreenState extends State<TransferMoneyScreen> {
   String searchQuery = "";
   String _activeFilter = "ALL";
+  Timer? _ticker;
 
   final List<String> _filters = ["ALL", "PBI", "LOCAL", "INTERNATIONAL"];
+
+  @override
+  void initState() {
+    super.initState();
+    // Rebuild every second so cooling countdowns stay live
+    _ticker = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _ticker?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +241,24 @@ class _TransferMoneyScreenState extends State<TransferMoneyScreen> {
                         name: b.nickname,
                         type: b.beneficiaryType,
                         accountNumber: b.accountNumber,
+                        coolingSecondsRemaining: b.coolingSecondsRemaining,
                         onTap: () {
+                          // Block transfer until cooling period elapses
+                          if (!b.isTransferAllowed) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'Transfer to ${b.nickname} is locked for '
+                                  '${b.coolingSecondsRemaining} more second'
+                                  '${b.coolingSecondsRemaining == 1 ? '' : 's'}. '
+                                  'This is a security cooling period.',
+                                ),
+                                backgroundColor: AppColors.warningDark,
+                                duration: const Duration(seconds: 3),
+                              ),
+                            );
+                            return;
+                          }
                           if (b.beneficiaryType == "PBI") {
                             Navigator.push(
                               context,

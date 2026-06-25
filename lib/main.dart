@@ -12,6 +12,11 @@ import 'package:profinch_mobile_application/features/cards/provider/card_provide
 import 'package:profinch_mobile_application/features/cards/screens/apply_card_screen.dart';
 import 'package:profinch_mobile_application/features/cards/screens/card_screen.dart';
 import 'package:profinch_mobile_application/features/accounts/screens/accounts_screen.dart';
+import 'package:profinch_mobile_application/features/insurance/provider/insurance_provider.dart';
+import 'package:profinch_mobile_application/features/insurance/screens/buy_insurance_screen.dart';
+import 'package:profinch_mobile_application/features/insurance/screens/insurance_claims_screen.dart';
+import 'package:profinch_mobile_application/features/insurance/screens/insurance_screen.dart';
+import 'package:profinch_mobile_application/features/insurance/screens/my_policies_screen.dart';
 import 'package:profinch_mobile_application/features/loans/provider/loan_provider.dart';
 import 'package:profinch_mobile_application/features/loans/screens/apply_loan_screen.dart';
 import 'package:profinch_mobile_application/features/loans/screens/emi_calculator_screen.dart';
@@ -59,6 +64,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => LoanProvider()),
         ChangeNotifierProvider(create: (_) => TransferProvider()),
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
+        ChangeNotifierProvider(create: (_) => InsuranceProvider()),
       ],
       child: const MyApp(),
     ),
@@ -129,6 +135,12 @@ class MyApp extends StatelessWidget {
         AppRoutes.bills: (context) => const BillsScreen(),
 
         AppRoutes.notifications: (context) => const NotificationScreen(),
+        
+         AppRoutes.insurance:       (context) => const InsuranceScreen(),
+        AppRoutes.myPolicies:      (context) => const MyPoliciesScreen(),
+        AppRoutes.buyInsurance:    (context) => const BuyInsuranceScreen(),
+        AppRoutes.insuranceClaims: (context) => const InsuranceClaimsScreen(),
+
       },
     );
   }

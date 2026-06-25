@@ -2,28 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:profinch_mobile_application/data/models/beneficiary_model.dart';
-import 'package:profinch_mobile_application/features/Beneficiaries/screens/beneficiary_details_screen.dart';
-import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
 import 'package:profinch_mobile_application/features/Beneficiaries/provider/beneficiary_provider.dart';
 import 'package:provider/provider.dart';
 
-class AddBeneficiaryScreen extends StatefulWidget {
-  final String beneficiaryType;
+class EditBeneficiaryScreen extends StatefulWidget {
+  final BeneficiaryModel beneficiary;
 
-  const AddBeneficiaryScreen({super.key, required this.beneficiaryType});
+  const EditBeneficiaryScreen({super.key, required this.beneficiary});
 
   @override
-  State<AddBeneficiaryScreen> createState() => _AddBeneficiaryScreenState();
+  State<EditBeneficiaryScreen> createState() => _EditBeneficiaryScreenState();
 }
 
-class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
-  final _nicknameCtrl = TextEditingController();
-  final _accountCtrl  = TextEditingController();
-  final _bankCtrl     = TextEditingController();
-  final _ifscCtrl     = TextEditingController();
-  final _countryCtrl  = TextEditingController();
-  final _ibanCtrl     = TextEditingController();
-  final _swiftCtrl    = TextEditingController();
+class _EditBeneficiaryScreenState extends State<EditBeneficiaryScreen> {
+  late final TextEditingController _nicknameCtrl;
+  late final TextEditingController _accountCtrl;
+  late final TextEditingController _bankCtrl;
+  late final TextEditingController _ifscCtrl;
+  late final TextEditingController _countryCtrl;
+  late final TextEditingController _ibanCtrl;
+  late final TextEditingController _swiftCtrl;
 
   String? _nicknameError;
   String? _accountError;
@@ -32,6 +30,19 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
   String? _countryError;
   String? _ibanError;
   String? _swiftError;
+
+  @override
+  void initState() {
+    super.initState();
+    final b = widget.beneficiary;
+    _nicknameCtrl = TextEditingController(text: b.nickname);
+    _accountCtrl  = TextEditingController(text: b.accountNumber);
+    _bankCtrl     = TextEditingController(text: b.bankName);
+    _ifscCtrl     = TextEditingController(text: b.ifscCode);
+    _countryCtrl  = TextEditingController(text: b.country ?? '');
+    _ibanCtrl     = TextEditingController(text: b.ibanNumber ?? '');
+    _swiftCtrl    = TextEditingController(text: b.swiftCode ?? '');
+  }
 
   @override
   void dispose() {
@@ -45,7 +56,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
     super.dispose();
   }
 
-  String get _type => widget.beneficiaryType;
+  String get _type => widget.beneficiary.beneficiaryType;
 
   bool _validate() {
     setState(() {
@@ -72,40 +83,28 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
     ].every((e) => e == null);
   }
 
-  void _addBeneficiary() {
+  void _save() {
     if (!_validate()) return;
 
-    final authProvider =
-        Provider.of<AuthProvider>(context, listen: false);
-    final beneficiaryProvider =
-        Provider.of<BeneficiaryProvider>(context, listen: false);
-
-    final newBeneficiary = BeneficiaryModel(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      userId: authProvider.currentUser!.id,
+    Provider.of<BeneficiaryProvider>(context, listen: false).editBeneficiary(
+      widget.beneficiary.id,
       nickname: _nicknameCtrl.text.trim(),
-      beneficiaryType: _type,
       accountNumber: _accountCtrl.text.trim(),
       bankName: _bankCtrl.text.trim(),
       ifscCode: _ifscCtrl.text.trim(),
       ibanNumber: _ibanCtrl.text.trim().isEmpty ? null : _ibanCtrl.text.trim(),
       swiftCode: _swiftCtrl.text.trim().isEmpty ? null : _swiftCtrl.text.trim(),
       country: _countryCtrl.text.trim().isEmpty ? null : _countryCtrl.text.trim(),
-      isVerified: true,
-      // addedAt defaults to DateTime.now() — cooling period starts here
-      coolingSeconds: 30,
     );
 
-    beneficiaryProvider.addBeneficiary(newBeneficiary);
-
-    // Replace this screen with details so the user sees the countdown
-    // immediately after adding. Using pushReplacement so back goes to the list.
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => BeneficiaryDetailsScreen(beneficiary: newBeneficiary),
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Beneficiary updated'),
+        backgroundColor: AppColors.success,
+        duration: Duration(seconds: 2),
       ),
     );
+    Navigator.pop(context);
   }
 
   Widget _field({
@@ -115,6 +114,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
     String? hint,
     String? errorText,
     TextInputType keyboardType = TextInputType.text,
+    bool readOnly = false,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,20 +130,25 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
         const SizedBox(height: 6),
         Container(
           decoration: BoxDecoration(
-            color: AppColors.light,
+            color: readOnly ? AppColors.surfaceLight : AppColors.light,
             borderRadius: BorderRadius.circular(12),
             border: Border.all(
-              color: errorText != null ? AppColors.error : AppColors.grey300,
+              color: errorText != null
+                  ? AppColors.error
+                  : AppColors.grey300,
             ),
           ),
           child: TextField(
             controller: controller,
             keyboardType: keyboardType,
+            readOnly: readOnly,
             style: AppTextStyles.body(context),
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle: AppTextStyles.body(context, color: AppColors.grey400),
-              prefixIcon: Icon(icon, color: AppColors.grey400, size: 18),
+              hintStyle: AppTextStyles.body(context,
+                  color: AppColors.grey400),
+              prefixIcon:
+                  Icon(icon, color: AppColors.grey400, size: 18),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(
                   horizontal: 14, vertical: 14),
@@ -154,7 +159,8 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 6, left: 4),
             child: Text(errorText,
-                style: AppTextStyles.small(context, color: AppColors.error)),
+                style: AppTextStyles.small(context,
+                    color: AppColors.error)),
           ),
       ],
     );
@@ -178,8 +184,8 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14)),
               ),
-              onPressed: _addBeneficiary,
-              child: Text('Add Beneficiary',
+              onPressed: _save,
+              child: Text('Save Changes',
                   style: AppTextStyles.labelBold(context,
                       color: AppColors.light)),
             ),
@@ -210,51 +216,24 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 4, 8, 0),
                     child: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: AppColors.light),
+                      icon: const Icon(Icons.arrow_back,
+                          color: AppColors.light),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
                     child: Text(
-                      'Add $_type Beneficiary',
+                      'Edit Beneficiary',
                       style: AppTextStyles.whiteHeading(context),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 24),
                     child: Text(
-                      'Fill in the details below',
+                      'Update details for ${widget.beneficiary.nickname}',
                       style: AppTextStyles.whiteBody(context,
                           color: AppColors.light.withValues(alpha: 0.7)),
-                    ),
-                  ),
-                  // Cooling period info banner
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: AppColors.light.withValues(alpha: 0.15),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                            color: AppColors.light.withValues(alpha: 0.2)),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.timer_outlined,
-                              color: AppColors.light, size: 18),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              '30-second cooling period applies after adding. '
-                              'Transfers are enabled once it elapses.',
-                              style: AppTextStyles.small(context,
-                                  color: AppColors.light),
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                 ],
@@ -275,6 +254,25 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                 ),
                 child: Column(
                   children: [
+                    // Type badge — read-only, shown for context
+                    Row(
+                      children: [
+                        Text('Type  ', style: AppTextStyles.bodySecondary(context)),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(_type,
+                              style: AppTextStyles.smallBold(context,
+                                  color: AppColors.primary)),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+
                     _field(
                       controller: _nicknameCtrl,
                       label: 'Nickname',
@@ -340,6 +338,32 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                         errorText: _swiftError,
                       ),
                     ],
+
+                    const SizedBox(height: 8),
+
+                    // Note about addedAt preservation
+                    Container(
+                      margin: const EdgeInsets.only(top: 12),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: AppColors.warningLight,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.info_outline,
+                              size: 16, color: AppColors.warningDark),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              'A 30-second cooling period applies after saving edits.',
+                              style: AppTextStyles.small(context,
+                                  color: AppColors.warningDark),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
