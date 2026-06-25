@@ -52,7 +52,7 @@ class _EmiCalculatorScreenState extends State<EmiCalculatorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           _CalcHeader(
@@ -173,12 +173,12 @@ class _CalcHeader extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.15),
+                color: AppColors.light.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
                 Icons.arrow_back_ios_new,
-                color: Colors.white,
+                color: AppColors.light,
                 size: 18,
               ),
             ),
@@ -199,7 +199,7 @@ class _CalcHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(subtitle,
-                    style: const TextStyle(color: Colors.white70)),
+                    style: TextStyle(color: AppColors.light.withValues(alpha: 0.7))),
               ],
             ),
           ),
@@ -222,7 +222,7 @@ class _InputCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: AppColors.light,
       shadowColor: Colors.blue.withValues(alpha: 0.15),
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -292,7 +292,7 @@ class _CalcButton extends StatelessWidget {
         child: Text(
           label,
           style: TextStyle(
-            color: Colors.white,
+            color: AppColors.light,
             fontSize: AppFontSize.medium(context),
             fontWeight: FontWeight.bold,
           ),
@@ -324,12 +324,12 @@ class _ResultHero extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(label, style: const TextStyle(color: Colors.white70)),
+          Text(label, style: TextStyle(color: AppColors.light.withValues(alpha:0.7))),
           const SizedBox(height: 8),
           Text(
             value,
             style: TextStyle(
-              color: Colors.white,
+              color: AppColors.light,
               fontSize: AppFontSize.xxl(context),
               fontWeight: FontWeight.bold,
             ),

@@ -163,8 +163,7 @@ class _BeneficiaryDetailsScreenState extends State<BeneficiaryDetailsScreen> {
       decoration: BoxDecoration(
         color: AppColors.warningLight,
         borderRadius: BorderRadius.circular(14),
-        border:
-            Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
+        border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -201,20 +200,16 @@ class _BeneficiaryDetailsScreenState extends State<BeneficiaryDetailsScreen> {
             child: LinearProgressIndicator(
               value: progress,
               minHeight: 6,
-              backgroundColor:
-                  AppColors.warning.withValues(alpha: 0.2),
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                  AppColors.warning),
+              backgroundColor: AppColors.warning.withValues(alpha: 0.2),
+              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.warning),
             ),
           ),
           const SizedBox(height: 6),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Added',
-                  style: AppTextStyles.caption(context)),
-              Text('Transfer allowed',
-                  style: AppTextStyles.caption(context)),
+              Text('Added', style: AppTextStyles.caption(context)),
+              Text('Transfer allowed', style: AppTextStyles.caption(context)),
             ],
           ),
         ],
@@ -241,8 +236,8 @@ class _BeneficiaryDetailsScreenState extends State<BeneficiaryDetailsScreen> {
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: Text('Cancel',
-                style:
-                    AppTextStyles.body(context, color: AppColors.textSecondary)),
+                style: AppTextStyles.body(context,
+                    color: AppColors.textSecondary)),
           ),
           TextButton(
             onPressed: () {
@@ -303,7 +298,6 @@ class _BeneficiaryDetailsScreenState extends State<BeneficiaryDetailsScreen> {
                           onPressed: () => Navigator.pop(context),
                         ),
                         const Spacer(),
-                        // Edit button
                         TextButton.icon(
                           onPressed: () async {
                             await Navigator.push(
@@ -411,7 +405,6 @@ class _BeneficiaryDetailsScreenState extends State<BeneficiaryDetailsScreen> {
                           'Verified',
                           b.isVerified ? '✓ Verified' : 'Pending',
                         ),
-                        // Remove the last divider's bottom line visually
                         const SizedBox(height: 4),
                       ],
                     ),
@@ -427,8 +420,7 @@ class _BeneficiaryDetailsScreenState extends State<BeneficiaryDetailsScreen> {
                         foregroundColor: AppColors.error,
                         side: BorderSide(
                             color: AppColors.error.withValues(alpha: 0.4)),
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 14),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14)),
                       ),

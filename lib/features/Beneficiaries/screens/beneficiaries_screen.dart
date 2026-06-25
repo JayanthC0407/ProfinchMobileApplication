@@ -1,7 +1,9 @@
 // ignore_for_file: unused_import
 
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +38,7 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
             .toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           // ── Header ──────────────────────────────────────────────────
@@ -45,7 +47,7 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFF1A3A6B), Color(0xFF2563B0)],
+                colors: [AppColors.navy, AppColors.blueButton],
               ),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(28),
@@ -62,13 +64,13 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                     child: Row(
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          icon: const Icon(Icons.arrow_back, color: AppColors.light),
                           onPressed: () => Navigator.pop(context),
                         ),
                         const Spacer(),
                         IconButton(
                           icon: const Icon(Icons.notifications_outlined,
-                              color: Colors.white),
+                              color: AppColors.light),
                           onPressed: () {},
                         ),
                       ],
@@ -79,7 +81,7 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                     child: Text(
                       "Beneficiaries",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: AppColors.light,
                         fontSize: RT.fs(context, 24),
                         fontWeight: FontWeight.bold,
                         letterSpacing: -0.4,
@@ -90,8 +92,7 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                     child: Text(
                       "${allBeneficiaries.length} saved recipient${allBeneficiaries.length == 1 ? '' : 's'}",
-                      style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.65), fontSize: AppFontSize.body(context)),
+                      style: AppTextStyles.whiteBody(context,color: AppColors.light.withValues(alpha: 0.65)),
                     ),
                   ),
                   // Transfer Money quick action inside header
@@ -103,10 +104,10 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                       child: Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha:0.15),
+                          color: AppColors.light.withValues(alpha:0.15),
                           borderRadius: BorderRadius.circular(14),
                           border:
-                              Border.all(color: Colors.white.withValues(alpha:0.2)),
+                              Border.all(color: AppColors.light.withValues(alpha:0.2)),
                         ),
                         child: Row(
                           children: [
@@ -114,11 +115,11 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                               width: 38,
                               height: 38,
                               decoration: BoxDecoration(
-                                color: Colors.white.withValues(alpha:0.2),
+                                color: AppColors.light.withValues(alpha:0.2),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: const Icon(Icons.swap_horiz_rounded,
-                                  color: Colors.white, size: 20),
+                                  color: AppColors.light, size: 20),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
@@ -128,21 +129,21 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                                   Text(
                                     "Transfer Money",
                                     style: TextStyle(
-                                        color: Colors.white,
+                                        color: AppColors.light,
                                         fontSize: AppFontSize.body(context),
                                         fontWeight: FontWeight.w600),
                                   ),
                                   Text(
                                     "Send to a beneficiary",
                                     style: TextStyle(
-                                        color: Colors.white.withValues(alpha:0.65),
+                                        color: AppColors.light.withValues(alpha:0.65),
                                         fontSize: AppFontSize.small(context)),
                                   ),
                                 ],
                               ),
                             ),
                             Icon(Icons.arrow_forward_ios_rounded,
-                                color: Colors.white.withValues(alpha: 0.7), size: 14),
+                                color: AppColors.light.withValues(alpha: 0.7), size: 14),
                           ],
                         ),
                       ),
@@ -169,13 +170,13 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                           horizontal: 14, vertical: 7),
                       decoration: BoxDecoration(
                         color: active
-                            ? const Color(0xFF2563B0)
-                            : Colors.white,
+                            ? AppColors.blueButton
+                            : AppColors.light,
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: active
-                              ? const Color(0xFF2563B0)
-                              : const Color(0xFFE5E7EB),
+                              ? AppColors.blueButton
+                              : AppColors.surface,
                         ),
                       ),
                       child: Text(
@@ -183,7 +184,7 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
                         style: TextStyle(
                           fontSize: AppFontSize.small(context),
                           fontWeight: FontWeight.w600,
-                          color: active ? Colors.white : Colors.grey.shade600,
+                          color: active ? AppColors.light : Colors.grey.shade600,
                         ),
                       ),
                     ),
@@ -241,8 +242,8 @@ class _BeneficiariesScreenState extends State<BeneficiariesScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: const Color(0xFF2563B0),
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.blueButton,
+        foregroundColor: AppColors.light,
         elevation: 4,
         onPressed: () =>
             Navigator.pushNamed(context, AppRoutes.beneficiaryType),

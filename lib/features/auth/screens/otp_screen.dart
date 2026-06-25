@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:profinch_mobile_application/shared/widgets/background_wrapper.dart';
 import 'package:profinch_mobile_application/shared/widgets/logo.dart';
@@ -146,16 +147,13 @@ class _OtpScreenState extends State<OtpScreen> {
                     style: TextStyle(
                       fontSize: RT.fs(context, 26),
                       fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                      color: AppColors.light,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     'Enter the 6-digit code sent to\n${widget.maskedDestination}',
-                    style: TextStyle(
-                      fontSize: AppFontSize.body(context),
-                      color: Colors.white.withValues(alpha: 0.8),
-                    ),
+                    style: AppTextStyles.whiteBody(context, color: AppColors.light.withValues(alpha: 0.8)),
                   ),
 
                   const SizedBox(height: 32),
@@ -176,7 +174,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           style: TextStyle(
                             fontSize: RT.fs(context, 20),
                             fontWeight: FontWeight.w700,
-                            color: Color(0xFF1A1A2E),
+                            color: AppColors.textPrimary,
                           ),
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly,
@@ -184,7 +182,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           decoration: InputDecoration(
                             counterText: '',
                             filled: true,
-                            fillColor: Colors.white,
+                            fillColor: AppColors.light,
                             contentPadding: EdgeInsets.zero,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
@@ -228,8 +226,7 @@ class _OtpScreenState extends State<OtpScreen> {
                         const SizedBox(width: 6),
                         Text(
                           'Incorrect OTP. Please try again.',
-                          style: TextStyle(
-                              fontSize: AppFontSize.body(context), color: Colors.red.shade300),
+                          style:AppTextStyles.body(context, color: Colors.red.shade300),
                         ),
                       ],
                     ),
@@ -245,7 +242,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       onPressed: _isVerifying ? null : _handleVerify,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryDark,
-                        foregroundColor: Colors.white,
+                        foregroundColor: AppColors.light,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -256,7 +253,7 @@ class _OtpScreenState extends State<OtpScreen> {
                               height: 22,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2.5,
-                                color: Colors.white,
+                                color: AppColors.light,
                               ),
                             )
                           : Text(
@@ -276,10 +273,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       children: [
                         Text(
                           "Didn't receive the code? ",
-                          style: TextStyle(
-                            fontSize: AppFontSize.body(context),
-                            color: Colors.white.withValues(alpha: 0.7),
-                          ),
+                          style: AppTextStyles.body(context, color: AppColors.light.withValues(alpha: 0.7)),
                         ),
                         GestureDetector(
                           onTap: _secondsLeft == 0 ? _handleResend : null,
@@ -291,8 +285,8 @@ class _OtpScreenState extends State<OtpScreen> {
                               fontSize: AppFontSize.body(context),
                               fontWeight: FontWeight.w600,
                               color: _secondsLeft == 0
-                                  ? Colors.white
-                                  : Colors.white.withValues(alpha: 0.5),
+                                  ? AppColors.light
+                                  : AppColors.light.withValues(alpha: 0.5),
                             ),
                           ),
                         ),

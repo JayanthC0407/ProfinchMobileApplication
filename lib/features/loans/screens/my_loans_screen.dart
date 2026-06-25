@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:provider/provider.dart';
 import '../../auth/provider/auth_provider.dart';
@@ -39,10 +40,10 @@ class _MyLoansScreenState extends State<MyLoansScreen>
     final closedLoans = loans.where((l) => l.status == 'CLOSED').toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF1A3A6B),
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.navy,
+        foregroundColor: AppColors.light,
         title: const Text(
           "My Loans",
           style: TextStyle(fontWeight: FontWeight.w600),
@@ -50,10 +51,10 @@ class _MyLoansScreenState extends State<MyLoansScreen>
         elevation: 0,
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: Colors.white,
+          indicatorColor: AppColors.light,
           indicatorWeight: 3,
-          labelColor: Colors.white,
-          unselectedLabelColor: Colors.white54,
+          labelColor: AppColors.light,
+          unselectedLabelColor: AppColors.light.withValues(alpha:0.54),
           labelStyle:  TextStyle(fontWeight: FontWeight.w600, fontSize: AppFontSize.body(context)),
           tabs: [
             Tab(text: "Active (${activeLoans.length})"),

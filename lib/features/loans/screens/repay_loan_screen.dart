@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
 import 'package:provider/provider.dart';
@@ -160,27 +161,27 @@ class _RepayLoanScreenState extends State<RepayLoanScreen> {
                               backgroundColor: Colors.green,
                               child: Icon(
                                 Icons.check,
-                                color: Colors.white,
+                                color: AppColors.light,
                                 size: 42,
                               ),
                             ),
 
                             const SizedBox(height: 20),
 
-                            const Text(
+                            Text(
                               "Payment Successful",
                               style: TextStyle(
-                                fontSize: 22,
+                                fontSize: AppFontSize.xl(context),
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
 
                             const SizedBox(height: 10),
 
-                            const Text(
+                            Text(
                               "EMI Paid Successfully",
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 14),
+                              style: TextStyle(fontSize: AppFontSize.body(context)),
                             ),
 
                             const SizedBox(height: 24),
@@ -193,7 +194,7 @@ class _RepayLoanScreenState extends State<RepayLoanScreen> {
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.green,
-                                  foregroundColor: Colors.white,
+                                  foregroundColor: AppColors.light,
                                   padding: const EdgeInsets.symmetric(
                                     vertical: 14,
                                   ),

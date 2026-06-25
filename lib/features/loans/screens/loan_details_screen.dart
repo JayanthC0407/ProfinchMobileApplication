@@ -63,7 +63,7 @@ class LoanDetailsScreen extends StatelessWidget {
                     loan.loanType,
 
                     style:  TextStyle(
-                      color: Colors.white,
+                      color: AppColors.light,
                       fontSize: RT.fs(context, 24),
                       fontWeight: FontWeight.bold,
                     ),
@@ -75,15 +75,15 @@ class LoanDetailsScreen extends StatelessWidget {
                     "₹${loan.outstandingAmount.toStringAsFixed(2)}",
 
                     style:  TextStyle(
-                      color: Colors.white,
+                      color: AppColors.light,
                       fontSize: RT.fs(context, 30),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
 
-                  const Text(
+                  Text(
                     "Outstanding Amount",
-                    style: TextStyle(color: Colors.white70),
+                    style: TextStyle(color: AppColors.light.withValues(alpha:0.7)),
                   ),
                 ],
               ),

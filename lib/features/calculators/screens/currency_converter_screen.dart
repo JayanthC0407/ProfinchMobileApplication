@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 
 class CurrencyConverterScreen extends StatefulWidget {
   const CurrencyConverterScreen({super.key});
@@ -49,15 +51,15 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           _CalcHeader(
             title: "Currency Converter",
             subtitle: "Convert currencies instantly",
             icon: Icons.currency_exchange_rounded,
-            iconBg: const Color(0xFFFEF3C7),
-            iconColor: const Color(0xFFD97706),
+            iconBg: AppColors.warningLight,
+            iconColor: AppColors.warning,
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -70,19 +72,19 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 12),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFEF3C7),
+                      color: AppColors.warningLight,
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    child: const Row(
+                    child: Row(
                       children: [
                         Icon(Icons.info_outline_rounded,
-                            size: 16, color: Color(0xFFD97706)),
+                            size: 16, color:AppColors.warning),
                         SizedBox(width: 8),
                         Text(
                           "Exchange rates are indicative only",
                           style: TextStyle(
-                            fontSize: 12.5,
-                            color: Color(0xFFD97706),
+                            fontSize: AppFontSize.small(context),
+                            color: AppColors.warning,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -137,7 +139,7 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
                               ),
                               child: const Icon(
                                 Icons.swap_horiz_rounded,
-                                color: Colors.white,
+                                color: AppColors.light,
                                 size: 22,
                               ),
                             ),
@@ -169,7 +171,7 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
                       label: "Converted Amount",
                       value:
                           "${currencyFlags[toCurrency] ?? ''} ${convertedAmount.toStringAsFixed(2)} $toCurrency",
-                      gradient: const [Color(0xFF92400E), Color(0xFFD97706)],
+                      gradient: const [Color(0xFF92400E), AppColors.warning],
                     ),
                     const SizedBox(height: 12),
                     _ResultChip(
@@ -177,7 +179,7 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
                           "1 $fromCurrency = ${(rates[fromCurrency]! / rates[toCurrency]!).toStringAsFixed(4)} $toCurrency",
                       value: "",
                       icon: Icons.compare_arrows_rounded,
-                      color: const Color(0xFFD97706),
+                      color: AppColors.warning,
                       fullWidth: true,
                     ),
                   ],
@@ -200,10 +202,10 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
       children: [
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 11,
+          style: TextStyle(
+            fontSize: AppFontSize.small(context),
             fontWeight: FontWeight.w600,
-            color: Color(0xFF6B7280),
+            color: AppColors.textSecondary,
             letterSpacing: 0.5,
           ),
         ),
@@ -213,19 +215,15 @@ class _CurrencyConverterScreenState extends State<CurrencyConverterScreen> {
           decoration: BoxDecoration(
             color: const Color(0xFFF9FAFB),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xFFD1D5DB)),
+            border: Border.all(color: AppColors.grey300),
           ),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
               value: value,
               isExpanded: true,
               icon: const Icon(Icons.keyboard_arrow_down_rounded,
-                  color: Color(0xFF6B7280), size: 20),
-              style: const TextStyle(
-                color: Color(0xFF111827),
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
+                  color: AppColors.textSecondary, size: 20),
+              style: AppTextStyles.bodyBold(context, color: AppColors.textDark),
               items: rates.keys.map((currency) {
                 return DropdownMenuItem(
                   value: currency,
@@ -280,12 +278,12 @@ class _CalcHeader extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.15),
+                color: AppColors.light.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
                 Icons.arrow_back_ios_new,
-                color: Colors.white,
+                color: AppColors.light,
                 size: 18,
               ),
             ),
@@ -298,15 +296,11 @@ class _CalcHeader extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    color: AppColors.lightBlue,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppTextStyles.whiteHeading(context, color: AppColors.lightBlue),
                 ),
                 const SizedBox(height: 8),
                 Text(subtitle,
-                    style: const TextStyle(color: Colors.white70)),
+                    style: TextStyle(color: AppColors.light.withValues(alpha:0.7))),
               ],
             ),
           ),
@@ -329,7 +323,7 @@ class _InputCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: AppColors.light,
       shadowColor: Colors.blue.withValues(alpha: 0.15),
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -367,9 +361,9 @@ class _CalcButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           label,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
+          style: TextStyle(
+            color: AppColors.light,
+            fontSize: AppFontSize.medium(context),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -400,15 +394,11 @@ class _ResultHero extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(label, style: const TextStyle(color: Colors.white70)),
+          Text(label, style: TextStyle(color: AppColors.light.withValues(alpha: 0.7))),
           const SizedBox(height: 8),
           Text(
             value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
+            style: AppTextStyles.whiteHeading(context),
           ),
         ],
       ),

@@ -103,8 +103,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (_) =>
-            BeneficiaryDetailsScreen(beneficiary: newBeneficiary),
+        builder: (_) => BeneficiaryDetailsScreen(beneficiary: newBeneficiary),
       ),
     );
   }
@@ -143,10 +142,8 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
             style: AppTextStyles.body(context),
             decoration: InputDecoration(
               hintText: hint,
-              hintStyle:
-                  AppTextStyles.body(context, color: AppColors.grey400),
-              prefixIcon:
-                  Icon(icon, color: AppColors.grey400, size: 18),
+              hintStyle: AppTextStyles.body(context, color: AppColors.grey400),
+              prefixIcon: Icon(icon, color: AppColors.grey400, size: 18),
               border: InputBorder.none,
               contentPadding: const EdgeInsets.symmetric(
                   horizontal: 14, vertical: 14),
@@ -157,8 +154,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 6, left: 4),
             child: Text(errorText,
-                style: AppTextStyles.small(context,
-                    color: AppColors.error)),
+                style: AppTextStyles.small(context, color: AppColors.error)),
           ),
       ],
     );
@@ -214,8 +210,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 4, 8, 0),
                     child: IconButton(
-                      icon: const Icon(Icons.arrow_back,
-                          color: AppColors.light),
+                      icon: const Icon(Icons.arrow_back, color: AppColors.light),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
@@ -234,7 +229,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                           color: AppColors.light.withValues(alpha: 0.7)),
                     ),
                   ),
-                  // Cooling period info banner inside header
+                  // Cooling period info banner
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
                     child: Container(
@@ -243,8 +238,7 @@ class _AddBeneficiaryScreenState extends State<AddBeneficiaryScreen> {
                         color: AppColors.light.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                            color:
-                                AppColors.light.withValues(alpha: 0.2)),
+                            color: AppColors.light.withValues(alpha: 0.2)),
                       ),
                       child: Row(
                         children: [

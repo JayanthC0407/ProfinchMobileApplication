@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 
 class SipCalculatorScreen extends StatefulWidget {
   const SipCalculatorScreen({super.key});
@@ -51,15 +53,15 @@ class _SipCalculatorScreenState extends State<SipCalculatorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: AppColors.background,
       body: Column(
         children: [
           _CalcHeader(
             title: "SIP Calculator",
             subtitle: "Estimate your future wealth",
             icon: Icons.trending_up_rounded,
-            iconBg: const Color(0xFFD1FAE5),
-            iconColor: const Color(0xFF059669),
+            iconBg: AppColors.successLight,
+            iconColor:AppColors.success,
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -105,14 +107,14 @@ class _SipCalculatorScreenState extends State<SipCalculatorScreen> {
                     _ResultHero(
                       label: "Future Value",
                       value: "₹${futureValue.toStringAsFixed(2)}",
-                      gradient: const [Color(0xFF065F46), Color(0xFF059669)],
+                      gradient: const [Color(0xFF065F46), AppColors.success],
                     ),
                     const SizedBox(height: 12),
                     _ResultChip(
                       label: "Invested Amount",
                       value: "₹${investedAmount.toStringAsFixed(2)}",
                       icon: Icons.savings_outlined,
-                      color: const Color(0xFF059669),
+                      color: AppColors.success,
                       fullWidth: true,
                     ),
                     const SizedBox(height: 10),
@@ -120,7 +122,7 @@ class _SipCalculatorScreenState extends State<SipCalculatorScreen> {
                       label: "Estimated Returns",
                       value: "₹${estimatedReturns.toStringAsFixed(2)}",
                       icon: Icons.show_chart_rounded,
-                      color: const Color(0xFF059669),
+                      color: AppColors.success,
                       fullWidth: true,
                     ),
                     const SizedBox(height: 12),
@@ -131,9 +133,9 @@ class _SipCalculatorScreenState extends State<SipCalculatorScreen> {
                         value: futureValue > 0
                             ? (investedAmount / futureValue).clamp(0.0, 1.0)
                             : 0,
-                        backgroundColor: const Color(0xFFD1FAE5),
+                        backgroundColor: AppColors.successLight,
                         valueColor: const AlwaysStoppedAnimation<Color>(
-                            Color(0xFF059669)),
+                            AppColors.success),
                         minHeight: 8,
                       ),
                     ),
@@ -141,15 +143,13 @@ class _SipCalculatorScreenState extends State<SipCalculatorScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           "Principal",
-                          style: TextStyle(
-                              color: Color(0xFF6B7280), fontSize: 11),
+                          style: AppTextStyles.caption(context, color: AppColors.textSecondary),
                         ),
                         Text(
                           "${futureValue > 0 ? ((investedAmount / futureValue) * 100).toStringAsFixed(1) : '0'}% of total",
-                          style: const TextStyle(
-                              color: Color(0xFF6B7280), fontSize: 11),
+                          style: AppTextStyles.caption(context, color: AppColors.textSecondary),
                         ),
                       ],
                     ),
@@ -202,12 +202,12 @@ class _CalcHeader extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.15),
+                color: AppColors.light.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
               child: const Icon(
                 Icons.arrow_back_ios_new,
-                color: Colors.white,
+                color: AppColors.light,
                 size: 18,
               ),
             ),
@@ -220,15 +220,11 @@ class _CalcHeader extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    color: AppColors.lightBlue,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppTextStyles.whiteHeading(context, color: AppColors.lightBlue),
                 ),
                 const SizedBox(height: 8),
                 Text(subtitle,
-                    style: const TextStyle(color: Colors.white70)),
+                    style: TextStyle(color: AppColors.light.withValues(alpha:0.7))),
               ],
             ),
           ),
@@ -251,7 +247,7 @@ class _InputCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: AppColors.light,
       shadowColor: Colors.blue.withValues(alpha: 0.15),
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -320,9 +316,9 @@ class _CalcButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           label,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 16,
+          style: TextStyle(
+            color: AppColors.light,
+            fontSize: AppFontSize.medium(context),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -353,15 +349,11 @@ class _ResultHero extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(label, style: const TextStyle(color: Colors.white70)),
+          Text(label, style: TextStyle(color: AppColors.light.withValues(alpha:0.7))),
           const SizedBox(height: 8),
           Text(
             value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
+            style: AppTextStyles.whiteHeading(context),
           ),
         ],
       ),

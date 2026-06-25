@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 
 class TermDepositCalculatorScreen extends StatefulWidget {
   const TermDepositCalculatorScreen({super.key});
@@ -54,7 +56,7 @@ class _TermDepositCalculatorScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7FA),
+      backgroundColor: AppColors.background,
 
       body: Column(
         children: [
@@ -207,13 +209,13 @@ class _CalcHeader extends StatelessWidget {
               padding: const EdgeInsets.all(10),
 
               decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.15),
+                color: AppColors.light.withValues(alpha: 0.15),
                 shape: BoxShape.circle,
               ),
 
               child: const Icon(
                 Icons.arrow_back_ios_new,
-                color: Colors.white,
+                color: AppColors.light,
                 size: 18,
               ),
             ),
@@ -228,16 +230,12 @@ class _CalcHeader extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
-                    color: AppColors.lightBlue,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: AppTextStyles.whiteHeading(context, color: AppColors.lightBlue),
                 ),
 
                 const SizedBox(height: 8),
 
-                Text(subtitle, style: const TextStyle(color: Colors.white70)),
+                Text(subtitle, style: TextStyle(color: AppColors.light.withValues(alpha: 0.7))),
               ],
             ),
           ),
@@ -263,7 +261,7 @@ class _InputCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: AppColors.light,
       shadowColor:
       Colors.blue.withValues(alpha: 0.15),
       elevation: 4,
@@ -332,9 +330,9 @@ class _CalcButton extends StatelessWidget {
         ),
         onPressed: onPressed,
         child: Text(label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
+            style: TextStyle(
+              color: AppColors.light,
+              fontSize: AppFontSize.medium(context),
               fontWeight: FontWeight.bold,
             )),
       ),
@@ -364,15 +362,11 @@ class _ResultHero extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(label, style: const TextStyle(color: Colors.white70)),
+          Text(label, style: TextStyle(color: AppColors.light.withValues(alpha: 0.7))),
           const SizedBox(height: 8),
           Text(
             value,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
+            style: AppTextStyles.whiteHeading(context),
           ),
         ],
       ),
