@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:profinch_mobile_application/core/constants/colors.dart';
-import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
-import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
-import 'package:profinch_mobile_application/features/insurance/screens/insurance_screen.dart';
 import 'package:profinch_mobile_application/features/upi/provider/upi_provider.dart';
 import 'package:profinch_mobile_application/features/upi/screens/receive_money_screen.dart';
 import 'package:profinch_mobile_application/features/upi/screens/scan_qr_screen.dart';
 import 'package:profinch_mobile_application/features/upi/screens/upi_home_screen.dart';
 import 'package:profinch_mobile_application/features/accounts/provider/account_provider.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/dashboard_provider.dart';
@@ -18,6 +15,7 @@ import '../widgets/feature_item.dart';
 import '../widgets/quick_action_item.dart';
 import '../../auth/provider/auth_provider.dart';
 
+// ✅ New transaction history module (replaces old map-based TransactionTile)
 import 'package:profinch_mobile_application/features/Transactions/provider/transaction_provider.dart';
 import 'package:profinch_mobile_application/features/Transactions/widgets/transaction_tile_widget.dart';
 import 'package:profinch_mobile_application/features/Transactions/screens/transaction_history_screen.dart';
@@ -41,9 +39,6 @@ class DashboardScreen extends StatelessWidget {
           account.id == (provider.selectedAccountId ?? user.primaryAccountId),
       orElse: () => userAccounts.first,
     );
-
-    // Muted white used for secondary labels on the dark background
-    final whiteMuted = AppColors.light.withValues(alpha: 0.7);
 
     return Scaffold(
       bottomNavigationBar: const BottomNavBar(),
@@ -76,13 +71,19 @@ class DashboardScreen extends StatelessWidget {
                           children: [
                             Text(
                               "Hello, ${user.username} 👋",
-                              style: AppTextStyles.whiteTitle(context),
+                              style: TextStyle(
+                                fontSize: AppFontSize.large(context),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                             const SizedBox(height: 3),
                             Text(
                               "Welcome Back",
-                              style: AppTextStyles.whiteBody(context,
-                                  color: whiteMuted),
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: AppFontSize.body(context),
+                              ),
                             ),
                           ],
                         ),
@@ -102,7 +103,7 @@ class DashboardScreen extends StatelessWidget {
                               const Icon(
                                 Icons.notifications_none,
                                 size: 30,
-                                color: AppColors.light,
+                                color: Colors.white,
                               ),
                               if (unread > 0)
                                 Positioned(
@@ -111,13 +112,13 @@ class DashboardScreen extends StatelessWidget {
                                   child: Container(
                                     padding: const EdgeInsets.all(4),
                                     decoration: const BoxDecoration(
-                                      color: Colors.red, // notification badge
+                                      color: Colors.red,
                                       shape: BoxShape.circle,
                                     ),
                                     child: Text(
                                       unread > 9 ? '9+' : '$unread',
                                       style: TextStyle(
-                                        color: AppColors.light,
+                                        color: Colors.white,
                                         fontSize: AppFontSize.xs(context),
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -134,11 +135,8 @@ class DashboardScreen extends StatelessWidget {
 
                 const SizedBox(height: 22),
 
-                // ── BALANCE CARD ──────────────────────────────────
+                // ── BALANCE CARD — swipeable between accounts ──────
                 BalanceCard(
-                  balance: selectedAccount.availableBalance,
-                  accountNumber: selectedAccount.accountNumber,
-                  accountType: selectedAccount.accountType,
                   accounts: userAccounts,
                   selectedAccountId: selectedAccount.id,
                   isBalanceHidden: provider.isBalanceHidden,
@@ -147,6 +145,10 @@ class DashboardScreen extends StatelessWidget {
                     if (accountId == null) return;
                     provider.selectAccount(accountId);
                   },
+                  // kept for signature compat, card now reads from accounts
+                  balance: selectedAccount.availableBalance,
+                  accountNumber: selectedAccount.accountNumber,
+                  accountType: selectedAccount.accountType,
                 ),
 
                 const SizedBox(height: 22),
@@ -158,7 +160,7 @@ class DashboardScreen extends StatelessWidget {
                     vertical: 16,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.light.withValues(alpha: 0.95),
+                    color: Colors.white.withValues(alpha: 0.95),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
@@ -231,11 +233,18 @@ class DashboardScreen extends StatelessWidget {
                   children: [
                     Text(
                       "Quick Access",
-                      style: AppTextStyles.whiteTitle(context),
+                      style: TextStyle(
+                        fontSize: AppFontSize.large(context),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
                     ),
                     Text(
                       "Edit",
-                      style: AppTextStyles.whiteBody(context, color: whiteMuted),
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: AppFontSize.body(context),
+                      ),
                     ),
                   ],
                 ),
@@ -269,6 +278,7 @@ class DashboardScreen extends StatelessWidget {
                     FeatureItem(
                       icon: Icons.currency_rupee,
                       title: "Loans",
+
                       onTap: () =>
                           Navigator.pushNamed(context, AppRoutes.loans),
                     ),
@@ -325,13 +335,9 @@ class DashboardScreen extends StatelessWidget {
                         title: "Invest.",
                       ),
 
-                       FeatureItem(
+                      const FeatureItem(
                         icon: Icons.security,
                         title: "Insurance",
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (_) => const InsuranceScreen()),
-                        ),
                       ),
 
                       FeatureItem(
@@ -359,7 +365,11 @@ class DashboardScreen extends StatelessWidget {
                   children: [
                     Text(
                       "Recent Transactions",
-                      style: AppTextStyles.whiteTitle(context),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: AppFontSize.large(context),
+                        color: Colors.white,
+                      ),
                     ),
                     GestureDetector(
                       onTap: () => Navigator.push(
@@ -370,8 +380,10 @@ class DashboardScreen extends StatelessWidget {
                       ),
                       child: Text(
                         "See All",
-                        style: AppTextStyles.whiteBody(context,
-                            color: whiteMuted),
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: AppFontSize.body(context),
+                        ),
                       ),
                     ),
                   ],

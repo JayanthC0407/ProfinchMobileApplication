@@ -60,10 +60,15 @@ class _PinScreenState extends State<PinScreen> {
         // verifyPin() restores currentUser if it was null after logout
         final user = authProvider.currentUser;
         if (user != null) {
-          context.read<DashboardProvider>().resetToPrimary(user.primaryAccountId);
+          context.read<DashboardProvider>().resetToPrimary(
+            user.primaryAccountId,
+          );
         }
         Navigator.pushNamedAndRemoveUntil(
-            context, AppRoutes.dashboard, (route) => false);
+          context,
+          AppRoutes.dashboard,
+          (route) => false,
+        );
       } else {
         setState(() {
           _entered = '';
@@ -91,7 +96,8 @@ class _PinScreenState extends State<PinScreen> {
             backgroundColor: Colors.green.shade600,
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10)),
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         );
         Navigator.pop(context);
@@ -119,20 +125,23 @@ class _PinScreenState extends State<PinScreen> {
     final subtitle = isLogin
         ? 'Enter your 4-digit PIN to continue'
         : (_confirming
-            ? 'Re-enter the same PIN to confirm'
-            : 'Choose a 4-digit PIN for quick access');
+              ? 'Re-enter the same PIN to confirm'
+              : 'Choose a 4-digit PIN for quick access');
 
     return BackgroundWrapper(
       child: SafeArea(
-        child: SingleChildScrollView(         // ✅ prevents overflow
+        child: SingleChildScrollView(
+          // ✅ prevents overflow
           physics: const NeverScrollableScrollPhysics(),
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              minHeight: screenH -            // fill screen height
+              minHeight:
+                  screenH - // fill screen height
                   MediaQuery.of(context).padding.top -
                   MediaQuery.of(context).padding.bottom,
             ),
-            child: IntrinsicHeight(           // lets Column use full height
+            child: IntrinsicHeight(
+              // lets Column use full height
               child: Column(
                 children: [
                   const SizedBox(height: 24),
@@ -147,33 +156,41 @@ class _PinScreenState extends State<PinScreen> {
                                 .toUpperCase() ??
                             'U',
                         style: TextStyle(
-                            fontSize: AppFontSize.xl(context),
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
+                          fontSize: AppFontSize.xl(context),
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10),
                     Text(
                       authProvider.currentUser?.username ?? '',
                       style: TextStyle(
-                          fontSize: AppFontSize.large(context),
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),
+                        fontSize: AppFontSize.large(context),
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
                     ),
                     const SizedBox(height: 8),
                   ],
 
-                  Text(title,
-                      style: TextStyle(
-                          fontSize: AppFontSize.xl(context),
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white)),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: AppFontSize.xl(context),
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
                   const SizedBox(height: 6),
-                  Text(subtitle,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontSize: AppFontSize.body(context),
-                          color: Colors.white.withValues(alpha: 0.7))),
+                  Text(
+                    subtitle,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: AppFontSize.body(context),
+                      color: Colors.white.withValues(alpha: 0.7),
+                    ),
+                  ),
 
                   const SizedBox(height: 28),
 
@@ -191,12 +208,13 @@ class _PinScreenState extends State<PinScreen> {
                           color: _hasError
                               ? Colors.red.shade400
                               : filled
-                                  ? Colors.white
-                                  : Colors.white.withValues(alpha: 0.3),
+                              ? Colors.white
+                              : Colors.white.withValues(alpha: 0.3),
                           border: Border.all(
-                              color: _hasError
-                                  ? Colors.red.shade400
-                                  : Colors.white.withValues(alpha: 0.5)),
+                            color: _hasError
+                                ? Colors.red.shade400
+                                : Colors.white.withValues(alpha: 0.5),
+                          ),
                         ),
                       );
                     }),
@@ -208,10 +226,13 @@ class _PinScreenState extends State<PinScreen> {
                   SizedBox(
                     height: 20,
                     child: _hasError
-                        ? Text(_errorMessage,
+                        ? Text(
+                            _errorMessage,
                             style: TextStyle(
-                                fontSize: AppFontSize.small(context),
-                                color: Colors.red.shade300))
+                              fontSize: AppFontSize.small(context),
+                              color: Colors.red.shade300,
+                            ),
+                          )
                         : null,
                   ),
 
@@ -234,24 +255,42 @@ class _PinScreenState extends State<PinScreen> {
                           children: [
                             if (isLogin && authProvider.isBiometricEnabled)
                               _keyBtn(
-                                child: Icon(Icons.fingerprint,
-                                    size: 26, color: Colors.white),
+                                child: Icon(
+                                  Icons.fingerprint,
+                                  size: 26,
+                                  color: Colors.white,
+                                ),
                                 onTap: () {},
                               )
                             else
-                              const SizedBox(width: 72, height: 72),
-                            _keyBtn(
-                              child: Text('0',
+                              _keyBtn(
+                                child: Text(
+                                  '#',
                                   style: TextStyle(
-                                      fontSize: AppFontSize.xl(context),
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w300)),
+                                    fontSize: AppFontSize.xl(context),
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                ),
+                                onTap: () => _onKey('0'),
+                              ),
+                            _keyBtn(
+                              child: Text(
+                                '0',
+                                style: TextStyle(
+                                  fontSize: AppFontSize.xl(context),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300,
+                                ),
+                              ),
                               onTap: () => _onKey('0'),
                             ),
                             _keyBtn(
-                              child: Icon(Icons.backspace_outlined,
-                                  size: 22,
-                                  color: Colors.white.withValues(alpha: 0.8)),
+                              child: Icon(
+                                Icons.backspace_outlined,
+                                size: 22,
+                                color: Colors.white.withValues(alpha: 0.8),
+                              ),
                               onTap: _onDelete,
                             ),
                           ],
@@ -265,15 +304,18 @@ class _PinScreenState extends State<PinScreen> {
                   if (isLogin)
                     GestureDetector(
                       onTap: () => Navigator.pushNamedAndRemoveUntil(
-                          context, AppRoutes.login, (route) => false),
+                        context,
+                        AppRoutes.login,
+                        (route) => false,
+                      ),
                       child: Text(
                         'Use password instead',
                         style: TextStyle(
-                            fontSize: AppFontSize.body(context),
-                            color: Colors.white.withValues(alpha: 0.65),
-                            decoration: TextDecoration.underline,
-                            decorationColor:
-                                Colors.white.withValues(alpha: 0.65)),
+                          fontSize: AppFontSize.body(context),
+                          color: Colors.white.withValues(alpha: 0.65),
+                          decoration: TextDecoration.underline,
+                          decorationColor: Colors.white.withValues(alpha: 0.65),
+                        ),
                       ),
                     ),
 
@@ -288,18 +330,23 @@ class _PinScreenState extends State<PinScreen> {
   }
 
   Widget _keyRow(List<String> digits) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: digits
-            .map((d) => _keyBtn(
-                  child: Text(d,
-                      style: TextStyle(
-                          fontSize: AppFontSize.xl(context),
-                          color: Colors.white,
-                          fontWeight: FontWeight.w300)),
-                  onTap: () => _onKey(d),
-                ))
-            .toList(),
-      );
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: digits
+        .map(
+          (d) => _keyBtn(
+            child: Text(
+              d,
+              style: TextStyle(
+                fontSize: AppFontSize.xl(context),
+                color: Colors.white,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+            onTap: () => _onKey(d),
+          ),
+        )
+        .toList(),
+  );
 
   Widget _keyBtn({required Widget child, required VoidCallback onTap}) =>
       GestureDetector(
@@ -310,8 +357,7 @@ class _PinScreenState extends State<PinScreen> {
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Colors.white.withValues(alpha: 0.1),
-            border:
-                Border.all(color: Colors.white.withValues(alpha: 0.15)),
+            border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
           ),
           child: Center(child: child),
         ),
