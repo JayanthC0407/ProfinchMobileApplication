@@ -5,6 +5,10 @@ import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/data/models/account_model.dart';
 import '../provider/bills_provider.dart';
 
+import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
+import 'package:profinch_mobile_application/features/notifications/provider/notification_provider.dart';
+import 'package:profinch_mobile_application/data/models/notification_model.dart';
+
 class PayBillSheet extends StatefulWidget {
   final BillerModel biller;
   final List<AccountModel> accounts;
@@ -41,6 +45,21 @@ class _PayBillSheetState extends State<PayBillSheet> {
           billerId: widget.biller.id,
           accountId: _selectedAccount!.id,
         );
+
+    // ── Fire notification on success ──────────────────────────
+    if (success && context.mounted) {
+      final userId = context.read<AuthProvider>().currentUser?.id ?? '';
+      context.read<NotificationProvider>().addNotification(
+        NotificationModel(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          userId: userId,
+          title: 'Bill Paid Successfully',
+          body: '₹${widget.biller.dueAmount.toStringAsFixed(2)} paid for ${widget.biller.nickname} (${widget.biller.providerName}).',
+          type: NotificationType.transaction,
+          createdAt: DateTime.now(),
+        ),
+      );
+    }
 
     setState(() {
       _isLoading = false;
