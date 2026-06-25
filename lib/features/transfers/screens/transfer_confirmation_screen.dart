@@ -9,6 +9,9 @@ import '../provider/transfer_provider.dart';
 import '../../Transactions/provider/transaction_provider.dart';
 import 'transfer_success_screen.dart';
 
+import 'package:profinch_mobile_application/features/notifications/provider/notification_provider.dart';
+import 'package:profinch_mobile_application/data/models/notification_model.dart';
+
 class TransferConfirmationScreen extends StatelessWidget {
   final BeneficiaryModel beneficiary;
   final String accountId;
@@ -242,6 +245,20 @@ class TransferConfirmationScreen extends StatelessWidget {
                               .getAccountById(accountId)
                               .availableBalance,
                         );
+
+                        // ── Fire notification ──────────────────────────────────
+                        final userId = authProvider.currentUser?.id ?? '';
+                        context.read<NotificationProvider>().addNotification(
+                          NotificationModel(
+                            id: DateTime.now().millisecondsSinceEpoch.toString(),
+                            userId: userId,
+                            title: 'Transfer Successful',
+                            body: '₹${amount.toStringAsFixed(2)} transferred to ${beneficiary.nickname} via $transferMode.',
+                            type: NotificationType.transaction,
+                            createdAt: DateTime.now(),
+                          ),
+                        );
+                        
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(

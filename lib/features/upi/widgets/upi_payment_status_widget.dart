@@ -25,7 +25,7 @@ class UpiPaymentStatusWidget extends StatelessWidget {
     final formatter = NumberFormat('#,##,##0.00', 'en_IN');
 
     return Container(
-      padding: const EdgeInsets.all(28),
+      padding: EdgeInsets.fromLTRB(28, 28, 28, MediaQuery.of(context).viewInsets.bottom + 28),
       decoration: const BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
