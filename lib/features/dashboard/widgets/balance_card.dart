@@ -1,113 +1,202 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
-import 'package:profinch_mobile_application/core/constants/text_styles.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
+import 'package:profinch_mobile_application/data/models/account_model.dart';
 
-class BalanceCard extends StatelessWidget {
-  final String accountNumber;
-  final String accountType;
-  final double balance;
-  final List accounts;
+class BalanceCard extends StatefulWidget {
+  final List<AccountModel> accounts;
   final String selectedAccountId;
   final bool isBalanceHidden;
   final VoidCallback onToggleVisibility;
   final Function(String?) onChanged;
 
+  // Keep old individual fields for backward compat —
+  // they're ignored now since we derive everything from accounts list
+  final double balance;
+  final String accountNumber;
+  final String accountType;
+
   const BalanceCard({
     super.key,
-    required this.accountNumber,
-    required this.accountType,
-    required this.balance,
     required this.accounts,
     required this.selectedAccountId,
     required this.isBalanceHidden,
     required this.onToggleVisibility,
     required this.onChanged,
+    required this.balance,
+    required this.accountNumber,
+    required this.accountType,
   });
 
-  // Card-specific colours — these purples/navies are unique to this widget
-  // and don't belong in AppColors.
-  static const _cardGradientEnd    = Color.fromARGB(255, 205, 211, 233);
-  static const _labelColor         = Color.fromARGB(179, 4, 27, 107);
-  static const _amountColor        = Color.fromARGB(255, 31, 4, 122);
-  static const _dropdownBg         = Color.fromARGB(255, 8, 18, 162);
-  static const _accountNumberColor = Color.fromARGB(179, 55, 3, 133);
+  @override
+  State<BalanceCard> createState() => _BalanceCardState();
+}
+
+class _BalanceCardState extends State<BalanceCard> {
+  late PageController _pageController;
+  int _currentIndex = 0;
+
+  // Different gradient per card so each account feels distinct
+  static const List<List<Color>> _gradients = [
+    [Color(0xFFFFFFFF), Color(0xFFCDD3E9)],   // white → blue-grey (original)
+    [Color(0xFFE8F5E9), Color(0xFFB2DFDB)],   // light green → teal
+    [Color(0xFFFCE4EC), Color(0xFFE1BEE7)],   // light pink → purple
+    [Color(0xFFFFF8E1), Color(0xFFFFCCBC)],   // light amber → orange
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Start on the account that was previously selected
+    _currentIndex = widget.accounts
+        .indexWhere((a) => a.id == widget.selectedAccountId);
+    if (_currentIndex < 0) _currentIndex = 0;
+
+    _pageController = PageController(
+      initialPage: _currentIndex,
+      viewportFraction: 0.92, // peek at next card edge
+    );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  List<Color> _gradientFor(int index) =>
+      _gradients[index % _gradients.length];
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(22),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(28),
-        gradient: const LinearGradient(
-          colors: [AppColors.light, _cardGradientEnd],
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Total Balance",
-                style: AppTextStyles.title(context, color: _labelColor),
-              ),
+    if (widget.accounts.isEmpty) return const SizedBox.shrink();
 
-              // 👁 Eye toggle button
-              GestureDetector(
-                onTap: onToggleVisibility,
-                child: Icon(
-                  isBalanceHidden ? Icons.visibility_off : Icons.visibility,
-                  color: AppColors.primary,
-                  size: 22,
+    return Column(
+      children: [
+
+        // ── Swipeable cards ───────────────────────────────────
+        SizedBox(
+          height: 200,
+          child: PageView.builder(
+            controller: _pageController,
+            itemCount: widget.accounts.length,
+            onPageChanged: (index) {
+              setState(() => _currentIndex = index);
+              // Notify dashboard of the newly visible account
+              widget.onChanged(widget.accounts[index].id);
+            },
+            itemBuilder: (context, index) {
+              final account = widget.accounts[index];
+              final gradient = _gradientFor(index);
+
+              return AnimatedScale(
+                scale: _currentIndex == index ? 1.0 : 0.95,
+                duration: const Duration(milliseconds: 250),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 6),
+                  padding: const EdgeInsets.all(22),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(28),
+                    gradient: LinearGradient(
+                      colors: gradient,
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     color: gradient.last.withValues(alpha: 0.5),
+                    //     blurRadius: 16,
+                    //     offset: const Offset(0, 6),
+                    //   ),
+                    // ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+
+                      // Top row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            account.accountType,
+                            style: TextStyle(
+                              color: const Color.fromARGB(179, 4, 27, 107),
+                              fontSize: AppFontSize.large(context),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: widget.onToggleVisibility,
+                            child: Icon(
+                              widget.isBalanceHidden
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: AppColors.primary,
+                              size: 22,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const Spacer(),
+
+                      // Balance
+                      Text(
+                        widget.isBalanceHidden
+                            ? '₹ ••••••'
+                            : '₹ ${account.availableBalance.toStringAsFixed(2)}',
+                        style: TextStyle(
+                          color: const Color.fromARGB(255, 31, 4, 122),
+                          fontSize: RT.fs(context, 30),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      const SizedBox(height: 12),
+
+                      // Account number
+                      Text(
+                        widget.isBalanceHidden
+                            ? '•••• •••• ${account.accountNumber.length >= 4 ? account.accountNumber.substring(account.accountNumber.length - 4) : account.accountNumber}'
+                            : account.accountNumber,
+                        style: const TextStyle(
+                            color: Color.fromARGB(179, 55, 3, 133),
+                            fontSize: 13),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              );
+            },
           ),
+        ),
 
-          const SizedBox(height: 18),
+        const SizedBox(height: 12),
 
-          Text(
-            isBalanceHidden ? '₹ ••••••' : '₹ ${balance.toStringAsFixed(2)}',
-            style: TextStyle(
-              color: _amountColor,
-              fontSize: RT.fs(context, 34),   // display size — kept as RT.fs
-              fontWeight: FontWeight.bold,
-            ),
+        // ── Dot indicators ────────────────────────────────────
+        if (widget.accounts.length > 1)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(widget.accounts.length, (index) {
+              final isActive = index == _currentIndex;
+              return AnimatedContainer(
+                duration: const Duration(milliseconds: 250),
+                margin: const EdgeInsets.symmetric(horizontal: 3),
+                width: isActive ? 20 : 7,
+                height: 7,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  color: isActive
+                      ? AppColors.primary
+                      : AppColors.primary.withValues(alpha: 0.25),
+                ),
+              );
+            }),
           ),
-
-          const SizedBox(height: 18),
-
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(14),
-              color: _dropdownBg.withValues(alpha: 0.15),
-            ),
-            child: DropdownButton<String>(
-              value: selectedAccountId,
-              underline: const SizedBox(),
-              items: accounts.map<DropdownMenuItem<String>>((account) {
-                return DropdownMenuItem<String>(
-                  value: account.id,
-                  child: Text(account.accountType),
-                );
-              }).toList(),
-              onChanged: onChanged,
-            ),
-          ),
-
-          const SizedBox(height: 18),
-
-          Text(
-            isBalanceHidden
-                ? '•••• •••• ${accountNumber.substring(accountNumber.length - 4)}'
-                : accountNumber,
-            style: AppTextStyles.body(context, color: _accountNumberColor),
-          ),
-        ],
-      ),
+      ],
     );
   }
 }
