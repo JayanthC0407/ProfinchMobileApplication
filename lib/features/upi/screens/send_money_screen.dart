@@ -7,6 +7,10 @@ import 'package:profinch_mobile_application/core/constants/colors.dart';
 import '../provider/upi_provider.dart';
 import '../widgets/upi_payment_status_widget.dart';
 
+import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
+import 'package:profinch_mobile_application/features/notifications/provider/notification_provider.dart';
+import 'package:profinch_mobile_application/data/models/notification_model.dart';
+
 class SendMoneyScreen extends StatefulWidget {
   final String? prefillUpiId;
   final String? prefillName;
@@ -70,10 +74,26 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
 
     if (!mounted) return;
 
+    // ── Fire notification on success ──────────────────────────
+  if (success) {
+    final userId = context.read<AuthProvider>().currentUser?.id ?? '';
+    context.read<NotificationProvider>().addNotification(
+      NotificationModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        userId: userId,
+        title: 'UPI Payment Sent',
+        body: '₹${amount.toStringAsFixed(2)} sent to ${_nameController.text.trim()} successfully.',
+        type: NotificationType.upi,
+        createdAt: DateTime.now(),
+      ),
+    );
+  }
+
     // Show result bottom sheet
     showModalBottomSheet(
       context: context,
       isDismissible: false,
+      isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => UpiPaymentStatusWidget(
         isSuccess: success,
