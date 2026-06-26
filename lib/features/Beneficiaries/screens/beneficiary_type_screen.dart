@@ -15,7 +15,7 @@ class BeneficiaryTypeScreen extends StatelessWidget {
         'title': 'ProFinch Bank',
         'subtitle': 'Transfer to ProFinch account holders',
         'icon': Icons.account_balance_outlined,
-        'color': AppColors.blueButton,
+        'color': 0xFF2563B0,
         'bg': 0xFFDBEAFE,
       },
       {
@@ -31,8 +31,8 @@ class BeneficiaryTypeScreen extends StatelessWidget {
         'title': 'International',
         'subtitle': 'SWIFT / IBAN international transfers',
         'icon': Icons.public_outlined,
-        'color': AppColors.warningDark,
-        'bg': AppColors.warningLight,
+        'color': 0xFFB45309,
+        'bg': 0xFFFEF3C7,
       },
     ];
 
