@@ -97,7 +97,7 @@ class BeneficiaryCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: AppFontSize.medium(context),
                           fontWeight: FontWeight.w600,
-                          color: Color(0xFF111827),
+                          color: const Color(0xFF111827),
                         ),
                       ),
                       const SizedBox(height: 3),
@@ -105,7 +105,7 @@ class BeneficiaryCard extends StatelessWidget {
                         "••••  ••••  ••••  ${accountNumber.substring(accountNumber.length - 4)}",
                         style: TextStyle(
                           fontSize: AppFontSize.small(context),
-                          color: Color(0xFF6B7280),
+                          color: const Color(0xFF6B7280),
                           letterSpacing: 1.2,
                         ),
                       ),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,10 @@ import '../widgets/beneficiary_transfer_tile.dart';
 import 'international_transfer_screen.dart';
 import 'local_transfer_screen.dart';
 import 'pbi_transfer_screen.dart';
+import '../../payments/screens/adhoc_transfer_screen.dart';
+import '../../payments/screens/scheduled_payment_screen.dart';
+import '../../payments/screens/favourites_screen.dart';
+import '../../payments/screens/payments_home_screen.dart';
 
 class TransferMoneyScreen extends StatefulWidget {
   const TransferMoneyScreen({super.key});
@@ -208,6 +213,64 @@ class _TransferMoneyScreenState extends State<TransferMoneyScreen> {
             ),
           ),
 
+          // ── Payments quick access ─────────────────────────────────────
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('Payments',
+                        style: AppTextStyles.title(context)),
+                    GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, AppRoutes.payments),
+                      child: Text('See all',
+                          style: AppTextStyles.small(context,
+                              color: AppColors.primary)),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    _PaymentShortcut(
+                      icon: Icons.send_rounded,
+                      label: 'Adhoc',
+                      color: AppColors.blueButton,
+                      onTap: () => Navigator.pushNamed(context, AppRoutes.adhocTransfer),
+                    ),
+                    const SizedBox(width: 10),
+                    _PaymentShortcut(
+                      icon: Icons.schedule_rounded,
+                      label: 'Scheduled',
+                      color: AppColors.success,
+                      onTap: () => Navigator.pushNamed(context, AppRoutes.scheduledPayment),
+                    ),
+                    const SizedBox(width: 10),
+                    _PaymentShortcut(
+                      icon: Icons.star_rounded,
+                      label: 'Favourites',
+                      color: AppColors.warning,
+                      onTap: () => Navigator.pushNamed(context, AppRoutes.favourites),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const Padding(
+            padding: EdgeInsets.fromLTRB(16, 10, 16, 0),
+            child: Divider(height: 1, color: AppColors.grey200),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 4),
+            child: Text('Beneficiaries',
+                style: AppTextStyles.title(context)),
+          ),
+
           // ── List ──────────────────────────────────────────────────────
           Expanded(
             child: filtered.isEmpty
@@ -290,6 +353,54 @@ class _TransferMoneyScreenState extends State<TransferMoneyScreen> {
                   ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ── Payment shortcut chip ─────────────────────────────────────────────────
+
+class _PaymentShortcut extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _PaymentShortcut({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.08),
+            borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: color.withValues(alpha: 0.2)),
+          ),
+          child: Column(
+            children: [
+              CircleAvatar(
+                radius: 18,
+                backgroundColor: color.withValues(alpha: 0.15),
+                child: Icon(icon, color: color, size: 18),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                label,
+                style: AppTextStyles.small(context, color: color)
+                    .copyWith(fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -17,26 +17,17 @@ class CalculatorMenuScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: false,
         titleSpacing: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: Container(
-            width: 36,
-            height: 36,
-            decoration: BoxDecoration(
-              color: const Color(0xFFE8F0FE),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: IconButton(
+        leading: IconButton(
               icon: const Icon(
-                Icons.arrow_back_ios_new_rounded,
-                size: 16,
+                Icons.arrow_back,
+                size: 22,
                 color: Color(0xFF1565C0),
               ),
               onPressed: () => Navigator.pop(context),
               padding: EdgeInsets.zero,
             ),
-          ),
-        ),
+          
+        
         title: Padding(
           padding: EdgeInsets.only(left: 8),
           child: Text(
