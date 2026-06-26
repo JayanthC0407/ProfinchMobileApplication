@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
@@ -11,11 +12,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
     final title = showTerms ? 'Terms & Conditions' : 'Privacy Policy';
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: const Color(0xFF0F1322),
+        backgroundColor: AppColors.lightBlue,
         appBar: AppBar(
-          backgroundColor: const Color(0xFF0F1322),
+          backgroundColor: AppColors.lightBlue,
           elevation: 0,
           scrolledUnderElevation: 0,
           leading: GestureDetector(
@@ -23,18 +24,18 @@ class PrivacyPolicyScreen extends StatelessWidget {
             child: Container(
               margin: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: const Color(0xFF1E2640),
+                color: AppColors.light,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: const Color(0xFF2E3A57)),
+                border: Border.all(color: Colors.grey.shade200),
               ),
               child: const Icon(Icons.arrow_back_ios_new_rounded,
-                  color: Colors.white, size: 18),
+                  color: Colors.black, size: 18),
             ),
           ),
           title: Text(
             title,
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontSize: AppFontSize.large(context),
               fontWeight: FontWeight.w700,
             ),
@@ -53,7 +54,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 24),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFF1E3A6E), Color(0xFF1A2F5A)],
+                    colors: [AppColors.navy, AppColors.blueButton],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -67,14 +68,14 @@ class PrivacyPolicyScreen extends StatelessWidget {
                       width: 48,
                       height: 48,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF4A90D9).withOpacity(0.15),
+                        color: AppColors.light.withValues(alpha: 0.15),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         showTerms
                             ? Icons.description_rounded
                             : Icons.privacy_tip_rounded,
-                        color: const Color(0xFF4A90D9),
+                        color: AppColors.light,
                         size: 24,
                       ),
                     ),
@@ -84,14 +85,15 @@ class PrivacyPolicyScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(title,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
+                              style: TextStyle(
+                                  color: AppColors.light,
+                                  fontSize: AppFontSize.medium(context),
                                   fontWeight: FontWeight.w700)),
                           const SizedBox(height: 4),
-                          const Text('Last updated: January 2025',
+                          Text('Last updated: January 2025',
                               style: TextStyle(
-                                  color: Color(0xFF8A9BB5), fontSize: 12)),
+                                  color: AppColors.light.withValues(alpha: 0.7), 
+                                  fontSize: AppFontSize.small(context))),
                         ],
                       ),
                     ),
@@ -208,25 +210,25 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
                 margin: const EdgeInsets.only(top: 8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1E2640),
+                  color: AppColors.light,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFF2E3A57)),
+                  border: Border.all(color: Colors.grey.shade200),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Have questions?',
+                    Text('Have questions?',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontWeight: FontWeight.w700,
-                            fontSize: 14)),
+                            fontSize: AppFontSize.body(context))),
                     const SizedBox(height: 6),
                     Text(
                       showTerms
                           ? 'Contact legal@profinch.in for any queries about these terms.'
                           : 'Reach our Data Protection Officer at dpo@profinch.in.',
-                      style: const TextStyle(
-                          color: Color(0xFF8A9BB5), fontSize: 12, height: 1.5),
+                      style: TextStyle(
+                          color: Color(0xFF8A9BB5), fontSize: AppFontSize.small(context), height: 1.5),
                     ),
                   ],
                 ),
@@ -248,9 +250,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E2640),
+        color: AppColors.light,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFF2E3A57)),
+        border: Border.all(color: Colors.grey.shade200),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,7 +263,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 width: 34,
                 height: 34,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF4A90D9).withOpacity(0.12),
+                  color: const Color(0xFF4A90D9).withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(icon, color: const Color(0xFF4A90D9), size: 18),
@@ -271,7 +273,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 child: Text(
                   title,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: AppFontSize.body(context),
                     fontWeight: FontWeight.w700,
                   ),

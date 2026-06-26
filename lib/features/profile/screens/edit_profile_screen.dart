@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/features/dashboard/provider/dashboard_provider.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +69,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _showSuccessSnackbar() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: const Color(0xFF1E2640),
+        backgroundColor: AppColors.light,
         behavior: SnackBarBehavior.floating,
         margin: const EdgeInsets.all(16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -77,7 +78,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             Icon(Icons.check_circle_rounded, color: Color(0xFF4CD964)),
             SizedBox(width: 10),
             Text('Profile updated successfully',
-                style: TextStyle(color: Colors.white)),
+                style: TextStyle(color: Colors.black)),
           ],
         ),
         duration: const Duration(seconds: 2),
@@ -94,11 +95,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         .toList();
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-        backgroundColor: const Color(0xFF0F1322),
+        backgroundColor: AppColors.lightBlue,
         appBar: AppBar(
-          backgroundColor: const Color(0xFF0F1322),
+          backgroundColor: AppColors.lightBlue,
           elevation: 0,
           scrolledUnderElevation: 0,
           leading: GestureDetector(
@@ -106,18 +107,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             child: Container(
               margin: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: const Color(0xFF1E2640),
+                color: AppColors.light,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: const Color(0xFF2E3A57)),
+                border: Border.all(color: Colors.grey.shade200),
               ),
               child: const Icon(Icons.arrow_back_ios_new_rounded,
-                  color: Colors.white, size: 18),
+                  color: Colors.black, size: 18),
             ),
           ),
           title: Text(
             'Edit Profile',
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,
               fontSize: AppFontSize.large(context),
               fontWeight: FontWeight.w700,
             ),
@@ -140,7 +141,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         height: 90,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: const Color(0xFF1E2640),
+                          color: AppColors.light,
                           border: Border.all(
                               color: const Color(0xFF4A90D9), width: 2),
                         ),
@@ -157,7 +158,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             color: const Color(0xFF4A90D9),
                             shape: BoxShape.circle,
                             border: Border.all(
-                                color: const Color(0xFF0F1322), width: 2),
+                                color: AppColors.lightBlue, width: 2),
                           ),
                           child: const Icon(Icons.camera_alt_rounded,
                               size: 14, color: Colors.white),
@@ -242,15 +243,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 16, vertical: 4),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1E2640),
+                    color: AppColors.light,
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: const Color(0xFF2E3A57)),
+                    border: Border.all(color: Colors.grey.shade200),
                   ),
                   child: DropdownButtonFormField<String>(
                     value: selectedPrimaryAccountId,
-                    dropdownColor: const Color(0xFF1E2640),
+                    dropdownColor: AppColors.light,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: AppFontSize.body(context),
                       fontWeight: FontWeight.w500,
                     ),
@@ -275,7 +276,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         value: account.id,
                         child: Text(
                           '${account.accountType}  •  ••••${account.accountNumber.substring(account.accountNumber.length - 4)}',
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.black),
                         ),
                       );
                     }).toList(),
@@ -290,10 +291,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF4A90D9).withOpacity(0.08),
+                    color: const Color(0xFF4A90D9).withValues(alpha: 0.08),
                     borderRadius: BorderRadius.circular(10),
                     border: Border.all(
-                        color: const Color(0xFF4A90D9).withOpacity(0.2)),
+                        color: const Color(0xFF4A90D9).withValues(alpha: 0.2)),
                   ),
                   child: Row(
                     children: [
@@ -324,9 +325,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     onPressed: _isSaving ? null : _save,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFF4A90D9),
-                      foregroundColor: Colors.white,
+                      foregroundColor: AppColors.light,
                       disabledBackgroundColor:
-                          const Color(0xFF4A90D9).withOpacity(0.5),
+                          const Color(0xFF4A90D9).withValues(alpha: 0.5),
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14)),
@@ -337,7 +338,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             height: 22,
                             child: CircularProgressIndicator(
                               strokeWidth: 2.5,
-                              color: Colors.white,
+                              color: AppColors.light,
                             ),
                           )
                         : Text(
@@ -384,7 +385,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       inputFormatters: inputFormatters,
       validator: validator,
       style: TextStyle(
-        color: Colors.white,
+        color: Colors.black,
         fontSize: AppFontSize.body(context),
         fontWeight: FontWeight.w500,
       ),
@@ -396,14 +397,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
         prefixIcon: Icon(icon, color: const Color(0xFF4A90D9), size: 20),
         filled: true,
-        fillColor: const Color(0xFF1E2640),
+        fillColor: AppColors.light,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFF2E3A57)),
+          borderSide: BorderSide(color: Colors.grey.shade200),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: Color(0xFF2E3A57)),
+          borderSide:  BorderSide(color: Colors.grey.shade200),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
