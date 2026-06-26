@@ -11,7 +11,6 @@ import 'transfer_success_screen.dart';
 
 import 'package:profinch_mobile_application/features/notifications/provider/notification_provider.dart';
 import 'package:profinch_mobile_application/data/models/notification_model.dart';
-
 class TransferConfirmationScreen extends StatelessWidget {
   final BeneficiaryModel beneficiary;
   final String accountId;
@@ -259,7 +258,7 @@ class TransferConfirmationScreen extends StatelessWidget {
                           ),
                         );
                         
-                        Navigator.pushReplacement(
+                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (_) => TransferSuccessScreen(

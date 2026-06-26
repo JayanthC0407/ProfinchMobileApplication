@@ -21,6 +21,11 @@ import 'package:profinch_mobile_application/features/loans/provider/loan_provide
 import 'package:profinch_mobile_application/features/loans/screens/apply_loan_screen.dart';
 import 'package:profinch_mobile_application/features/loans/screens/emi_calculator_screen.dart';
 import 'package:profinch_mobile_application/features/loans/screens/my_loans_screen.dart';
+import 'package:profinch_mobile_application/features/payments/provider/payment_provider.dart';
+import 'package:profinch_mobile_application/features/payments/screens/adhoc_transfer_screen.dart';
+import 'package:profinch_mobile_application/features/payments/screens/favourites_screen.dart';
+import 'package:profinch_mobile_application/features/payments/screens/payments_home_screen.dart';
+import 'package:profinch_mobile_application/features/payments/screens/scheduled_payment_screen.dart';
 import 'package:profinch_mobile_application/features/profile/screens/profile_screen.dart';
 import 'package:profinch_mobile_application/features/transfers/provider/transfer_provider.dart';
 import 'package:profinch_mobile_application/features/transfers/screens/transfer_money_screen.dart';
@@ -65,6 +70,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => TransferProvider()),
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
         ChangeNotifierProvider(create: (_) => InsuranceProvider()),
+        ChangeNotifierProvider(create: (_) => PaymentProvider()),
       ],
       child: const MyApp(),
     ),
@@ -136,11 +142,14 @@ class MyApp extends StatelessWidget {
 
         AppRoutes.notifications: (context) => const NotificationScreen(),
         
-         AppRoutes.insurance:       (context) => const InsuranceScreen(),
+        AppRoutes.insurance:       (context) => const InsuranceScreen(),
         AppRoutes.myPolicies:      (context) => const MyPoliciesScreen(),
         AppRoutes.buyInsurance:    (context) => const BuyInsuranceScreen(),
         AppRoutes.insuranceClaims: (context) => const InsuranceClaimsScreen(),
-
+        AppRoutes.payments: (context) => const PaymentsHomeScreen(),
+        AppRoutes.adhocTransfer:    (context) => const AdhocTransferScreen(),
+        AppRoutes.scheduledPayment: (context) => const ScheduledPaymentScreen(),
+        AppRoutes.favourites:       (context) => const FavouritesScreen(),
       },
     );
   }

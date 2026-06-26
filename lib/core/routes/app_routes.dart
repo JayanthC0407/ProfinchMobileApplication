@@ -46,4 +46,8 @@ class AppRoutes {
   static const String myPolicies     = '/myPolicies';
   static const String buyInsurance   = '/buyInsurance';
   static const String insuranceClaims= '/insuranceClaims';
+  static const String payments          = '/payments';
+  static const String adhocTransfer     = '/adhocTransfer';
+  static const String scheduledPayment  = '/scheduledPayment';
+  static const String favourites        = '/favourites';
 }
