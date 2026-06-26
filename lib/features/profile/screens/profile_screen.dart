@@ -392,7 +392,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _showLinkedDevices(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E2640),
+      backgroundColor: AppColors.lightBlue,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -405,7 +405,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Text(
               'Linked Devices',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: AppFontSize.large(context),
                 fontWeight: FontWeight.w700,
               ),
@@ -432,13 +432,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFE53935).withOpacity(0.15),
+                  backgroundColor: const Color(0xFFE53935).withValues(alpha: 0.12),
                   foregroundColor: const Color(0xFFE53935),
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
                     side: BorderSide(
-                      color: const Color(0xFFE53935).withOpacity(0.3),
+                      color: const Color(0xFFE53935).withValues(alpha: 0.3),
                     ),
                   ),
                 ),
@@ -465,9 +465,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFF0F1322),
+        color: AppColors.light,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFF2E3A57)),
+        border: Border.all(color: Colors.grey.shade200)
       ),
       child: Row(
         children: [
@@ -475,7 +475,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: const Color(0xFF9B59B6).withOpacity(0.12),
+              color: Color(0xFF9B59B6).withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(10),
             ),
             child: const Icon(
@@ -494,7 +494,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Text(
                       name,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontWeight: FontWeight.w600,
                         fontSize: 13,
                       ),
@@ -507,14 +507,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF4CD964).withOpacity(0.15),
+                          color: const Color(0xFF4CD964).withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(4),
                         ),
-                        child: const Text(
+                        child: Text(
                           'This device',
                           style: TextStyle(
                             color: Color(0xFF4CD964),
-                            fontSize: 9,
+                            fontSize: AppFontSize.xs(context),
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -556,7 +556,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: const Color(0xFF1E2640),
+      backgroundColor: AppColors.lightBlue,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -569,15 +569,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Text(
               'Login Activity',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: AppFontSize.large(context),
                 fontWeight: FontWeight.w700,
               ),
             ),
             const SizedBox(height: 4),
-            const Text(
+            Text(
               'Recent sign-in sessions',
-              style: TextStyle(color: Color(0xFF8A9BB5), fontSize: 12),
+              style: TextStyle(color: Color(0xFF8A9BB5), fontSize: AppFontSize.small(context)),
             ),
             const SizedBox(height: 20),
             ...sessions.map(
@@ -585,9 +585,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 margin: const EdgeInsets.only(bottom: 10),
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF0F1322),
+                  color: AppColors.light,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFF2E3A57)),
+                  border: Border.all(color: Colors.grey.shade200),
                 ),
                 child: Row(
                   children: [
@@ -595,7 +595,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       width: 36,
                       height: 36,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFF59E0B).withOpacity(0.12),
+                        color: const Color(0xFFF59E0B).withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: const Icon(
@@ -612,7 +612,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Text(
                             s['time']!,
                             style: const TextStyle(
-                              color: Colors.white,
+                              color: Colors.black,
                               fontWeight: FontWeight.w600,
                               fontSize: 13,
                             ),
@@ -734,12 +734,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? const Color(0xFF4A90D9).withValues(alpha: 0.1)
-                                : const Color(0xFF0F1322),
+                                : AppColors.light,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                               color: isSelected
                                   ? const Color(0xFF4A90D9).withValues(alpha: 0.4)
-                                  : const Color(0xFF2E3A57),
+                                  : Colors.grey.shade200,
                             ),
                           ),
                           child: Row(children: [
@@ -748,7 +748,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               style: TextStyle(
                                 color: isSelected
                                     ? const Color(0xFF4A90D9)
-                                    : Colors.white,
+                                    : Colors.black,
                                 fontWeight: isSelected
                                     ? FontWeight.w600
                                     : FontWeight.w400,
