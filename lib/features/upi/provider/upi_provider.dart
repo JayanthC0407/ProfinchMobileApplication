@@ -54,9 +54,28 @@ class UpiProvider extends ChangeNotifier {
     );
   }
 
-  String get _myAccountId => _myAccount.id;
+  String get _myAccountId => _selectedAccountId ?? _myAccount.id;
 
-  double get accountBalance => _myAccount.availableBalance;
+  double get accountBalance =>
+      _accountProvider.getAccountById(_myAccountId).availableBalance;
+
+  // ── All accounts for the current user (for the account picker) ─
+  List<AccountModel> get userAccounts {
+    final userId = _authProvider.currentUser?.id ?? '';
+    return _accountProvider.accounts
+        .where((a) => a.userId == userId)
+        .toList();
+  }
+
+  // ── Selected account (user can switch while sending) ──────────
+  String? _selectedAccountId;
+
+  String get selectedAccountId => _selectedAccountId ?? _myAccount.id;
+
+  void selectAccount(String accountId) {
+    _selectedAccountId = accountId;
+    notifyListeners();
+  }
 
   // ── Recent UPI contacts ────────────────────────────────────────
   final List<RecentUpiContact> recentContacts = const [
