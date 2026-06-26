@@ -11,10 +11,6 @@ import '../widgets/beneficiary_transfer_tile.dart';
 import 'international_transfer_screen.dart';
 import 'local_transfer_screen.dart';
 import 'pbi_transfer_screen.dart';
-import '../../payments/screens/adhoc_transfer_screen.dart';
-import '../../payments/screens/scheduled_payment_screen.dart';
-import '../../payments/screens/favourites_screen.dart';
-import '../../payments/screens/payments_home_screen.dart';
 
 class TransferMoneyScreen extends StatefulWidget {
   const TransferMoneyScreen({super.key});
