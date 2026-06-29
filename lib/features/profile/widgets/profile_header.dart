@@ -114,6 +114,8 @@ class ProfileHeader extends StatelessWidget {
           // ── Name ───────────────────────────────────────────────
           Text(
             username,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: Colors.white,
               fontSize: AppFontSize.xl(context),
@@ -127,6 +129,8 @@ class ProfileHeader extends StatelessWidget {
           // ── Email ──────────────────────────────────────────────
           Text(
             email,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               color: Colors.white,
               fontSize: AppFontSize.small(context),
@@ -136,8 +140,10 @@ class ProfileHeader extends StatelessWidget {
           const SizedBox(height: 16),
 
           // ── KYC + Account type chips ───────────────────────────
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 10,
+            runSpacing: 8,
             children: [
               _buildChip(
                 icon: isKycVerified
@@ -148,15 +154,13 @@ class ProfileHeader extends StatelessWidget {
                     ? const Color(0xFF4CD964)
                     : const Color(0xFFFFA500),
               ),
-              if (accountType.isNotEmpty) ...[
-                const SizedBox(width: 10),
+              if (accountType.isNotEmpty)
                 _buildChip(
                   icon: Icons.account_balance_rounded,
                   label: accountType,
                   color: Colors.white,
                 ),
               ],
-            ],
           ),
         ],
       ),
@@ -188,6 +192,8 @@ class ProfileHeader extends StatelessWidget {
               fontWeight: FontWeight.w600,
               letterSpacing: 0.2,
             ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
         ],
       ),

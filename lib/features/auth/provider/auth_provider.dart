@@ -92,6 +92,12 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateProfileImage(String imagePath) {
+  if (currentUser == null) return;
+  currentUser = currentUser!.copyWith(profileImage: imagePath);
+  notifyListeners();
+  }
+
   Future<bool> login({
     required String email,
     required String password,

@@ -21,6 +21,9 @@ import 'package:profinch_mobile_application/features/Transactions/widgets/transa
 import 'package:profinch_mobile_application/features/Transactions/screens/transaction_history_screen.dart';
 import 'package:profinch_mobile_application/features/notifications/provider/notification_provider.dart';
 
+import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
+
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
@@ -61,9 +64,49 @@ class DashboardScreen extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const CircleAvatar(
-                          radius: 24,
-                          backgroundImage: AssetImage('images/avatar.jpg'),
+                        GestureDetector(
+                          onTap: () => Navigator.pushNamed(context, AppRoutes.profile),
+                          child: CircleAvatar(
+                            radius: 24,
+                            backgroundColor: AppColors.accent,
+                            child: user.profileImage.isEmpty
+                                ? Text(
+                                    user.username
+                                        .trim()
+                                        .split(' ')
+                                        .where((e) => e.isNotEmpty)
+                                        .take(2)
+                                        .map((e) => e[0].toUpperCase())
+                                        .join(),
+                                    style: TextStyle(
+                                      color: AppColors.light,
+                                      fontSize: AppFontSize.body(context),
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                : ClipOval(
+                                    child: Image.asset(
+                                      user.profileImage,
+                                      fit: BoxFit.cover,
+                                      width: 48,
+                                      height: 48,
+                                      errorBuilder: (_, __, ___) => Text(
+                                        user.username
+                                            .trim()
+                                            .split(' ')
+                                            .where((e) => e.isNotEmpty)
+                                            .take(2)
+                                            .map((e) => e[0].toUpperCase())
+                                            .join(),
+                                        style: TextStyle(
+                                          color: AppColors.light,
+                                          fontSize: AppFontSize.body(context),
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                          ),
                         ),
                         const SizedBox(width: 12),
                         Column(
