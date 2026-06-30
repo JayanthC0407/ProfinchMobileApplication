@@ -289,6 +289,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   ),
                   child: DropdownButtonFormField<String>(
                     value: selectedPrimaryAccountId,
+                    isExpanded: true,
                     dropdownColor: AppColors.light,
                     style: TextStyle(
                       color: Colors.black,
@@ -317,6 +318,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         child: Text(
                           '${account.accountType}  •  ••••${account.accountNumber.substring(account.accountNumber.length - 4)}',
                           style: const TextStyle(color: Colors.black),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
                         ),
                       );
                     }).toList(),

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'dart:typed_data';
 
 class ProfileHeader extends StatelessWidget {
   final String username;
   final String email;
   final bool isKycVerified;
   final String accountType;
+  final Uint8List? profileImageBytes;
+  final String profileImagePath;    
 
   const ProfileHeader({
     super.key,
@@ -14,6 +17,8 @@ class ProfileHeader extends StatelessWidget {
     required this.email,
     this.isKycVerified = false,
     this.accountType = '',
+    this.profileImageBytes,  
+    this.profileImagePath = '', 
   });
 
   @override
@@ -77,10 +82,18 @@ class ProfileHeader extends StatelessWidget {
                   shape: BoxShape.circle,
                   color: Color(0xFF2A3550),
                 ),
-                child: const Icon(
-                  Icons.person_rounded,
-                  size: 40,
-                  color: Color(0xFF4A90D9),
+                child: ClipOval(
+                  child: profileImageBytes != null
+                      ? Image.memory(profileImageBytes!, fit: BoxFit.cover, width: 76, height: 76)
+                      : (profileImagePath.isNotEmpty
+                          ? Image.asset(
+                              profileImagePath,
+                              fit: BoxFit.cover,
+                              width: 76,
+                              height: 76,
+                              errorBuilder: (_, __, ___) => _initials(context),
+                            )
+                          : _initials(context)),
                 ),
               ),
               // KYC badge
@@ -199,4 +212,22 @@ class ProfileHeader extends StatelessWidget {
       ),
     );
   }
+  Widget _initials(BuildContext context) {
+  return Center(
+    child: Text(
+      username
+          .trim()
+          .split(' ')
+          .where((e) => e.isNotEmpty)
+          .take(2)
+          .map((e) => e[0].toUpperCase())
+          .join(),
+      style: TextStyle(
+        color: const Color(0xFF4A90D9),
+        fontSize: AppFontSize.xl(context),
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+  );
+}
 }

@@ -116,6 +116,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 email: user.email,
                 isKycVerified: user.isKycVerified,
                 accountType: primaryAccount.accountType,
+                profileImageBytes: authProvider.profileImageBytes, 
+                profileImagePath: user.profileImage,
               ),
 
               const SizedBox(height: 24),
