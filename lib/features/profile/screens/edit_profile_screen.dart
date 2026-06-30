@@ -7,6 +7,9 @@ import 'package:provider/provider.dart';
 import '../../auth/provider/auth_provider.dart';
 import '../../../data/dummy/dummy_accounts.dart';
 
+import 'dart:io';    
+import 'package:image_picker/image_picker.dart';
+
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 
@@ -21,6 +24,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late TextEditingController phoneController;
   String? selectedPrimaryAccountId;
   bool _isSaving = false;
+  Uint8List? _pickedImageBytes;
 
   @override
   void initState() {
@@ -41,6 +45,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.dispose();
   }
 
+  //add profile image
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final picked = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 512,
+      maxHeight: 512,
+      imageQuality: 80,
+    );
+    if (picked != null) {
+      final bytes = await picked.readAsBytes();
+      setState(() => _pickedImageBytes = bytes);
+    }
+  }
+
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -54,6 +73,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       phoneNumber: phoneController.text.trim(),
       primaryAccountId: selectedPrimaryAccountId,
     );
+
+    authProvider.updateUser(updatedUser);
+    if (_pickedImageBytes != null) {
+      authProvider.updateProfileImageBytes(_pickedImageBytes!);  // ← add this
+    }
 
     authProvider.updateUser(updatedUser);
     Provider.of<DashboardProvider>(context, listen: false)
@@ -133,7 +157,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               children: [
 
                 // ── Avatar section ─────────────────────────────
-                Center(
+                //updated to add profile image
+              Center(
+                child: GestureDetector(
+                  onTap: _pickImage,
                   child: Stack(
                     children: [
                       Container(
@@ -142,11 +169,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppColors.light,
-                          border: Border.all(
-                              color: const Color(0xFF4A90D9), width: 2),
+                          border: Border.all(color: const Color(0xFF4A90D9), width: 2),
                         ),
-                        child: const Icon(Icons.person_rounded,
-                            size: 48, color: Color(0xFF4A90D9)),
+                        child: ClipOval(
+                          child: _pickedImageBytes != null
+                              ? Image.memory(_pickedImageBytes!, fit: BoxFit.cover, width: 90, height: 90)
+                              : (user.profileImage.isNotEmpty
+                                  ? Image.asset(
+                                      user.profileImage,
+                                      fit: BoxFit.cover,
+                                      width: 90,
+                                      height: 90,
+                                      errorBuilder: (_, __, ___) => const Icon(
+                                          Icons.person_rounded, size: 48, color: Color(0xFF4A90D9)),
+                                    )
+                                  : const Icon(Icons.person_rounded, size: 48, color: Color(0xFF4A90D9))),
+                        ),
                       ),
                       Positioned(
                         bottom: 0,
@@ -157,25 +195,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           decoration: BoxDecoration(
                             color: const Color(0xFF4A90D9),
                             shape: BoxShape.circle,
-                            border: Border.all(
-                                color: AppColors.lightBlue, width: 2),
+                            border: Border.all(color: AppColors.lightBlue, width: 2),
                           ),
-                          child: const Icon(Icons.camera_alt_rounded,
-                              size: 14, color: Colors.white),
+                          child: const Icon(Icons.camera_alt_rounded, size: 14, color: Colors.white),
                         ),
                       ),
                     ],
                   ),
                 ),
+              ),
 
                 const SizedBox(height: 8),
 
                 Center(
+                  child: GestureDetector(
+                  onTap: _pickImage,
                   child: Text(
                     'Tap to change photo',
                     style: TextStyle(
                       color: const Color(0xFF4A90D9),
                       fontSize: AppFontSize.xs(context),
+                      ),
                     ),
                   ),
                 ),

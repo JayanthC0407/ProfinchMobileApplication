@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/services/biometric_service.dart';
 import 'package:profinch_mobile_application/data/models/user_model.dart';
@@ -135,4 +137,13 @@ class AuthProvider extends ChangeNotifier {
     // so user can still quick-login on next session
     notifyListeners();
   }
+
+  //update profile image
+  Uint8List? profileImageBytes;
+
+  void updateProfileImageBytes(Uint8List bytes) {
+    profileImageBytes = bytes;
+    notifyListeners();
+  }
+
 }

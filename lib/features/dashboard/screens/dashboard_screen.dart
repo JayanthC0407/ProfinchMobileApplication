@@ -22,7 +22,7 @@ import 'package:profinch_mobile_application/features/Transactions/screens/transa
 import 'package:profinch_mobile_application/features/notifications/provider/notification_provider.dart';
 
 import 'package:profinch_mobile_application/core/constants/colors.dart';
-import 'package:profinch_mobile_application/core/constants/text_styles.dart';
+import 'dart:typed_data';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -69,43 +69,24 @@ class DashboardScreen extends StatelessWidget {
                           child: CircleAvatar(
                             radius: 24,
                             backgroundColor: AppColors.accent,
-                            child: user.profileImage.isEmpty
-                                ? Text(
-                                    user.username
-                                        .trim()
-                                        .split(' ')
-                                        .where((e) => e.isNotEmpty)
-                                        .take(2)
-                                        .map((e) => e[0].toUpperCase())
-                                        .join(),
-                                    style: TextStyle(
-                                      color: AppColors.light,
-                                      fontSize: AppFontSize.body(context),
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                : ClipOval(
-                                    child: Image.asset(
-                                      user.profileImage,
+                            child: ClipOval(
+                              child: authProvider.profileImageBytes != null
+                                  ? Image.memory(
+                                      authProvider.profileImageBytes!,
                                       fit: BoxFit.cover,
                                       width: 48,
                                       height: 48,
-                                      errorBuilder: (_, __, ___) => Text(
-                                        user.username
-                                            .trim()
-                                            .split(' ')
-                                            .where((e) => e.isNotEmpty)
-                                            .take(2)
-                                            .map((e) => e[0].toUpperCase())
-                                            .join(),
-                                        style: TextStyle(
-                                          color: AppColors.light,
-                                          fontSize: AppFontSize.body(context),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                    )
+                                  : (user.profileImage.isNotEmpty
+                                      ? Image.asset(
+                                          user.profileImage,
+                                          fit: BoxFit.cover,
+                                          width: 48,
+                                          height: 48,
+                                          errorBuilder: (_, __, ___) => _initialsText(context, user.username),
+                                        )
+                                      : _initialsText(context, user.username)),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -462,12 +443,27 @@ class DashboardScreen extends StatelessWidget {
                     );
                   },
                 ),
-
                 const SizedBox(height: 16),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+  Widget _initialsText(BuildContext context, String username) {
+    return Text(
+      username
+          .trim()
+          .split(' ')
+          .where((e) => e.isNotEmpty)
+          .take(2)
+          .map((e) => e[0].toUpperCase())
+          .join(),
+      style: TextStyle(
+        color: AppColors.light,
+        fontSize: AppFontSize.body(context),
+        fontWeight: FontWeight.bold,
       ),
     );
   }
