@@ -146,4 +146,15 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //
+  String? get pinUsername {
+  if (_pinEmail == null) return null;
+  return _repository.getUserByEmail(_pinEmail!)?.username;
+  }
+
+  String? get patternUsername {
+    if (_patternEmail == null) return null;
+    return _repository.getUserByEmail(_patternEmail!)?.username;
+  }
+
 }
