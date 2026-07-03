@@ -199,7 +199,7 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                         final phoneRegex = RegExp(r'^\d{10}$');
 
                         // UPI ID (e.g. name@bank)
-                        final upiRegex = RegExp(r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9]+$');
+                        final upiRegex = RegExp(r'^[a-zA-Z0-9._-]+@[a-zA-Z]+$');
 
                         if (!phoneRegex.hasMatch(value) && !upiRegex.hasMatch(value)) {
                           return 'Enter a valid UPI ID or phone number';

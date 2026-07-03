@@ -6,6 +6,28 @@ class NotificationProvider extends ChangeNotifier {
   final List<NotificationModel> _notifications =
       List.from(DummyNotifications.notifications);
 
+  //preferences
+  bool pushEnabled = true;
+  bool smsEnabled = true;
+  bool emailEnabled = false;
+  bool transactionAlertsEnabled = true;
+  bool promoAlertsEnabled = false;
+
+  void updatePreferences({
+    bool? push,
+    bool? sms,
+    bool? email,
+    bool? transactionAlerts,
+    bool? promoAlerts,
+  }) {
+    if (push != null) pushEnabled = push;
+    if (sms != null) smsEnabled = sms;
+    if (email != null) emailEnabled = email;
+    if (transactionAlerts != null) transactionAlertsEnabled = transactionAlerts;
+    if (promoAlerts != null) promoAlertsEnabled = promoAlerts;
+    notifyListeners();
+  }
+
   List<NotificationModel> getByUserId(String userId) {
     final list = _notifications
         .where((n) => n.userId == userId)
@@ -42,6 +64,21 @@ class NotificationProvider extends ChangeNotifier {
   }
 
   void addNotification(NotificationModel notification) {
+    if (!pushEnabled) return;
+
+    const transactionTypes = {
+      NotificationType.transaction,
+      NotificationType.upi,
+      NotificationType.wallet,
+    };
+
+    const promoTypes = {
+      NotificationType.offer,
+    };
+
+    if (!transactionAlertsEnabled && transactionTypes.contains(notification.type)) return;
+    if (!promoAlertsEnabled && promoTypes.contains(notification.type)) return;
+
     _notifications.insert(0, notification);
     notifyListeners();
   }
