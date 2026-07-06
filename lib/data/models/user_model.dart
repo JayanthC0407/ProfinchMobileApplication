@@ -31,6 +31,7 @@ class UserModel {
   String? email,
   String? phoneNumber,
   String? primaryAccountId,
+  String? profileImage,
 }) 
  {
   return UserModel(
@@ -40,7 +41,7 @@ class UserModel {
     password: password,
     phoneNumber: phoneNumber ?? this.phoneNumber,
     panNumber: panNumber,
-    profileImage: profileImage,
+    profileImage: profileImage ?? this.profileImage,
     accountNumber: accountNumber,
     createdAt: createdAt,
     isKycVerified: isKycVerified,

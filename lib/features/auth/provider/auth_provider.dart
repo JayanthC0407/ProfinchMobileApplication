@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/services/biometric_service.dart';
 import 'package:profinch_mobile_application/data/models/user_model.dart';
@@ -92,6 +94,12 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateProfileImage(String imagePath) {
+  if (currentUser == null) return;
+  currentUser = currentUser!.copyWith(profileImage: imagePath);
+  notifyListeners();
+  }
+
   Future<bool> login({
     required String email,
     required String password,
@@ -129,4 +137,24 @@ class AuthProvider extends ChangeNotifier {
     // so user can still quick-login on next session
     notifyListeners();
   }
+
+  //update profile image
+  Uint8List? profileImageBytes;
+
+  void updateProfileImageBytes(Uint8List bytes) {
+    profileImageBytes = bytes;
+    notifyListeners();
+  }
+
+  //
+  String? get pinUsername {
+  if (_pinEmail == null) return null;
+  return _repository.getUserByEmail(_pinEmail!)?.username;
+  }
+
+  String? get patternUsername {
+    if (_patternEmail == null) return null;
+    return _repository.getUserByEmail(_patternEmail!)?.username;
+  }
+
 }

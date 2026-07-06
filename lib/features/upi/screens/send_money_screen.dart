@@ -192,6 +192,19 @@ class _SendMoneyScreenState extends State<SendMoneyScreen> {
                       if (v == null || v.trim().isEmpty) {
                         return 'UPI ID is required';
                       }
+
+                      final value = v.trim();
+
+                        // Phone number (10 digits)
+                        final phoneRegex = RegExp(r'^\d{10}$');
+
+                        // UPI ID (e.g. name@bank)
+                        final upiRegex = RegExp(r'^[a-zA-Z0-9._-]+@[a-zA-Z]+$');
+
+                        if (!phoneRegex.hasMatch(value) && !upiRegex.hasMatch(value)) {
+                          return 'Enter a valid UPI ID or phone number';
+                        }
+
                       return null;
                     },
                     decoration: _inputDecoration(

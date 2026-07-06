@@ -13,6 +13,7 @@ import 'edit_profile_screen.dart';
 import 'security_settings_screen.dart';
 import 'privacy_policy_screen.dart';
 import 'help_support_screen.dart';
+import 'package:profinch_mobile_application/features/notifications/provider/notification_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -116,6 +117,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 email: user.email,
                 isKycVerified: user.isKycVerified,
                 accountType: primaryAccount.accountType,
+                profileImageBytes: authProvider.profileImageBytes, 
+                profileImagePath: user.profileImage,
               ),
 
               const SizedBox(height: 24),
@@ -960,22 +963,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 }
 
 // ── Notification Prefs Sheet ──────────────────────────────────────
-class _NotificationPrefsSheet extends StatefulWidget {
+class _NotificationPrefsSheet extends StatelessWidget {
   const _NotificationPrefsSheet();
-  @override
-  State<_NotificationPrefsSheet> createState() =>
-      _NotificationPrefsSheetState();
-}
-
-class _NotificationPrefsSheetState extends State<_NotificationPrefsSheet> {
-  bool pushEnabled = true;
-  bool smsEnabled = true;
-  bool emailEnabled = false;
-  bool transactionAlerts = true;
-  bool promoAlerts = false;
 
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<NotificationProvider>();
+
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -991,32 +985,17 @@ class _NotificationPrefsSheetState extends State<_NotificationPrefsSheet> {
             ),
           ),
           const SizedBox(height: 20),
-          _prefRow(
-            'Push Notifications',
-            pushEnabled,
-            (v) => setState(() => pushEnabled = v),
-          ),
-          _prefRow(
-            'SMS Alerts',
-            smsEnabled,
-            (v) => setState(() => smsEnabled = v),
-          ),
-          _prefRow(
-            'Email Alerts',
-            emailEnabled,
-            (v) => setState(() => emailEnabled = v),
-          ),
+          _prefRow('Push Notifications', provider.pushEnabled,
+              (v) => provider.updatePreferences(push: v), context),
+          _prefRow('SMS Alerts', provider.smsEnabled,
+              (v) => provider.updatePreferences(sms: v), context),
+          _prefRow('Email Alerts', provider.emailEnabled,
+              (v) => provider.updatePreferences(email: v), context),
           const Divider(color: Color(0xFF2E3A57), height: 24),
-          _prefRow(
-            'Transaction Alerts',
-            transactionAlerts,
-            (v) => setState(() => transactionAlerts = v),
-          ),
-          _prefRow(
-            'Promotional Offers',
-            promoAlerts,
-            (v) => setState(() => promoAlerts = v),
-          ),
+          _prefRow('Transaction Alerts', provider.transactionAlertsEnabled,
+              (v) => provider.updatePreferences(transactionAlerts: v), context),
+          _prefRow('Promotional Offers', provider.promoAlertsEnabled,
+              (v) => provider.updatePreferences(promoAlerts: v), context),
           const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
@@ -1031,10 +1010,8 @@ class _NotificationPrefsSheetState extends State<_NotificationPrefsSheet> {
                 ),
               ),
               onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'Save Preferences',
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
+              child: const Text('Save Preferences',
+                  style: TextStyle(fontWeight: FontWeight.w700)),
             ),
           ),
         ],
@@ -1042,16 +1019,15 @@ class _NotificationPrefsSheetState extends State<_NotificationPrefsSheet> {
     );
   }
 
-  Widget _prefRow(String label, bool value, ValueChanged<bool> onChanged) {
+  Widget _prefRow(String label, bool value, ValueChanged<bool> onChanged,
+      BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: const TextStyle(color: Colors.black, fontSize: 14),
-          ),
+          Text(label,
+              style: const TextStyle(color: Colors.black, fontSize: 14)),
           Switch(
             value: value,
             onChanged: onChanged,

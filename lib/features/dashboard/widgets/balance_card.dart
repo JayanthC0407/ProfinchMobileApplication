@@ -120,14 +120,19 @@ class _BalanceCardState extends State<BalanceCard> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          Expanded(
+                          child: Text(
                             account.accountType,
                             style: TextStyle(
                               color: const Color.fromARGB(179, 4, 27, 107),
                               fontSize: AppFontSize.large(context),
                               fontWeight: FontWeight.w600,
+                              ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                             ),
                           ),
+                          const SizedBox(width: 8),
                           GestureDetector(
                             onTap: widget.onToggleVisibility,
                             child: Icon(
