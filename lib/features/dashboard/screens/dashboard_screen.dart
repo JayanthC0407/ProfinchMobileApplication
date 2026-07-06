@@ -31,7 +31,15 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<DashboardProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
-    final user = authProvider.currentUser!;
+    final user = authProvider.currentUser;
+
+    if (user == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, AppRoutes.login);
+      });
+
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
 
     // ✅ Use AccountProvider (main branch) — cleaner approach
     final accountProvider = Provider.of<AccountProvider>(context);
@@ -65,7 +73,8 @@ class DashboardScreen extends StatelessWidget {
                     Row(
                       children: [
                         GestureDetector(
-                          onTap: () => Navigator.pushNamed(context, AppRoutes.profile),
+                          onTap: () =>
+                              Navigator.pushNamed(context, AppRoutes.profile),
                           child: CircleAvatar(
                             radius: 24,
                             backgroundColor: AppColors.accent,
@@ -78,14 +87,21 @@ class DashboardScreen extends StatelessWidget {
                                       height: 48,
                                     )
                                   : (user.profileImage.isNotEmpty
-                                      ? Image.asset(
-                                          user.profileImage,
-                                          fit: BoxFit.cover,
-                                          width: 48,
-                                          height: 48,
-                                          errorBuilder: (_, __, ___) => _initialsText(context, user.username),
-                                        )
-                                      : _initialsText(context, user.username)),
+                                        ? Image.asset(
+                                            user.profileImage,
+                                            fit: BoxFit.cover,
+                                            width: 48,
+                                            height: 48,
+                                            errorBuilder: (_, __, ___) =>
+                                                _initialsText(
+                                                  context,
+                                                  user.username,
+                                                ),
+                                          )
+                                        : _initialsText(
+                                            context,
+                                            user.username,
+                                          )),
                             ),
                           ),
                         ),
@@ -359,9 +375,14 @@ class DashboardScreen extends StatelessWidget {
                         title: "Invest.",
                       ),
 
-                      const FeatureItem(
+                      FeatureItem(
                         icon: Icons.security,
                         title: "Insurance",
+                        onTap: () { Navigator.pushNamed(
+                          context,
+                          AppRoutes.insurance,
+                        );
+                        },
                       ),
 
                       FeatureItem(
@@ -451,6 +472,7 @@ class DashboardScreen extends StatelessWidget {
       ),
     );
   }
+
   Widget _initialsText(BuildContext context, String username) {
     return Text(
       username
