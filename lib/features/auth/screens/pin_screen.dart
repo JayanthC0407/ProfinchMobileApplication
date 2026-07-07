@@ -151,12 +151,15 @@ class _PinScreenState extends State<PinScreen> {
                       radius: 32,
                       backgroundColor: Colors.white.withValues(alpha: 0.2),
                       child: Text(
-                        authProvider.currentUser?.username
-                                .substring(0, 1)
-                                .toUpperCase() ??
-                            'U',
+                        (authProvider.pinUsername ?? 'User')
+                          .trim()
+                          .split(' ')
+                          .where((e) => e.isNotEmpty)
+                          .take(2)
+                          .map((e) => e[0].toUpperCase())
+                          .join(),
                         style: TextStyle(
-                          fontSize: AppFontSize.xl(context),
+                          fontSize: AppFontSize.large(context),
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
                         ),
@@ -164,7 +167,7 @@ class _PinScreenState extends State<PinScreen> {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      authProvider.currentUser?.username ?? '',
+                      authProvider.pinUsername ?? '',
                       style: TextStyle(
                         fontSize: AppFontSize.large(context),
                         fontWeight: FontWeight.w600,

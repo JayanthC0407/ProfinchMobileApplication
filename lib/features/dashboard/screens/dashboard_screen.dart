@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
+import 'package:profinch_mobile_application/features/analytics/screens/analytics_screen.dart';
 import 'package:profinch_mobile_application/features/upi/provider/upi_provider.dart';
 import 'package:profinch_mobile_application/features/upi/screens/receive_money_screen.dart';
 import 'package:profinch_mobile_application/features/upi/screens/scan_qr_screen.dart';
@@ -21,6 +22,9 @@ import 'package:profinch_mobile_application/features/Transactions/widgets/transa
 import 'package:profinch_mobile_application/features/Transactions/screens/transaction_history_screen.dart';
 import 'package:profinch_mobile_application/features/notifications/provider/notification_provider.dart';
 
+import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'dart:typed_data';
+
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
@@ -28,7 +32,15 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<DashboardProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
-    final user = authProvider.currentUser!;
+    final user = authProvider.currentUser;
+
+    if (user == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, AppRoutes.login);
+      });
+
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
 
     // ✅ Use AccountProvider (main branch) — cleaner approach
     final accountProvider = Provider.of<AccountProvider>(context);
@@ -61,9 +73,38 @@ class DashboardScreen extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const CircleAvatar(
-                          radius: 24,
-                          backgroundImage: AssetImage('images/avatar.jpg'),
+                        GestureDetector(
+                          onTap: () =>
+                              Navigator.pushNamed(context, AppRoutes.profile),
+                          child: CircleAvatar(
+                            radius: 24,
+                            backgroundColor: AppColors.accent,
+                            child: ClipOval(
+                              child: authProvider.profileImageBytes != null
+                                  ? Image.memory(
+                                      authProvider.profileImageBytes!,
+                                      fit: BoxFit.cover,
+                                      width: 48,
+                                      height: 48,
+                                    )
+                                  : (user.profileImage.isNotEmpty
+                                        ? Image.asset(
+                                            user.profileImage,
+                                            fit: BoxFit.cover,
+                                            width: 48,
+                                            height: 48,
+                                            errorBuilder: (_, __, ___) =>
+                                                _initialsText(
+                                                  context,
+                                                  user.username,
+                                                ),
+                                          )
+                                        : _initialsText(
+                                            context,
+                                            user.username,
+                                          )),
+                            ),
+                          ),
                         ),
                         const SizedBox(width: 12),
                         Column(
@@ -283,9 +324,17 @@ class DashboardScreen extends StatelessWidget {
                           Navigator.pushNamed(context, AppRoutes.loans),
                     ),
 
-                    const FeatureItem(
+                    FeatureItem(
                       icon: Icons.bar_chart,
                       title: "Analytics",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const AnalyticsScreen(),
+                          ),
+                        );
+                      },
                     ),
 
                     // Always visible items
@@ -335,9 +384,14 @@ class DashboardScreen extends StatelessWidget {
                         title: "Invest.",
                       ),
 
-                      const FeatureItem(
+                      FeatureItem(
                         icon: Icons.security,
                         title: "Insurance",
+                        onTap: () { Navigator.pushNamed(
+                          context,
+                          AppRoutes.insurance,
+                        );
+                        },
                       ),
 
                       FeatureItem(
@@ -419,12 +473,28 @@ class DashboardScreen extends StatelessWidget {
                     );
                   },
                 ),
-
                 const SizedBox(height: 16),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _initialsText(BuildContext context, String username) {
+    return Text(
+      username
+          .trim()
+          .split(' ')
+          .where((e) => e.isNotEmpty)
+          .take(2)
+          .map((e) => e[0].toUpperCase())
+          .join(),
+      style: TextStyle(
+        color: AppColors.light,
+        fontSize: AppFontSize.body(context),
+        fontWeight: FontWeight.bold,
       ),
     );
   }

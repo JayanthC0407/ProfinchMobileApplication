@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/features/Beneficiaries/provider/beneficiary_provider.dart';
 import 'package:profinch_mobile_application/features/Beneficiaries/screens/beneficiaries_screen.dart';
 import 'package:profinch_mobile_application/features/Beneficiaries/screens/beneficiary_type_screen.dart';
+import 'package:profinch_mobile_application/features/Transactions/provider/transaction_provider.dart';
 import 'package:profinch_mobile_application/features/Transactions/screens/transaction_history_screen.dart';
 import 'package:profinch_mobile_application/features/calculators/screens/calculator_menu_screen.dart';
 import 'package:profinch_mobile_application/features/calculators/screens/currency_converter_screen.dart';
@@ -71,6 +72,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
         ChangeNotifierProvider(create: (_) => InsuranceProvider()),
         ChangeNotifierProvider(create: (_) => PaymentProvider()),
+        ChangeNotifierProvider.value(value: TransactionProvider.instance),
       ],
       child: const MyApp(),
     ),
@@ -141,15 +143,15 @@ class MyApp extends StatelessWidget {
         AppRoutes.bills: (context) => const BillsScreen(),
 
         AppRoutes.notifications: (context) => const NotificationScreen(),
-        
-        AppRoutes.insurance:       (context) => const InsuranceScreen(),
-        AppRoutes.myPolicies:      (context) => const MyPoliciesScreen(),
-        AppRoutes.buyInsurance:    (context) => const BuyInsuranceScreen(),
+
+        AppRoutes.insurance: (context) => const InsuranceScreen(),
+        AppRoutes.myPolicies: (context) => const MyPoliciesScreen(),
+        AppRoutes.buyInsurance: (context) => const BuyInsuranceScreen(),
         AppRoutes.insuranceClaims: (context) => const InsuranceClaimsScreen(),
         AppRoutes.payments: (context) => const PaymentsHomeScreen(),
-        AppRoutes.adhocTransfer:    (context) => const AdhocTransferScreen(),
+        AppRoutes.adhocTransfer: (context) => const AdhocTransferScreen(),
         AppRoutes.scheduledPayment: (context) => const ScheduledPaymentScreen(),
-        AppRoutes.favourites:       (context) => const FavouritesScreen(),
+        AppRoutes.favourites: (context) => const FavouritesScreen(),
       },
     );
   }
