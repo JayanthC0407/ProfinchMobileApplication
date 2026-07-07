@@ -3,17 +3,15 @@ import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:profinch_mobile_application/features/analytics/utils/analytics_helper.dart';
-import 'package:provider/provider.dart';
 import '../../Transactions/provider/transaction_provider.dart';
 import '../widgets/analytics_summary_card.dart';
 import '../widgets/spending_pie_chart.dart';
-import '../../../data/models/transaction_model.dart';
 import '../widgets/comparative_analysis_card.dart';
 
 enum AnalyticsPeriod { month, threeMonths, year }
 
 class AnalyticsScreen extends StatefulWidget {
-  const AnalyticsScreen({Key? key}) : super(key: key);
+  const AnalyticsScreen({super.key});
 
   @override
   State<AnalyticsScreen> createState() => _AnalyticsScreenState();
@@ -24,9 +22,12 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
 
   String get _periodLabel {
     switch (_selectedPeriod) {
-      case AnalyticsPeriod.month: return 'This Month';
-      case AnalyticsPeriod.threeMonths: return 'Last 3 Months';
-      case AnalyticsPeriod.year: return 'This Year';
+      case AnalyticsPeriod.month:
+        return 'This Month';
+      case AnalyticsPeriod.threeMonths:
+        return 'Last 3 Months';
+      case AnalyticsPeriod.year:
+        return 'This Year';
     }
   }
 
@@ -34,13 +35,23 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
   Widget build(BuildContext context) {
     final transactions = TransactionProvider.instance.allTransactionsSorted;
 
-    final filtered = AnalyticsHelper.filterByPeriod(transactions, _selectedPeriod);
+    final filtered = AnalyticsHelper.filterByPeriod(
+      transactions,
+      _selectedPeriod,
+    );
     final totalSpent = AnalyticsHelper.totalSpent(filtered);
     final totalIncome = AnalyticsHelper.totalIncome(filtered);
     final groupedData = AnalyticsHelper.spendingByCategory(filtered);
-    final chartData = AnalyticsHelper.comparativeData(transactions, _selectedPeriod);
+    final chartData = AnalyticsHelper.comparativeData(
+      transactions,
+      _selectedPeriod,
+    );
     final insight = AnalyticsHelper.generateInsight(
-        chartData, _selectedPeriod, totalSpent, totalIncome);
+      transactions,
+      _selectedPeriod,
+      groupedData,
+      totalSpent,
+    );
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -68,7 +79,10 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(4, 4, 8, 0),
                     child: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: AppColors.light),
+                      icon: const Icon(
+                        Icons.arrow_back,
+                        color: AppColors.light,
+                      ),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
@@ -89,8 +103,10 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
                     child: Text(
                       'Track your spending patterns',
-                      style: AppTextStyles.whiteBody(context,
-                          color: AppColors.light.withValues(alpha: 0.65)),
+                      style: AppTextStyles.whiteBody(
+                        context,
+                        color: AppColors.light.withValues(alpha: 0.65),
+                      ),
                     ),
                   ),
                   // Period toggle chips
@@ -102,16 +118,19 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                         final label = period == AnalyticsPeriod.month
                             ? 'This Month'
                             : period == AnalyticsPeriod.threeMonths
-                                ? '3 Months'
-                                : 'This Year';
+                            ? '3 Months'
+                            : 'This Year';
                         return Padding(
                           padding: const EdgeInsets.only(right: 8),
                           child: GestureDetector(
-                            onTap: () => setState(() => _selectedPeriod = period),
+                            onTap: () =>
+                                setState(() => _selectedPeriod = period),
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 180),
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 8),
+                                horizontal: 16,
+                                vertical: 8,
+                              ),
                               decoration: BoxDecoration(
                                 color: isSelected
                                     ? AppColors.light
@@ -152,72 +171,31 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-  // Summary card
-  AnalyticsSummaryCard(
-    totalAmount: totalSpent,
-    totalIncome: totalIncome,
-    totalExpense: totalSpent,
-    period: _periodLabel,
-  ),
+                  // Summary card
+                  AnalyticsSummaryCard(
+                    totalAmount: totalSpent,
+                    totalIncome: totalIncome,
+                    totalExpense: totalSpent,
+                    period: _periodLabel,
+                  ),
 
-  const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-  // Pie chart
-  SpendingPieChart(data: groupedData),
+                  // Pie chart
+                  SpendingPieChart(data: groupedData),
 
-  const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-  // Comparative analysis
-  ComparativeAnalysisCard(
-    chartData: chartData,
-    period: _selectedPeriod,
-    insight: insight,
-  ),
+                  // Comparative analysis
+                  ComparativeAnalysisCard(
+                    chartData: chartData,
+                    period: _selectedPeriod,
+                    insight: insight,
+                  ),
 
-  const SizedBox(height: 24),
-],
+                  const SizedBox(height: 24),
+                ],
               ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-Widget _buildInsightCard(BuildContext context,
-    Map<TransactionCategory, double> groupedData, double totalSpent) {
-    final top = groupedData.entries
-        .reduce((a, b) => a.value > b.value ? a : b);
-    final percentage = totalSpent > 0
-        ? ((top.value / totalSpent) * 100).toStringAsFixed(0)
-        : '0';
-    final catName = top.key.toString().split('.').last;
-    final cleanName = catName[0].toUpperCase() + catName.substring(1);
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.iconBackground,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppColors.primary.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(Icons.lightbulb_outline_rounded,
-                color: AppColors.primary, size: 20),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              '$cleanName accounts for $percentage% of your spending this period.',
-              style: AppTextStyles.body(context, color: AppColors.textPrimary),
             ),
           ),
         ],

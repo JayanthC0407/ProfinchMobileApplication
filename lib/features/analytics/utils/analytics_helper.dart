@@ -6,7 +6,9 @@ class AnalyticsHelper {
   AnalyticsHelper._();
 
   static List<TransactionModel> filterByPeriod(
-      List<TransactionModel> transactions, AnalyticsPeriod period) {
+    List<TransactionModel> transactions,
+    AnalyticsPeriod period,
+  ) {
     final now = DateTime.now();
     return transactions.where((t) {
       switch (period) {
@@ -33,17 +35,22 @@ class AnalyticsHelper {
         .fold(0.0, (sum, t) => sum + t.amount);
   }
 
-  static Map<TransactionCategory, double> spendingByCategory(
-      List<TransactionModel> transactions) {
-    final Map<TransactionCategory, double> result = {};
-    for (final t in transactions.where((t) => t.type == TransactionType.debit)) {
-      result[t.category] = (result[t.category] ?? 0) + t.amount;
+  static Map<String, double> spendingByCategory(
+    List<TransactionModel> transactions,
+  ) {
+    final Map<String, double> result = {};
+    for (final t in transactions.where(
+      (t) => t.type == TransactionType.debit,
+    )) {
+      final category = _analyticsCategoryLabel(t.category);
+      result[category] = (result[category] ?? 0) + t.amount;
     }
     return result;
   }
 
-  static MapEntry<TransactionCategory, double>? topCategory(
-      List<TransactionModel> transactions) {
+  static MapEntry<String, double>? topCategory(
+    List<TransactionModel> transactions,
+  ) {
     final grouped = spendingByCategory(transactions);
     if (grouped.isEmpty) return null;
     return grouped.entries.reduce((a, b) => a.value > b.value ? a : b);
@@ -54,17 +61,19 @@ class AnalyticsHelper {
   }
 
   static List<TransactionModel> topTransactions(
-      List<TransactionModel> transactions) {
-    final debits = transactions
-        .where((t) => t.type == TransactionType.debit)
-        .toList()
-      ..sort((a, b) => b.amount.compareTo(a.amount));
+    List<TransactionModel> transactions,
+  ) {
+    final debits =
+        transactions.where((t) => t.type == TransactionType.debit).toList()
+          ..sort((a, b) => b.amount.compareTo(a.amount));
     return debits.take(5).toList();
   }
 
   // Returns last 6 months spending as map of month label → amount
   static Map<String, List<double>> comparativeData(
-      List<TransactionModel> all, AnalyticsPeriod period) {
+    List<TransactionModel> all,
+    AnalyticsPeriod period,
+  ) {
     final now = DateTime.now();
     final Map<String, List<double>> result = {};
     // result[label] = [currentValue, comparisonValue]
@@ -74,7 +83,11 @@ class AnalyticsHelper {
         // 4 weeks of current month vs avg of same week across prev 3 months
         for (int week = 1; week <= 4; week++) {
           final currentWeekTotal = _weekSpendingForMonth(
-              all, now.year, now.month, week);
+            all,
+            now.year,
+            now.month,
+            week,
+          );
           double avgTotal = 0.0;
           for (int i = 1; i <= 3; i++) {
             final past = DateTime(now.year, now.month - i);
@@ -89,26 +102,25 @@ class AnalyticsHelper {
         for (int i = 2; i >= 0; i--) {
           final month = DateTime(now.year, now.month - i);
           final currentTotal = _monthSpending(all, month.year, month.month);
-          final lastYearTotal =
-              _monthSpending(all, month.year - 1, month.month);
+          final lastYearTotal = _monthSpending(
+            all,
+            month.year - 1,
+            month.month,
+          );
           const monthNames = [
-            '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-          ];
-          result[monthNames[month.month]] = [currentTotal, lastYearTotal];
-        }
-        break;
-
-        case AnalyticsPeriod.threeMonths:
-        // Last 3 months: each month current year vs same month last year
-        for (int i = 2; i >= 0; i--) {
-          final month = DateTime(now.year, now.month - i);
-          final currentTotal = _monthSpending(all, month.year, month.month);
-          final lastYearTotal =
-              _monthSpending(all, month.year - 1, month.month);
-          const monthNames = [
-            '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+            '',
+            'Jan',
+            'Feb',
+            'Mar',
+            'Apr',
+            'May',
+            'Jun',
+            'Jul',
+            'Aug',
+            'Sep',
+            'Oct',
+            'Nov',
+            'Dec',
           ];
           result[monthNames[month.month]] = [currentTotal, lastYearTotal];
         }
@@ -117,8 +129,19 @@ class AnalyticsHelper {
       case AnalyticsPeriod.year:
         // All 12 months: this year vs last year
         const monthNames = [
-          '', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-          'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+          '',
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+          'Aug',
+          'Sep',
+          'Oct',
+          'Nov',
+          'Dec',
         ];
         for (int m = 1; m <= 12; m++) {
           final currentTotal = _monthSpending(all, now.year, m);
@@ -131,23 +154,34 @@ class AnalyticsHelper {
   }
 
   static double _weekSpendingForMonth(
-      List<TransactionModel> transactions, int year, int month, int weekNum) {
+    List<TransactionModel> transactions,
+    int year,
+    int month,
+    int weekNum,
+  ) {
     return transactions
-        .where((t) =>
-            t.type == TransactionType.debit &&
-            t.date.year == year &&
-            t.date.month == month &&
-            _weekOfMonth(t.date) == weekNum)
+        .where(
+          (t) =>
+              t.type == TransactionType.debit &&
+              t.date.year == year &&
+              t.date.month == month &&
+              _weekOfMonth(t.date) == weekNum,
+        )
         .fold(0.0, (sum, t) => sum + t.amount);
   }
 
   static double _monthSpending(
-      List<TransactionModel> transactions, int year, int month) {
+    List<TransactionModel> transactions,
+    int year,
+    int month,
+  ) {
     return transactions
-        .where((t) =>
-            t.type == TransactionType.debit &&
-            t.date.year == year &&
-            t.date.month == month)
+        .where(
+          (t) =>
+              t.type == TransactionType.debit &&
+              t.date.year == year &&
+              t.date.month == month,
+        )
         .fold(0.0, (sum, t) => sum + t.amount);
   }
 
@@ -155,50 +189,97 @@ class AnalyticsHelper {
     return ((date.day - 1) / 7).floor() + 1;
   }
 
-  /// Simple prescriptive insight — no exclamation marks, plain language
+  /// Short comparison insight for the selected analytics period.
   static String generateInsight(
-      Map<String, List<double>> chartData,
-      AnalyticsPeriod period,
-      double totalSpent,
-      double totalIncome) {
+    List<TransactionModel> allTransactions,
+    AnalyticsPeriod period,
+    Map<String, double> groupedData,
+    double totalSpent,
+  ) {
     final fmt = NumberFormat('#,##,##0', 'en_IN');
 
-    // Sum up current vs comparison totals from chart data
-    double currentTotal = 0;
-    double compTotal = 0;
-    for (final entry in chartData.values) {
-      currentTotal += entry[0];
-      compTotal += entry[1];
+    if (totalSpent == 0) {
+      return 'No spending yet for this period.';
     }
 
-    final savingsRate = totalIncome > 0
-        ? ((totalIncome - totalSpent) / totalIncome * 100).round()
-        : 0;
+    final top = groupedData.entries.reduce((a, b) => a.value > b.value ? a : b);
+    final previousTotal = _previousPeriodSpending(allTransactions, period);
+    final comparisonLabel = _comparisonLabel(period);
 
-    final compLabel = period == AnalyticsPeriod.month
-        ? '3-month weekly average'
-        : period == AnalyticsPeriod.threeMonths
-            ? 'the same period last year'
-            : 'last year';
-
-    if (compTotal == 0) {
-      return 'No comparison data available for this period.';
+    if (previousTotal == 0) {
+      return 'Not enough $comparisonLabel data yet. Biggest area: ${top.key}.';
     }
 
-    final diff = currentTotal - compTotal;
-    final percent = (diff.abs() / compTotal * 100).round();
+    final difference = totalSpent - previousTotal;
+    if (difference == 0) {
+      return 'You spent the same as $comparisonLabel. Biggest area: ${top.key}.';
+    }
 
-    if (diff > 0) {
-      return 'Spending is $percent% higher than $compLabel '
-          '(₹${fmt.format(currentTotal)} vs ₹${fmt.format(compTotal)}). '
-          'Savings rate this period: $savingsRate%.';
-    } else if (diff < 0) {
-      return 'Spending is $percent% lower than $compLabel '
-          '(₹${fmt.format(currentTotal)} vs ₹${fmt.format(compTotal)}). '
-          'Savings rate this period: $savingsRate%.';
-    } else {
-      return 'Spending is on par with $compLabel. '
-          'Savings rate this period: $savingsRate%.';
+    final direction = difference > 0 ? 'more' : 'less';
+    return 'You spent ₹${fmt.format(difference.abs())} $direction than '
+        '$comparisonLabel. Biggest area: ${top.key}.';
+  }
+
+  static double _previousPeriodSpending(
+    List<TransactionModel> transactions,
+    AnalyticsPeriod period,
+  ) {
+    final now = DateTime.now();
+    return transactions
+        .where((t) {
+          if (t.type != TransactionType.debit) return false;
+
+          switch (period) {
+            case AnalyticsPeriod.month:
+              final lastMonth = DateTime(now.year, now.month - 1);
+              return t.date.year == lastMonth.year &&
+                  t.date.month == lastMonth.month;
+            case AnalyticsPeriod.threeMonths:
+              final start = DateTime(now.year, now.month - 5, 1);
+              final end = DateTime(now.year, now.month - 2, 1);
+              return !t.date.isBefore(start) && t.date.isBefore(end);
+            case AnalyticsPeriod.year:
+              return t.date.year == now.year - 1;
+          }
+        })
+        .fold(0.0, (sum, t) => sum + t.amount);
+  }
+
+  static String _comparisonLabel(AnalyticsPeriod period) {
+    switch (period) {
+      case AnalyticsPeriod.month:
+        return 'last month';
+      case AnalyticsPeriod.threeMonths:
+        return 'the previous 3 months';
+      case AnalyticsPeriod.year:
+        return 'last year';
+    }
+  }
+
+  static String _analyticsCategoryLabel(TransactionCategory category) {
+    switch (category) {
+      case TransactionCategory.food:
+        return 'Food';
+      case TransactionCategory.shopping:
+        return 'Shopping';
+      case TransactionCategory.billPayment:
+      case TransactionCategory.recharge:
+      case TransactionCategory.insurance:
+        return 'Bills';
+      case TransactionCategory.transfer:
+      case TransactionCategory.upi:
+      case TransactionCategory.wallet:
+        return 'Transfers';
+      case TransactionCategory.emi:
+      case TransactionCategory.loan:
+        return 'Loans';
+      case TransactionCategory.atm:
+        return 'Cash';
+      case TransactionCategory.termDeposit:
+        return 'Savings';
+      case TransactionCategory.salary:
+      case TransactionCategory.refund:
+        return 'Income';
     }
   }
 }

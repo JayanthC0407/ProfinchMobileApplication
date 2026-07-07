@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
-import '../../../data/models/transaction_model.dart';
 
 class SpendingPieChart extends StatelessWidget {
-  final Map<TransactionCategory, double> data;
+  final Map<String, double> data;
 
-  const SpendingPieChart({Key? key, required this.data}) : super(key: key);
+  const SpendingPieChart({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +14,12 @@ class SpendingPieChart extends StatelessWidget {
         color: Colors.white,
         child: Padding(
           padding: EdgeInsets.all(32),
-          child: Center(child: Text('No debit history found for this month.', style: TextStyle(color: AppColors.textSecondary))),
+          child: Center(
+            child: Text(
+              'No spending found for this period.',
+              style: TextStyle(color: AppColors.textSecondary),
+            ),
+          ),
         ),
       );
     }
@@ -29,7 +33,14 @@ class SpendingPieChart extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Spending Breakdown', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
+            const Text(
+              'Spending Breakdown',
+              style: TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 20),
             SizedBox(
               height: 230,
@@ -46,14 +57,9 @@ class SpendingPieChart extends StatelessWidget {
               spacing: 16,
               runSpacing: 8,
               children: data.entries
-                  .map(
-                    (entry) => _buildLegendItem(
-                      entry.key,
-                      entry.value,
-                    ),
-                  )
+                  .map((entry) => _buildLegendItem(entry.key, entry.value))
                   .toList(),
-            )
+            ),
           ],
         ),
       ),
@@ -78,67 +84,60 @@ class SpendingPieChart extends StatelessWidget {
     }).toList();
   }
 
-Widget _buildLegendItem(
-  TransactionCategory category,
-  double amount,
-) {
-  return Row(
-    children: [
-      Container(
-        width: 12,
-        height: 12,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: _getCategoryColor(category),
-        ),
-      ),
-      const SizedBox(width: 8),
-
-      Expanded(
-        child: Text(
-          _cleanCategoryName(category),
-          style: const TextStyle(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w500,
+  Widget _buildLegendItem(String category, double amount) {
+    return SizedBox(
+      width: 145,
+      child: Row(
+        children: [
+          Container(
+            width: 12,
+            height: 12,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: _getCategoryColor(category),
+            ),
           ),
-        ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              category,
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w500,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          Text(
+            '₹${amount.toStringAsFixed(0)}',
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
       ),
-
-      Text(
-        '₹${amount.toStringAsFixed(0)}',
-        style: const TextStyle(
-          color: AppColors.textSecondary,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    ],
-  );
-}
-
-  String _cleanCategoryName(TransactionCategory category) {
-    String name = category.toString().split('.').last;
-    return name[0].toUpperCase() + name.substring(1);
+    );
   }
 
-  Color _getCategoryColor(TransactionCategory category) {
+  Color _getCategoryColor(String category) {
     switch (category) {
-        case TransactionCategory.food:
-      return const Color(0xFFFFB74D);
-
-    case TransactionCategory.shopping:
-      return const Color(0xFF9575CD);
-
-    case TransactionCategory.billPayment:
-      return const Color.fromARGB(255, 239, 82, 140);
-
-    case TransactionCategory.transfer:
-      return const Color(0xFF42A5F5);
-
-    case TransactionCategory.salary:
-      return const Color(0xFF66BB6A);
-
-    default:
-      return const Color(0xFF26C6DA);
+      case 'Food':
+        return const Color(0xFFFFB74D);
+      case 'Shopping':
+        return const Color(0xFF9575CD);
+      case 'Bills':
+        return const Color(0xFFEF528C);
+      case 'Transfers':
+        return const Color(0xFF42A5F5);
+      case 'Loans':
+        return const Color(0xFFE57373);
+      case 'Cash':
+        return const Color(0xFF26A69A);
+      case 'Savings':
+        return const Color(0xFF66BB6A);
+      default:
+        return const Color(0xFF26C6DA);
     }
   }
 }

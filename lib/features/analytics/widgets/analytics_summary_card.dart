@@ -11,12 +11,12 @@ class AnalyticsSummaryCard extends StatelessWidget {
   final String period;
 
   const AnalyticsSummaryCard({
-    Key? key,
+    super.key,
     required this.totalAmount,
     required this.totalIncome,
     required this.totalExpense,
     required this.period,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -80,40 +80,41 @@ class AnalyticsSummaryCard extends StatelessWidget {
   }
 
   Widget _buildStatTile(
-      BuildContext context, String label, String value, IconData icon) {
-return Container(
-  width: 145,
-  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-  decoration: BoxDecoration(
-    color: AppColors.light.withValues(alpha: 0.10),
-    borderRadius: BorderRadius.circular(12),
-  ),
-  child: Row(
-    children: [
-      Icon(icon, color: AppColors.light, size: 18),
-      const SizedBox(width: 10),
-      Expanded(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label,
-              style: AppTextStyles.whiteCaption(context),
-            ),
-            const SizedBox(height: 2),
-            Text(
-              value,
-              style: AppTextStyles.whiteBody(
-                context,
-                color: AppColors.light,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
+    BuildContext context,
+    String label,
+    String value,
+    IconData icon,
+  ) {
+    return Container(
+      width: 145,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      decoration: BoxDecoration(
+        color: AppColors.light.withValues(alpha: 0.10),
+        borderRadius: BorderRadius.circular(12),
       ),
-    ],
-  ),
-);
+      child: Row(
+        children: [
+          Icon(icon, color: AppColors.light, size: 18),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(label, style: AppTextStyles.whiteCaption(context)),
+                const SizedBox(height: 2),
+                Text(
+                  value,
+                  style: AppTextStyles.whiteBody(
+                    context,
+                    color: AppColors.light,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
