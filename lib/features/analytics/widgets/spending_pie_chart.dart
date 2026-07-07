@@ -23,20 +23,20 @@ class SpendingPieChart extends StatelessWidget {
     return Card(
       color: Colors.white,
       elevation: 0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('Spending Breakdown', style: TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 20),
             SizedBox(
-              height: 180,
+              height: 230,
               child: PieChart(
                 PieChartData(
-                  sectionsSpace: 4,
-                  centerSpaceRadius: 50,
+                  sectionsSpace: 3,
+                  centerSpaceRadius: 38,
                   sections: _getSections(),
                 ),
               ),
@@ -45,7 +45,14 @@ class SpendingPieChart extends StatelessWidget {
             Wrap(
               spacing: 16,
               runSpacing: 8,
-              children: data.keys.map((cat) => _buildLegendItem(cat)).toList(),
+              children: data.entries
+                  .map(
+                    (entry) => _buildLegendItem(
+                      entry.key,
+                      entry.value,
+                    ),
+                  )
+                  .toList(),
             )
           ],
         ),
@@ -61,22 +68,52 @@ class SpendingPieChart extends StatelessWidget {
         color: _getCategoryColor(entry.key),
         value: entry.value,
         title: '${percentage.toStringAsFixed(0)}%',
-        radius: 22,
-        titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+        radius: 55,
+        titleStyle: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w700,
+          color: Colors.white,
+        ),
       );
     }).toList();
   }
 
-  Widget _buildLegendItem(TransactionCategory category) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(width: 12, height: 12, decoration: BoxDecoration(shape: BoxShape.circle, color: _getCategoryColor(category))),
-        const SizedBox(width: 6),
-        Text(_cleanCategoryName(category), style: const TextStyle(color: AppColors.textSecondary, fontSize: 13)),
-      ],
-    );
-  }
+Widget _buildLegendItem(
+  TransactionCategory category,
+  double amount,
+) {
+  return Row(
+    children: [
+      Container(
+        width: 12,
+        height: 12,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: _getCategoryColor(category),
+        ),
+      ),
+      const SizedBox(width: 8),
+
+      Expanded(
+        child: Text(
+          _cleanCategoryName(category),
+          style: const TextStyle(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+
+      Text(
+        '₹${amount.toStringAsFixed(0)}',
+        style: const TextStyle(
+          color: AppColors.textSecondary,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ],
+  );
+}
 
   String _cleanCategoryName(TransactionCategory category) {
     String name = category.toString().split('.').last;
@@ -85,12 +122,23 @@ class SpendingPieChart extends StatelessWidget {
 
   Color _getCategoryColor(TransactionCategory category) {
     switch (category) {
-      case TransactionCategory.food: return Colors.orange;
-      case TransactionCategory.shopping: return Colors.purple;
-      case TransactionCategory.billPayment: return Colors.redAccent;
-      case TransactionCategory.transfer: return AppColors.accent;
-      case TransactionCategory.salary: return AppColors.success;
-      default: return AppColors.blueButton;
+        case TransactionCategory.food:
+      return const Color(0xFFFFB74D);
+
+    case TransactionCategory.shopping:
+      return const Color(0xFF9575CD);
+
+    case TransactionCategory.billPayment:
+      return const Color.fromARGB(255, 239, 82, 140);
+
+    case TransactionCategory.transfer:
+      return const Color(0xFF42A5F5);
+
+    case TransactionCategory.salary:
+      return const Color(0xFF66BB6A);
+
+    default:
+      return const Color(0xFF26C6DA);
     }
   }
 }

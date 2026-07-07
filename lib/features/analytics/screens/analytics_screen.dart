@@ -1,53 +1,226 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
+import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:profinch_mobile_application/features/analytics/utils/analytics_helper.dart';
 import 'package:provider/provider.dart';
-import '../../Transactions/provider/transaction_provider.dart'; 
+import '../../Transactions/provider/transaction_provider.dart';
 import '../widgets/analytics_summary_card.dart';
 import '../widgets/spending_pie_chart.dart';
-import '../widgets/top_category_card.dart';
+import '../../../data/models/transaction_model.dart';
+import '../widgets/comparative_analysis_card.dart';
 
-class AnalyticsScreen extends StatelessWidget {
+enum AnalyticsPeriod { month, threeMonths, year }
+
+class AnalyticsScreen extends StatefulWidget {
   const AnalyticsScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    // Accessing your exact singleton context via Provider
-    final transactionProvider = Provider.of<TransactionProvider>(context);
-    final transactions = transactionProvider.allTransactionsSorted; 
+  State<AnalyticsScreen> createState() => _AnalyticsScreenState();
+}
 
-    final totalSpent = AnalyticsHelper.totalSpentThisMonth(transactions);
-    final txCount = AnalyticsHelper.transactionCount(transactions);
-    final groupedData = AnalyticsHelper.spendingByCategory(transactions);
-    final highestExpense = AnalyticsHelper.topCategory(transactions);
+class _AnalyticsScreenState extends State<AnalyticsScreen> {
+  AnalyticsPeriod _selectedPeriod = AnalyticsPeriod.month;
+
+  String get _periodLabel {
+    switch (_selectedPeriod) {
+      case AnalyticsPeriod.month: return 'This Month';
+      case AnalyticsPeriod.threeMonths: return 'Last 3 Months';
+      case AnalyticsPeriod.year: return 'This Year';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final transactions = TransactionProvider.instance.allTransactionsSorted;
+
+    final filtered = AnalyticsHelper.filterByPeriod(transactions, _selectedPeriod);
+    final totalSpent = AnalyticsHelper.totalSpent(filtered);
+    final totalIncome = AnalyticsHelper.totalIncome(filtered);
+    final groupedData = AnalyticsHelper.spendingByCategory(filtered);
+    final chartData = AnalyticsHelper.comparativeData(transactions, _selectedPeriod);
+    final insight = AnalyticsHelper.generateInsight(
+        chartData, _selectedPeriod, totalSpent, totalIncome);
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Insights & Analytics', style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AnalyticsSummaryCard(totalAmount: totalSpent, count: txCount),
-              const SizedBox(height: 20),
-              SpendingPieChart(data: groupedData),
-              const SizedBox(height: 20),
-              if (highestExpense != null)
-                TopCategoryCard(category: highestExpense.key, amount: highestExpense.value),
-            ],
+      body: Column(
+        children: [
+          // ── Gradient header ──────────────────────────────────
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [AppColors.navy, AppColors.blueButton],
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(28),
+                bottomRight: Radius.circular(28),
+              ),
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Back button
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(4, 4, 8, 0),
+                    child: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: AppColors.light),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                  // Title
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
+                    child: Text(
+                      'Insights & Analytics',
+                      style: TextStyle(
+                        color: AppColors.light,
+                        fontSize: RT.fs(context, 26),
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: -0.5,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                    child: Text(
+                      'Track your spending patterns',
+                      style: AppTextStyles.whiteBody(context,
+                          color: AppColors.light.withValues(alpha: 0.65)),
+                    ),
+                  ),
+                  // Period toggle chips
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+                    child: Row(
+                      children: AnalyticsPeriod.values.map((period) {
+                        final isSelected = _selectedPeriod == period;
+                        final label = period == AnalyticsPeriod.month
+                            ? 'This Month'
+                            : period == AnalyticsPeriod.threeMonths
+                                ? '3 Months'
+                                : 'This Year';
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: GestureDetector(
+                            onTap: () => setState(() => _selectedPeriod = period),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 180),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? AppColors.light
+                                    : AppColors.light.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: isSelected
+                                      ? AppColors.light
+                                      : AppColors.light.withValues(alpha: 0.3),
+                                ),
+                              ),
+                              child: Text(
+                                label,
+                                style: TextStyle(
+                                  fontSize: RT.fs(context, 13),
+                                  fontWeight: FontWeight.w600,
+                                  color: isSelected
+                                      ? AppColors.blueButton
+                                      : AppColors.light,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
+
+          // ── Scrollable body ──────────────────────────────────
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+  // Summary card
+  AnalyticsSummaryCard(
+    totalAmount: totalSpent,
+    totalIncome: totalIncome,
+    totalExpense: totalSpent,
+    period: _periodLabel,
+  ),
+
+  const SizedBox(height: 16),
+
+  // Pie chart
+  SpendingPieChart(data: groupedData),
+
+  const SizedBox(height: 16),
+
+  // Comparative analysis
+  ComparativeAnalysisCard(
+    chartData: chartData,
+    period: _selectedPeriod,
+    insight: insight,
+  ),
+
+  const SizedBox(height: 24),
+],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+Widget _buildInsightCard(BuildContext context,
+    Map<TransactionCategory, double> groupedData, double totalSpent) {
+    final top = groupedData.entries
+        .reduce((a, b) => a.value > b.value ? a : b);
+    final percentage = totalSpent > 0
+        ? ((top.value / totalSpent) * 100).toStringAsFixed(0)
+        : '0';
+    final catName = top.key.toString().split('.').last;
+    final cleanName = catName[0].toUpperCase() + catName.substring(1);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.iconBackground,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.lightbulb_outline_rounded,
+                color: AppColors.primary, size: 20),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              '$cleanName accounts for $percentage% of your spending this period.',
+              style: AppTextStyles.body(context, color: AppColors.textPrimary),
+            ),
+          ),
+        ],
       ),
     );
   }
