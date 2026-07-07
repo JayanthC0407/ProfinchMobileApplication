@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
+import 'package:profinch_mobile_application/features/analytics/screens/analytics_screen.dart';
 import 'package:profinch_mobile_application/features/upi/provider/upi_provider.dart';
 import 'package:profinch_mobile_application/features/upi/screens/receive_money_screen.dart';
 import 'package:profinch_mobile_application/features/upi/screens/scan_qr_screen.dart';
@@ -323,9 +324,17 @@ class DashboardScreen extends StatelessWidget {
                           Navigator.pushNamed(context, AppRoutes.loans),
                     ),
 
-                    const FeatureItem(
+                    FeatureItem(
                       icon: Icons.bar_chart,
                       title: "Analytics",
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const AnalyticsScreen(),
+                          ),
+                        );
+                      },
                     ),
 
                     // Always visible items
