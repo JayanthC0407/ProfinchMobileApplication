@@ -17,13 +17,9 @@ class BillsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (ctx) => BillsProvider(
-        ctx.read<AuthProvider>(),
-        ctx.read<AccountProvider>(),
-      ),
-      child: const _BillsView(),
-    );
+    // BillsProvider is registered globally in main.dart so state
+    // persists across navigation — paid bills stay paid.
+    return const _BillsView();
   }
 }
 
