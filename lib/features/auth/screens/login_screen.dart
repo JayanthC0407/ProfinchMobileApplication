@@ -30,18 +30,18 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
+  final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isLoading = false;
 
   @override
   void dispose() {
-    _emailController.dispose();
+    _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  // ── Sign in with email + password ─────────────────────────────
+  // ── Sign in with username + password ─────────────────────────────
   Future<void> _handleSignIn() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final authProvider = context.read<AuthProvider>();
 
     final success = await authProvider.login(
-      email: _emailController.text.trim(),
+      username: _usernameController.text.trim(),
       password: _passwordController.text.trim(),
     );
 
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Invalid email or password'),
+          content: const Text('Invalid username or password'),
           backgroundColor: Colors.red.shade600,
           behavior: SnackBarBehavior.floating,
           shape:
@@ -214,7 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   LoginForm(
                     formKey: _formKey,
-                    emailController: _emailController,
+                    usernameController: _usernameController,
                     passwordController: _passwordController,
                     onSubmit: _handleSignIn,
                   ),

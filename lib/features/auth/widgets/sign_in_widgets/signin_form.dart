@@ -3,20 +3,20 @@ import 'package:profinch_mobile_application/core/constants/colors.dart';
 
 class LoginForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
-  final TextEditingController emailController;
+  final TextEditingController usernameController;
   final TextEditingController passwordController;
   final VoidCallback onSubmit;
 
-  final String? emailError;
+  final String? usernameError;
   final String? passwordError;
 
   const LoginForm({
     super.key,
     required this.formKey,
-    required this.emailController,
+    required this.usernameController,
     required this.passwordController,
     required this.onSubmit,
-    this.emailError,
+    this.usernameError,
     this.passwordError,
   });
 
@@ -28,13 +28,12 @@ class _LoginFormState extends State<LoginForm> {
   bool _obscurePassword = true;
 
   // ── Validators ─────────────────────────────────────────────────
-  String? _validateEmail(String? value) {
+  String? _validateUsername(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Email address is required';
+      return 'Username is required';
     }
-    final emailRegex = RegExp(r'^[\w\-.]+@([\w\-]+\.)+[\w\-]{2,}$');
-    if (!emailRegex.hasMatch(value.trim())) {
-      return 'Enter a valid email address';
+     if (value.trim().length < 3) {
+      return 'Username must be at least 3 characters';
     }
     return null;
   }
@@ -114,9 +113,9 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── Email ──────────────────────────────────────────────
-          _fieldLabel('Email address'),
-          if (widget.emailError != null) ...[
+          // ── Username ─────────────────────────────────────────
+          _fieldLabel('Username'),
+          if (widget.usernameError != null) ...[
             const SizedBox(height: 6),
 
             Container(
@@ -136,7 +135,7 @@ class _LoginFormState extends State<LoginForm> {
 
                   Expanded(
                     child: Text(
-                      widget.emailError!,
+                      widget.usernameError!,
                       style: const TextStyle(color: Colors.red, fontSize: 12),
                     ),
                   ),
@@ -148,14 +147,14 @@ class _LoginFormState extends State<LoginForm> {
           ],
           const SizedBox(height: 8),
           TextFormField(
-            controller: widget.emailController,
-            keyboardType: TextInputType.emailAddress,
+            controller: widget.usernameController,
+            keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
-            validator: _validateEmail,
+            validator: _validateUsername,
             style: const TextStyle(fontSize: 14, color: Colors.black),
             decoration: _inputDecoration(
-              hint: 'you@example.com',
-              prefixIcon: Icons.mail_outline_rounded,
+              hint: 'Enter your Username',
+              prefixIcon: Icons.person_outline_rounded,
             ),
           ),
 
