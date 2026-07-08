@@ -5,7 +5,7 @@ import 'package:profinch_mobile_application/core/constants/colors.dart';
 class SpendingPieChart extends StatelessWidget {
   final Map<String, double> data;
 
-  const SpendingPieChart({super.key, required this.data});
+const SpendingPieChart({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,25 +41,23 @@ class SpendingPieChart extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             SizedBox(
-              height: 230,
+              height: 250,
               child: PieChart(
                 PieChartData(
                   sectionsSpace: 3,
-                  centerSpaceRadius: 38,
+                  centerSpaceRadius: 30,
                   sections: _getSections(),
                 ),
               ),
             ),
             const SizedBox(height: 16),
-            Wrap(
-              spacing: 16,
-              runSpacing: 8,
-              children: data.entries
-                  .map((entry) => _buildLegendItem(entry.key, entry.value))
-                  .toList(),
-            ),
+Column(
+  children: data.entries
+      .map((entry) => _buildLegendItem(entry.key, entry.value))
+      .toList(),
+),
           ],
         ),
       ),
@@ -74,70 +72,67 @@ class SpendingPieChart extends StatelessWidget {
         color: _getCategoryColor(entry.key),
         value: entry.value,
         title: '${percentage.toStringAsFixed(0)}%',
-        radius: 55,
+        radius: 70,
         titleStyle: const TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w700,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
           color: Colors.white,
         ),
       );
     }).toList();
   }
 
-  Widget _buildLegendItem(String category, double amount) {
-    return SizedBox(
-      width: 145,
-      child: Row(
-        children: [
-          Container(
-            width: 12,
-            height: 12,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: _getCategoryColor(category),
-            ),
+Widget _buildLegendItem(String category, double amount) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 6),
+    child: Row(
+      children: [
+        Container(
+          width: 12,
+          height: 12,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: _getCategoryColor(category),
           ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              category,
-              style: const TextStyle(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w500,
-              ),
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-          Text(
-            '₹${amount.toStringAsFixed(0)}',
+        ),
+
+        const SizedBox(width: 10),
+
+        Expanded(
+          child: Text(
+            category,
             style: const TextStyle(
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w500,
+              fontSize: 15,
             ),
           ),
-        ],
-      ),
-    );
-  }
+        ),
+
+        Text(
+          '₹ ${amount.toStringAsFixed(0)}',
+          style: const TextStyle(
+            color: AppColors.textSecondary,
+            fontWeight: FontWeight.w700,
+            fontSize: 15,
+          ),
+        ),
+      ],
+    ),
+  );
+}
 
   Color _getCategoryColor(String category) {
-    switch (category) {
-      case 'Food':
-        return const Color(0xFFFFB74D);
-      case 'Shopping':
-        return const Color(0xFF9575CD);
-      case 'Bills':
-        return const Color(0xFFEF528C);
-      case 'Transfers':
-        return const Color(0xFF42A5F5);
-      case 'Loans':
-        return const Color(0xFFE57373);
-      case 'Cash':
-        return const Color(0xFF26A69A);
-      case 'Savings':
-        return const Color(0xFF66BB6A);
-      default:
-        return const Color(0xFF26C6DA);
-    }
+  switch (category) {
+    case 'Food': return const Color(0xFFFFB74D);
+    case 'Shopping': return const Color(0xFF9575CD);
+    case 'Bills': return const Color(0xFFEF525C);
+    case 'Insurance': return const Color(0xFF26C6DA);
+    case 'Transfers': return const Color(0xFF42A5F5);
+    case 'Loans & EMI': return const Color(0xFFAB47BC);
+    case 'Cash': return const Color(0xFF8D6E63);
+    case 'Savings': return const Color(0xFF66BB6A);
+    default: return const Color(0xFF26C6DA);
+  }
   }
 }

@@ -17,36 +17,16 @@ class ComparativeAnalysisCard extends StatelessWidget {
     required this.insight,
   });
 
-  String get _comparisonLabel {
-    switch (period) {
-      case AnalyticsPeriod.month:
-        return '3M Avg';
-      case AnalyticsPeriod.threeMonths:
-        return 'Last Year';
-      case AnalyticsPeriod.year:
-        return 'Last Year';
-    }
-  }
-
-  String get _currentLabel {
-    switch (period) {
-      case AnalyticsPeriod.month:
-        return 'This Month';
-      case AnalyticsPeriod.threeMonths:
-        return 'This Period';
-      case AnalyticsPeriod.year:
-        return 'This Year';
-    }
-  }
+  bool get _isComparison => period == AnalyticsPeriod.month;
 
   String get _cardTitle {
     switch (period) {
       case AnalyticsPeriod.month:
-        return 'Weekly Breakdown vs 3-Month Avg';
+        return 'This month vs last month by category';
       case AnalyticsPeriod.threeMonths:
-        return 'Monthly Breakdown vs Last Year';
+        return 'Monthly spending — last 3 months';
       case AnalyticsPeriod.year:
-        return 'Monthly Breakdown vs Last Year';
+        return 'Monthly spending — this year';
     }
   }
 
@@ -55,7 +35,6 @@ class ComparativeAnalysisCard extends StatelessWidget {
     final fmt = NumberFormat('#,##,##0', 'en_IN');
     final entries = chartData.entries.toList();
 
-    // Calculate totals for status badge
     double currentTotal = 0;
     double compTotal = 0;
     for (final e in chartData.values) {
@@ -72,6 +51,10 @@ class ComparativeAnalysisCard extends StatelessWidget {
       final m = e[0] > e[1] ? e[0] : e[1];
       return m > max ? m : max;
     });
+
+    final barWidth = _isComparison
+        ? (entries.length > 6 ? 10.0 : 16.0)
+        : (entries.length > 6 ? 16.0 : 28.0);
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -90,7 +73,7 @@ class ComparativeAnalysisCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── Title ─────────────────────────────────────────
+          // title
           Row(
             children: [
               Container(
@@ -99,40 +82,35 @@ class ComparativeAnalysisCard extends StatelessWidget {
                   color: AppColors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Icon(
-                  Icons.compare_arrows_rounded,
-                  color: AppColors.primary,
-                  size: 20,
-                ),
+                child: const Icon(Icons.bar_chart_rounded,
+                    color: AppColors.primary, size: 20),
               ),
               const SizedBox(width: 10),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Spending Comparison',
-                      style: AppTextStyles.labelBold(context),
-                    ),
-                    Text(_cardTitle, style: AppTextStyles.caption(context)),
+                    Text('Spending Analysis',
+                        style: AppTextStyles.labelBold(context)),
+                    Text(_cardTitle,
+                        style: AppTextStyles.caption(context)),
                   ],
                 ),
               ),
             ],
           ),
 
-          const SizedBox(height: 14),
-
-          // ── Status badge ──────────────────────────────────
-          if (compTotal > 0)
+          if (_isComparison && compTotal > 0) ...[
+            const SizedBox(height: 12),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: isOver
                     ? AppColors.errorLight
                     : isUnder
-                    ? AppColors.successLight
-                    : AppColors.surfaceLight,
+                        ? AppColors.successLight
+                        : AppColors.surfaceLight,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
@@ -142,38 +120,37 @@ class ComparativeAnalysisCard extends StatelessWidget {
                     isOver
                         ? Icons.trending_up_rounded
                         : isUnder
-                        ? Icons.trending_down_rounded
-                        : Icons.trending_flat_rounded,
+                            ? Icons.trending_down_rounded
+                            : Icons.trending_flat_rounded,
                     size: 14,
                     color: isOver
                         ? AppColors.error
                         : isUnder
-                        ? AppColors.success
-                        : AppColors.textSecondary,
+                            ? AppColors.success
+                            : AppColors.textSecondary,
                   ),
                   const SizedBox(width: 4),
                   Text(
                     isOver
-                        ? '$percent% above $_comparisonLabel'
+                        ? '$percent% above last month'
                         : isUnder
-                        ? '$percent% below $_comparisonLabel'
-                        : 'On par with $_comparisonLabel',
-                    style: AppTextStyles.smallBold(
-                      context,
-                      color: isOver
-                          ? AppColors.error
-                          : isUnder
-                          ? AppColors.success
-                          : AppColors.textSecondary,
-                    ),
+                            ? '$percent% below last month'
+                            : 'On par with last month',
+                    style: AppTextStyles.smallBold(context,
+                        color: isOver
+                            ? AppColors.error
+                            : isUnder
+                                ? AppColors.success
+                                : AppColors.textSecondary),
                   ),
                 ],
               ),
             ),
+          ],
 
           const SizedBox(height: 20),
 
-          // ── Bar chart ─────────────────────────────────────
+          // bar chart
           SizedBox(
             height: 180,
             child: BarChart(
@@ -183,20 +160,17 @@ class ComparativeAnalysisCard extends StatelessWidget {
                   show: true,
                   drawVerticalLine: false,
                   horizontalInterval: maxVal > 0 ? maxVal / 4 : 25,
-                  getDrawingHorizontalLine: (_) =>
-                      FlLine(color: Colors.grey.shade100, strokeWidth: 1),
+                  getDrawingHorizontalLine: (_) => FlLine(
+                      color: Colors.grey.shade100, strokeWidth: 1),
                 ),
                 borderData: FlBorderData(show: false),
                 titlesData: FlTitlesData(
                   leftTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
+                      sideTitles: SideTitles(showTitles: false)),
                   rightTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
+                      sideTitles: SideTitles(showTitles: false)),
                   topTitles: const AxisTitles(
-                    sideTitles: SideTitles(showTitles: false),
-                  ),
+                      sideTitles: SideTitles(showTitles: false)),
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
@@ -206,12 +180,15 @@ class ComparativeAnalysisCard extends StatelessWidget {
                         if (index < 0 || index >= entries.length) {
                           return const SizedBox.shrink();
                         }
+
+                        final label = entries[index].key;
+                        final short = label.length > 6
+                            ? '${label.substring(0, 5)}.'
+                            : label;
                         return Padding(
                           padding: const EdgeInsets.only(top: 6),
-                          child: Text(
-                            entries[index].key,
-                            style: AppTextStyles.caption(context),
-                          ),
+                          child: Text(short,
+                              style: AppTextStyles.caption(context)),
                         );
                       },
                     ),
@@ -220,44 +197,61 @@ class ComparativeAnalysisCard extends StatelessWidget {
                 barGroups: List.generate(entries.length, (i) {
                   final current = entries[i].value[0];
                   final comp = entries[i].value[1];
-                  return BarChartGroupData(
-                    x: i,
-                    groupVertically: false,
-                    barRods: [
-                      BarChartRodData(
-                        toY: current,
-                        color: current > comp
-                            ? AppColors.error
-                            : AppColors.primary,
-                        width: period == AnalyticsPeriod.year ? 8 : 14,
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(4),
+
+                  if (_isComparison) {
+
+                    return BarChartGroupData(
+                      x: i,
+                      barsSpace: 4,
+                      barRods: [
+                        BarChartRodData(
+                          toY: current,
+                          color: current > comp
+                              ? AppColors.error
+                              : AppColors.primary,
+                          width: barWidth,
+                          borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(4)),
                         ),
-                      ),
-                      BarChartRodData(
-                        toY: comp,
-                        color: Colors.grey.shade300,
-                        width: period == AnalyticsPeriod.year ? 8 : 14,
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(4),
+                        BarChartRodData(
+                          toY: comp,
+                          color: Colors.grey.shade300,
+                          width: barWidth,
+                          borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(4)),
                         ),
-                      ),
-                    ],
-                  );
+                      ],
+                    );
+                  } else {
+                    // Single bar trend
+                    return BarChartGroupData(
+                      x: i,
+                      barRods: [
+                        BarChartRodData(
+                          toY: current,
+                          color: AppColors.primary,
+                          width: barWidth,
+                          borderRadius: const BorderRadius.vertical(
+                              top: Radius.circular(4)),
+                        ),
+                      ],
+                    );
+                  }
                 }),
                 barTouchData: BarTouchData(
                   touchTooltipData: BarTouchTooltipData(
                     getTooltipItem: (group, groupIndex, rod, rodIndex) {
                       final label = entries[groupIndex].key;
                       final isCurrentRod = rodIndex == 0;
+                      final prefix = _isComparison
+                          ? (isCurrentRod ? 'This month' : 'Last month')
+                          : label;
                       return BarTooltipItem(
-                        '${isCurrentRod ? _currentLabel : _comparisonLabel} ($label)\n'
-                        '₹ ${fmt.format(rod.toY)}',
+                        '$prefix\n₹ ${fmt.format(rod.toY)}',
                         const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 11,
-                        ),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11),
                       );
                     },
                   ),
@@ -266,40 +260,36 @@ class ComparativeAnalysisCard extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 10),
-
-          // ── Legend ────────────────────────────────────────
-          Row(
-            children: [
-              _legendDot(AppColors.primary),
-              const SizedBox(width: 6),
-              Text(_currentLabel, style: AppTextStyles.small(context)),
-              const SizedBox(width: 16),
-              _legendDot(Colors.grey.shade300),
-              const SizedBox(width: 6),
-              Text(_comparisonLabel, style: AppTextStyles.small(context)),
-            ],
-          ),
+          // legend
+          if (_isComparison) ...[
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                _legendDot(AppColors.primary),
+                const SizedBox(width: 6),
+                Text('This Month', style: AppTextStyles.small(context)),
+                const SizedBox(width: 16),
+                _legendDot(Colors.grey.shade300),
+                const SizedBox(width: 6),
+                Text('Last Month', style: AppTextStyles.small(context)),
+              ],
+            ),
+          ],
 
           const SizedBox(height: 16),
           const Divider(color: AppColors.surfaceLight),
           const SizedBox(height: 14),
 
-          // ── Prescriptive insight ──────────────────────────
+          // insight
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(
-                Icons.lightbulb_outline_rounded,
-                color: AppColors.warning,
-                size: 18,
-              ),
+              const Icon(Icons.lightbulb_outline_rounded,
+                  color: AppColors.warning, size: 18),
               const SizedBox(width: 8),
               Expanded(
-                child: Text(
-                  insight,
-                  style: AppTextStyles.bodySecondary(context),
-                ),
+                child: Text(insight,
+                    style: AppTextStyles.bodySecondary(context)),
               ),
             ],
           ),
@@ -309,8 +299,8 @@ class ComparativeAnalysisCard extends StatelessWidget {
   }
 
   Widget _legendDot(Color color) => Container(
-    width: 10,
-    height: 10,
-    decoration: BoxDecoration(shape: BoxShape.circle, color: color),
-  );
+        width: 10,
+        height: 10,
+        decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+      );
 }
