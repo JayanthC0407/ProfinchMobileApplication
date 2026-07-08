@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/routes/app_routes.dart';
+import 'package:profinch_mobile_application/features/analytics/screens/analytics_screen.dart';
 import 'package:profinch_mobile_application/features/upi/provider/upi_provider.dart';
 import 'package:profinch_mobile_application/features/upi/screens/receive_money_screen.dart';
 import 'package:profinch_mobile_application/features/upi/screens/scan_qr_screen.dart';
@@ -332,8 +333,14 @@ class DashboardScreen extends StatelessWidget {
                       icon: Icons.bar_chart,
                       // ── CHANGED ── was: "Analytics"
                       title: t.qa_analytics,
-                      onTap: () =>
-                          Navigator.pushNamed(context, AppRoutes.analytics),
+                     onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const AnalyticsScreen(),
+                          ),
+                        );
+                      },
                     ),
                     FeatureItem(
                       icon: Icons.calculate,
@@ -379,6 +386,10 @@ class DashboardScreen extends StatelessWidget {
                       FeatureItem(
                         icon: Icons.security,
                         title: t.qa_insurance,
+                        onTap: () => Navigator.pushNamed(
+                          context,
+                          AppRoutes.insurance,
+                        ),
                       ),
                       FeatureItem(
                         icon: Icons.people,
