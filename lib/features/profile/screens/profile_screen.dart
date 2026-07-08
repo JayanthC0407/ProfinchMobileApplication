@@ -825,80 +825,80 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void _showStatementPrefs(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: const Color(0xFF1E2640),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (_) => Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Statement Delivery',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: AppFontSize.large(context),
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 16),
-            ...['Email (Digital)', 'Post (Physical)', 'Both'].map((opt) {
-              final isSelected = opt == 'Email (Digital)';
-              return GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 14,
-                  ),
-                  decoration: BoxDecoration(
-                    color: isSelected
-                        ? const Color(0xFF4A90D9).withOpacity(0.1)
-                        : const Color(0xFF0F1322),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: isSelected
-                          ? const Color(0xFF4A90D9).withOpacity(0.4)
-                          : const Color(0xFF2E3A57),
-                    ),
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        opt,
-                        style: TextStyle(
-                          color: isSelected
-                              ? const Color(0xFF4A90D9)
-                              : Colors.white,
-                          fontSize: 14,
-                          fontWeight: isSelected
-                              ? FontWeight.w600
-                              : FontWeight.w400,
-                        ),
-                      ),
-                      const Spacer(),
-                      if (isSelected)
-                        const Icon(
-                          Icons.check_circle_rounded,
-                          color: Color(0xFF4A90D9),
-                          size: 18,
-                        ),
-                    ],
-                  ),
-                ),
-              );
-            }),
-          ],
-        ),
-      ),
-    );
-  }
+  // void _showStatementPrefs(BuildContext context) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     backgroundColor: const Color(0xFF1E2640),
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+  //     ),
+  //     builder: (_) => Padding(
+  //       padding: const EdgeInsets.all(24),
+  //       child: Column(
+  //         mainAxisSize: MainAxisSize.min,
+  //         crossAxisAlignment: CrossAxisAlignment.start,
+  //         children: [
+  //           Text(
+  //             'Statement Delivery',
+  //             style: TextStyle(
+  //               color: Colors.white,
+  //               fontSize: AppFontSize.large(context),
+  //               fontWeight: FontWeight.w700,
+  //             ),
+  //           ),
+  //           const SizedBox(height: 16),
+  //           ...['Email (Digital)', 'Post (Physical)', 'Both'].map((opt) {
+  //             final isSelected = opt == 'Email (Digital)';
+  //             return GestureDetector(
+  //               onTap: () => Navigator.pop(context),
+  //               child: Container(
+  //                 margin: const EdgeInsets.only(bottom: 8),
+  //                 padding: const EdgeInsets.symmetric(
+  //                   horizontal: 16,
+  //                   vertical: 14,
+  //                 ),
+  //                 decoration: BoxDecoration(
+  //                   color: isSelected
+  //                       ? const Color(0xFF4A90D9).withOpacity(0.1)
+  //                       : const Color(0xFF0F1322),
+  //                   borderRadius: BorderRadius.circular(12),
+  //                   border: Border.all(
+  //                     color: isSelected
+  //                         ? const Color(0xFF4A90D9).withOpacity(0.4)
+  //                         : const Color(0xFF2E3A57),
+  //                   ),
+  //                 ),
+  //                 child: Row(
+  //                   children: [
+  //                     Text(
+  //                       opt,
+  //                       style: TextStyle(
+  //                         color: isSelected
+  //                             ? const Color(0xFF4A90D9)
+  //                             : Colors.white,
+  //                         fontSize: 14,
+  //                         fontWeight: isSelected
+  //                             ? FontWeight.w600
+  //                             : FontWeight.w400,
+  //                       ),
+  //                     ),
+  //                     const Spacer(),
+  //                     if (isSelected)
+  //                       const Icon(
+  //                         Icons.check_circle_rounded,
+  //                         color: Color(0xFF4A90D9),
+  //                         size: 18,
+  //                       ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             );
+  //           }),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   void _showRating(BuildContext context) {
     showModalBottomSheet(
