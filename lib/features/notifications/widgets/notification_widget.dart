@@ -36,6 +36,12 @@ class NotificationTile extends StatelessWidget {
           color: const Color(0xFF00695C),
           bg: const Color(0xFFE0F2F1),
         );
+      case NotificationType.insurance:
+        return _NotificationStyle(
+          icon: Icons.health_and_safety_rounded,
+          color: const Color(0xFFC62828),
+          bg: const Color(0xFFFFEBEE),
+        );
       case NotificationType.card:
         return _NotificationStyle(
           icon: Icons.credit_card_rounded,
@@ -102,8 +108,11 @@ class NotificationTile extends StatelessWidget {
           color: Colors.red.shade400,
           borderRadius: BorderRadius.circular(14),
         ),
-        child: const Icon(Icons.delete_outline_rounded,
-            color: Colors.white, size: 24),
+        child: const Icon(
+          Icons.delete_outline_rounded,
+          color: Colors.white,
+          size: 24,
+        ),
       ),
       child: GestureDetector(
         onTap: onTap,
@@ -203,6 +212,9 @@ class _NotificationStyle {
   final IconData icon;
   final Color color;
   final Color bg;
-  const _NotificationStyle(
-      {required this.icon, required this.color, required this.bg});
+  const _NotificationStyle({
+    required this.icon,
+    required this.color,
+    required this.bg,
+  });
 }

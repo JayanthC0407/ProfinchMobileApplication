@@ -11,7 +11,8 @@ class WalletSendSheet extends StatefulWidget {
     required String receiverUpiId,
     required double amount,
     required String note,
-  }) onSend;
+  })
+  onSend;
 
   const WalletSendSheet({
     super.key,
@@ -25,6 +26,7 @@ class WalletSendSheet extends StatefulWidget {
 }
 
 class _WalletSendSheetState extends State<WalletSendSheet> {
+  final _formKey = GlobalKey<FormState>();
   final _upiController = TextEditingController();
   final _nameController = TextEditingController();
   final _amountController = TextEditingController();
@@ -53,24 +55,11 @@ class _WalletSendSheetState extends State<WalletSendSheet> {
   }
 
   Future<void> _handleSend() async {
+    if (!_formKey.currentState!.validate()) return;
+
     final amount = double.tryParse(_amountController.text) ?? 0;
     final name = _nameController.text.trim();
     final upi = _upiController.text.trim();
-
-    if (amount <= 0 || name.isEmpty || upi.isEmpty) return;
-
-    if (amount > widget.walletBalance) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Insufficient wallet balance'),
-          backgroundColor: Colors.red.shade600,
-          behavior: SnackBarBehavior.floating,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
-      );
-      return;
-    }
 
     setState(() => _isLoading = true);
 
@@ -93,8 +82,9 @@ class _WalletSendSheetState extends State<WalletSendSheet> {
     final formatter = NumberFormat('#,##,##0.00', 'en_IN');
 
     return Padding(
-      padding:
-          EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
       child: Container(
         padding: const EdgeInsets.all(24),
         decoration: const BoxDecoration(
@@ -151,11 +141,13 @@ class _WalletSendSheetState extends State<WalletSendSheet> {
               backgroundColor: AppColors.primaryDark,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
-            child: const Text('Done',
-                style:
-                    TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+            child: const Text(
+              'Done',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            ),
           ),
         ),
         const SizedBox(height: 8),
@@ -165,139 +157,198 @@ class _WalletSendSheetState extends State<WalletSendSheet> {
 
   // ── Send form ──────────────────────────────────────────────────
   Widget _buildForm(NumberFormat formatter) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-
-        // ── Header ──────────────────────────────────────────
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text('Send from Wallet',
+    return Form(
+      key: _formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // ── Header ──────────────────────────────────────────
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Send from Wallet',
                 style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Color(0xFF1A1A2E))),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-              decoration: BoxDecoration(
-                color: const Color(0xFF0A3D62).withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(20),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF1A1A2E),
+                ),
               ),
-              child: Text(
-                '₹${formatter.format(widget.walletBalance)} available',
-                style: const TextStyle(
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 5,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF0A3D62).withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Text(
+                  '₹${formatter.format(widget.walletBalance)} available',
+                  style: const TextStyle(
                     fontSize: 11,
                     color: Color(0xFF0A3D62),
-                    fontWeight: FontWeight.w600),
-              ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 20),
-
-        // ── UPI ID ───────────────────────────────────────────
-        _inputField(
-          controller: _upiController,
-          hint: 'name@bank or phone number',
-          label: 'UPI ID',
-          icon: Icons.alternate_email_rounded,
-        ),
-
-        const SizedBox(height: 12),
-
-        // ── Name ─────────────────────────────────────────────
-        _inputField(
-          controller: _nameController,
-          hint: 'Receiver name',
-          label: 'Name',
-          icon: Icons.person_outline_rounded,
-        ),
-
-        const SizedBox(height: 12),
-
-        // ── Amount ───────────────────────────────────────────
-        _inputField(
-          controller: _amountController,
-          hint: '0.00',
-          label: 'Amount (₹)',
-          icon: Icons.currency_rupee_rounded,
-          keyboardType: TextInputType.number,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
-          ],
-        ),
-
-        const SizedBox(height: 10),
-
-        // ── Quick amounts ─────────────────────────────────────
-        Wrap(
-          spacing: 8,
-          children: _quickAmounts.map((amt) {
-            return GestureDetector(
-              onTap: () =>
-                  setState(() => _amountController.text = amt.toString()),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                      color: AppColors.primary.withValues(alpha: 0.4)),
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                child: Text('₹$amt',
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: AppColors.primaryDark,
-                        fontWeight: FontWeight.w600)),
               ),
-            );
-          }).toList(),
-        ),
-
-        const SizedBox(height: 12),
-
-        // ── Note ─────────────────────────────────────────────
-        _inputField(
-          controller: _noteController,
-          hint: 'Add a note (optional)',
-          label: 'Note',
-          icon: Icons.note_outlined,
-          maxLength: 50,
-        ),
-
-        const SizedBox(height: 20),
-
-        // ── Send button ───────────────────────────────────────
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: ElevatedButton(
-            onPressed: _isLoading ? null : _handleSend,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryDark,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
-            ),
-            child: _isLoading
-                ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                        strokeWidth: 2.5, color: Colors.white))
-                : const Text('Send from Wallet',
-                    style: TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w600)),
+            ],
           ),
-        ),
 
-        const SizedBox(height: 8),
-      ],
+          const SizedBox(height: 20),
+
+          // ── UPI ID ───────────────────────────────────────────
+          _inputField(
+            controller: _upiController,
+            hint: 'name@bank or 9876543210',
+            label: 'UPI ID / Phone Number',
+            icon: Icons.alternate_email_rounded,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            validator: (v) {
+              if (v == null || v.trim().isEmpty) {
+                return 'UPI ID is required';
+              }
+
+              final value = v.trim();
+              final phoneRegex = RegExp(r'^\d{10}$');
+              final upiRegex = RegExp(r'^[a-zA-Z0-9._-]+@[a-zA-Z]+$');
+
+              if (!phoneRegex.hasMatch(value) && !upiRegex.hasMatch(value)) {
+                return 'Enter a valid UPI ID or phone number';
+              }
+
+              return null;
+            },
+          ),
+
+          const SizedBox(height: 12),
+
+          // ── Name ─────────────────────────────────────────────
+          _inputField(
+            controller: _nameController,
+            hint: 'Receiver name',
+            label: 'Name',
+            icon: Icons.person_outline_rounded,
+            textInputAction: TextInputAction.next,
+            validator: (v) {
+              if (v == null || v.trim().isEmpty) {
+                return 'Name is required';
+              }
+              return null;
+            },
+          ),
+
+          const SizedBox(height: 12),
+
+          // ── Amount ───────────────────────────────────────────
+          _inputField(
+            controller: _amountController,
+            hint: '0.00',
+            label: 'Amount (₹)',
+            icon: Icons.currency_rupee_rounded,
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.next,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+            ],
+            validator: (v) {
+              if (v == null || v.trim().isEmpty) {
+                return 'Amount is required';
+              }
+              final amount = double.tryParse(v) ?? 0;
+              if (amount <= 0) return 'Enter a valid amount';
+              if (amount > widget.walletBalance) {
+                return 'Insufficient wallet balance';
+              }
+              return null;
+            },
+          ),
+
+          const SizedBox(height: 10),
+
+          // ── Quick amounts ─────────────────────────────────────
+          Wrap(
+            spacing: 8,
+            children: _quickAmounts.map((amt) {
+              return GestureDetector(
+                onTap: () =>
+                    setState(() => _amountController.text = amt.toString()),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 14,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: AppColors.primary.withValues(alpha: 0.4),
+                    ),
+                  ),
+                  child: Text(
+                    '₹$amt',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: AppColors.primaryDark,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+
+          const SizedBox(height: 12),
+
+          // ── Note ─────────────────────────────────────────────
+          _inputField(
+            controller: _noteController,
+            hint: 'Add a note (optional)',
+            label: 'Note',
+            icon: Icons.note_outlined,
+            maxLength: 50,
+            textInputAction: TextInputAction.done,
+          ),
+
+          const SizedBox(height: 20),
+
+          // ── Send button ───────────────────────────────────────
+          SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: ElevatedButton(
+              onPressed: _isLoading ? null : _handleSend,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryDark,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: _isLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.5,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Text(
+                      'Send from Wallet',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+            ),
+          ),
+
+          const SizedBox(height: 8),
+        ],
+      ),
     );
   }
 
@@ -307,34 +358,41 @@ class _WalletSendSheetState extends State<WalletSendSheet> {
     required String label,
     required IconData icon,
     TextInputType keyboardType = TextInputType.text,
+    TextInputAction? textInputAction,
     List<TextInputFormatter>? inputFormatters,
     int? maxLength,
+    String? Function(String?)? validator,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: const TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF555555))),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+            color: Color(0xFF555555),
+          ),
+        ),
         const SizedBox(height: 6),
-        TextField(
+        TextFormField(
           controller: controller,
           keyboardType: keyboardType,
+          textInputAction: textInputAction,
           inputFormatters: inputFormatters,
           maxLength: maxLength,
+          validator: validator,
           decoration: InputDecoration(
             hintText: hint,
             counterText: '',
-            hintStyle:
-                TextStyle(color: Colors.grey.shade400, fontSize: 13),
-            prefixIcon:
-                Icon(icon, size: 18, color: Colors.grey.shade500),
+            hintStyle: TextStyle(color: Colors.grey.shade400, fontSize: 13),
+            prefixIcon: Icon(icon, size: 18, color: Colors.grey.shade500),
             filled: true,
             fillColor: Colors.grey.shade50,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide(color: Colors.grey.shade200),

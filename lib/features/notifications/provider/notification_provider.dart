@@ -3,8 +3,9 @@ import 'package:profinch_mobile_application/data/dummy/dummy_notifications.dart'
 import 'package:profinch_mobile_application/data/models/notification_model.dart';
 
 class NotificationProvider extends ChangeNotifier {
-  final List<NotificationModel> _notifications =
-      List.from(DummyNotifications.notifications);
+  final List<NotificationModel> _notifications = List.from(
+    DummyNotifications.notifications,
+  );
 
   //preferences
   bool pushEnabled = true;
@@ -29,9 +30,7 @@ class NotificationProvider extends ChangeNotifier {
   }
 
   List<NotificationModel> getByUserId(String userId) {
-    final list = _notifications
-        .where((n) => n.userId == userId)
-        .toList()
+    final list = _notifications.where((n) => n.userId == userId).toList()
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
     return list;
   }
@@ -68,15 +67,18 @@ class NotificationProvider extends ChangeNotifier {
 
     const transactionTypes = {
       NotificationType.transaction,
+      NotificationType.loan,
+      NotificationType.termDeposit,
+      NotificationType.insurance,
       NotificationType.upi,
       NotificationType.wallet,
     };
 
-    const promoTypes = {
-      NotificationType.offer,
-    };
+    const promoTypes = {NotificationType.offer};
 
-    if (!transactionAlertsEnabled && transactionTypes.contains(notification.type)) return;
+    if (!transactionAlertsEnabled &&
+        transactionTypes.contains(notification.type))
+      return;
     if (!promoAlertsEnabled && promoTypes.contains(notification.type)) return;
 
     _notifications.insert(0, notification);

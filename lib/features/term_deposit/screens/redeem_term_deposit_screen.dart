@@ -6,6 +6,8 @@ import '../../accounts/provider/account_provider.dart';
 import '../../auth/provider/auth_provider.dart';
 import '../provider/term_deposit_provider.dart';
 import '../../Transactions/provider/transaction_provider.dart';
+import '../../notifications/provider/notification_provider.dart';
+import '../../../data/models/notification_model.dart';
 
 class RedeemTermDepositScreen extends StatelessWidget {
   const RedeemTermDepositScreen({super.key});
@@ -219,6 +221,7 @@ class RedeemTermDepositScreen extends StatelessWidget {
                                   deposit,
                                   accountProvider,
                                   tdProvider,
+                                  user.id,
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.primaryDark,
@@ -249,8 +252,8 @@ class RedeemTermDepositScreen extends StatelessWidget {
     deposit,
     AccountProvider accountProvider,
     TermDepositProvider tdProvider,
+    String userId,
   ) {
-
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -318,6 +321,17 @@ class RedeemTermDepositScreen extends StatelessWidget {
                         balanceAfter: accountProvider
                             .getAccountById(deposit.sourceAccountId)
                             .availableBalance,
+                      );
+                      context.read<NotificationProvider>().addNotification(
+                        NotificationModel(
+                          id: DateTime.now().millisecondsSinceEpoch.toString(),
+                          userId: userId,
+                          title: 'Term Deposit Redeemed',
+                          body:
+                              '₹${deposit.maturityAmount.toStringAsFixed(2)} credited to your account.',
+                          type: NotificationType.termDeposit,
+                          createdAt: DateTime.now(),
+                        ),
                       );
 
                       Navigator.pop(context);
