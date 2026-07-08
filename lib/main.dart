@@ -60,6 +60,7 @@ import 'package:profinch_mobile_application/features/notifications/screens/notif
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:profinch_mobile_application/core/l10n/app_localizations.dart';
 import 'package:profinch_mobile_application/features/profile/provider/language_provider.dart';
+import 'package:profinch_mobile_application/features/bills/provider/bills_provider.dart';
 
 void main() {
   runApp(
@@ -78,6 +79,12 @@ void main() {
         ChangeNotifierProvider(create: (_) => PaymentProvider()),
         ChangeNotifierProvider.value(value: TransactionProvider.instance),
         ChangeNotifierProvider(create: (_) => LanguageProvider()),
+        ChangeNotifierProvider(
+          create: (ctx) => BillsProvider(
+            ctx.read<AuthProvider>(),
+            ctx.read<AccountProvider>(),
+          ),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -89,7 +96,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   final locale = context.watch<LanguageProvider>().locale;
+    final locale = context.watch<LanguageProvider>().locale;
 
     return MaterialApp(
       title: 'Profinch Bank',
@@ -140,9 +147,11 @@ class MyApp extends StatelessWidget {
         AppRoutes.emiCalculator: (context) => const EmiCalculatorScreen(),
         AppRoutes.wallet: (context) => const WalletScreen(),
         AppRoutes.calculators: (context) => const CalculatorMenuScreen(),
-        AppRoutes.tdCalculator: (context) => const TermDepositCalculatorScreen(),
+        AppRoutes.tdCalculator: (context) =>
+            const TermDepositCalculatorScreen(),
         AppRoutes.loanEligibility: (context) => const LoanEligibilityScreen(),
-        AppRoutes.currencyConverter: (context) => const CurrencyConverterScreen(),
+        AppRoutes.currencyConverter: (context) =>
+            const CurrencyConverterScreen(),
         AppRoutes.sipCalculator: (context) => const SipCalculatorScreen(),
         AppRoutes.applyCard: (context) => const ApplyCardScreen(),
 
