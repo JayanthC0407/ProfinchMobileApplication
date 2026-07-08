@@ -332,6 +332,8 @@ class DashboardScreen extends StatelessWidget {
                       icon: Icons.bar_chart,
                       // ── CHANGED ── was: "Analytics"
                       title: t.qa_analytics,
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.analytics),
                     ),
                     FeatureItem(
                       icon: Icons.calculate,
