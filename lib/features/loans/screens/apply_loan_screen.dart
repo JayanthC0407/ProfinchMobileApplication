@@ -10,6 +10,8 @@ import '../../accounts/provider/account_provider.dart';
 import '../../auth/provider/auth_provider.dart';
 import '../provider/loan_provider.dart';
 import '../../Transactions/provider/transaction_provider.dart';
+import '../../notifications/provider/notification_provider.dart';
+import '../../../data/models/notification_model.dart';
 
 class ApplyLoanScreen extends StatefulWidget {
   const ApplyLoanScreen({super.key});
@@ -321,6 +323,19 @@ class _ApplyLoanScreenState extends State<ApplyLoanScreen> {
                             autoPayDate: autoPayDate,
                             status: 'ACTIVE',
                           ));
+
+context.read<NotificationProvider>().addNotification(
+  NotificationModel(
+    id: DateTime.now().millisecondsSinceEpoch.toString(),
+    userId: user.id,
+    title: 'Loan Application Successful',
+    body:
+        'Your $loanType of ₹${amount.toStringAsFixed(2)} has been successfully approved and credited to your account.',
+    type: NotificationType.loan,
+    createdAt: DateTime.now(),
+  ),
+);
+
                           TransactionProvider.instance
                               .recordLoanReimbursement(
                             accountId: selectedAccountId!,

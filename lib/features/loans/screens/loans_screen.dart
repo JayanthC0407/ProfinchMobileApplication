@@ -61,11 +61,6 @@ class LoansScreen extends StatelessWidget {
                           onPressed: () => Navigator.pop(context),
                         ),
                         const Spacer(),
-                        IconButton(
-                          icon: const Icon(Icons.notifications_outlined,
-                              color: AppColors.light),
-                          onPressed: () {},
-                        ),
                       ],
                     ),
                   ),
