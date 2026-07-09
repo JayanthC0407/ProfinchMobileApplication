@@ -95,13 +95,13 @@ class AuthProvider extends ChangeNotifier {
   }
 
   void updateProfileImage(String imagePath) {
-  if (currentUser == null) return;
-  currentUser = currentUser!.copyWith(profileImage: imagePath);
-  notifyListeners();
+    if (currentUser == null) return;
+    currentUser = currentUser!.copyWith(profileImage: imagePath);
+    notifyListeners();
   }
 
   Future<bool> login({
-    required String email,
+    required String username,
     required String password,
   }) async {
     isLoading = true;
@@ -109,7 +109,7 @@ class AuthProvider extends ChangeNotifier {
 
     await Future.delayed(const Duration(seconds: 2));
 
-    final user = _repository.login(email: email, password: password);
+    final user = _repository.login(username: username, password: password);
 
     isLoading = false;
 
@@ -125,10 +125,9 @@ class AuthProvider extends ChangeNotifier {
 
   bool emailExists(String email) => _repository.emailExists(email);
 
-  bool passwordMatches({
-    required String email,
-    required String password,
-  }) =>
+  bool usernameExists(String username) => _repository.usernameExists(username);
+
+  bool passwordMatches({required String email, required String password}) =>
       _repository.passwordMatches(email: email, password: password);
 
   void logout() {
@@ -148,13 +147,12 @@ class AuthProvider extends ChangeNotifier {
 
   //
   String? get pinUsername {
-  if (_pinEmail == null) return null;
-  return _repository.getUserByEmail(_pinEmail!)?.username;
+    if (_pinEmail == null) return null;
+    return _repository.getUserByEmail(_pinEmail!)?.username;
   }
 
   String? get patternUsername {
     if (_patternEmail == null) return null;
     return _repository.getUserByEmail(_patternEmail!)?.username;
   }
-
 }

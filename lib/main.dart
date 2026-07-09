@@ -57,6 +57,11 @@ import 'package:profinch_mobile_application/features/bills/screens/bills_screen.
 import 'package:profinch_mobile_application/features/notifications/provider/notification_provider.dart';
 import 'package:profinch_mobile_application/features/notifications/screens/notification_screen.dart';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:profinch_mobile_application/core/l10n/app_localizations.dart';
+import 'package:profinch_mobile_application/features/profile/provider/language_provider.dart';
+import 'package:profinch_mobile_application/features/bills/provider/bills_provider.dart';
+
 void main() {
   runApp(
     MultiProvider(
@@ -73,6 +78,13 @@ void main() {
         ChangeNotifierProvider(create: (_) => InsuranceProvider()),
         ChangeNotifierProvider(create: (_) => PaymentProvider()),
         ChangeNotifierProvider.value(value: TransactionProvider.instance),
+        ChangeNotifierProvider(create: (_) => LanguageProvider()),
+        ChangeNotifierProvider(
+          create: (ctx) => BillsProvider(
+            ctx.read<AuthProvider>(),
+            ctx.read<AccountProvider>(),
+          ),
+        ),
       ],
       child: const MyApp(),
     ),
@@ -84,9 +96,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = context.watch<LanguageProvider>().locale;
+
     return MaterialApp(
       title: 'Profinch Bank',
       debugShowCheckedModeBanner: false,
+
+      locale: locale,
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color.fromARGB(255, 165, 24, 64),
@@ -115,19 +139,13 @@ class MyApp extends StatelessWidget {
             const TermDepositStatementScreen(),
 
         AppRoutes.beneficiaries: (context) => const BeneficiariesScreen(),
-
         AppRoutes.beneficiaryType: (context) => const BeneficiaryTypeScreen(),
 
         AppRoutes.loans: (context) => const LoansScreen(),
-
         AppRoutes.myLoans: (context) => const MyLoansScreen(),
-
         AppRoutes.applyLoan: (context) => const ApplyLoanScreen(),
-
         AppRoutes.emiCalculator: (context) => const EmiCalculatorScreen(),
-
         AppRoutes.wallet: (context) => const WalletScreen(),
-
         AppRoutes.calculators: (context) => const CalculatorMenuScreen(),
         AppRoutes.tdCalculator: (context) =>
             const TermDepositCalculatorScreen(),
@@ -139,9 +157,7 @@ class MyApp extends StatelessWidget {
 
         AppRoutes.transferMoney: (context) => const TransferMoneyScreen(),
         AppRoutes.rewards: (context) => const RewardsScreen(),
-
         AppRoutes.bills: (context) => const BillsScreen(),
-
         AppRoutes.notifications: (context) => const NotificationScreen(),
 
         AppRoutes.insurance: (context) => const InsuranceScreen(),

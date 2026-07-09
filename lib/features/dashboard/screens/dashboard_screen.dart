@@ -16,20 +16,25 @@ import '../widgets/feature_item.dart';
 import '../widgets/quick_action_item.dart';
 import '../../auth/provider/auth_provider.dart';
 
-// ✅ New transaction history module (replaces old map-based TransactionTile)
 import 'package:profinch_mobile_application/features/Transactions/provider/transaction_provider.dart';
 import 'package:profinch_mobile_application/features/Transactions/widgets/transaction_tile_widget.dart';
 import 'package:profinch_mobile_application/features/Transactions/screens/transaction_history_screen.dart';
 import 'package:profinch_mobile_application/features/notifications/provider/notification_provider.dart';
-
 import 'package:profinch_mobile_application/core/constants/colors.dart';
-import 'dart:typed_data';
+
+// ── NEW ──────────────────────────────────────────────────────────
+import 'package:profinch_mobile_application/core/l10n/app_localizations.dart';
+// ─────────────────────────────────────────────────────────────────
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // ── NEW ── one-liner lookup, use t.xxx anywhere in this build
+    final t = AppLocalizations.of(context);
+    // ─────────────────────────────────────────────────────────────
+
     final provider = Provider.of<DashboardProvider>(context);
     final authProvider = Provider.of<AuthProvider>(context);
     final user = authProvider.currentUser;
@@ -38,14 +43,11 @@ class DashboardScreen extends StatelessWidget {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Navigator.pushReplacementNamed(context, AppRoutes.login);
       });
-
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    // ✅ Use AccountProvider (main branch) — cleaner approach
     final accountProvider = Provider.of<AccountProvider>(context);
     final userAccounts = accountProvider.getAccountsByUserId(user.id);
-
     final selectedAccount = userAccounts.firstWhere(
       (account) =>
           account.id == (provider.selectedAccountId ?? user.primaryAccountId),
@@ -67,7 +69,7 @@ class DashboardScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ── HEADER ───────────────────────────────────────
+                // ── HEADER ──────────────────────────────────────
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -120,7 +122,8 @@ class DashboardScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 3),
                             Text(
-                              "Welcome Back",
+                              // ── CHANGED ── was: "Welcome Back"
+                              t.dashboard_welcomeBack,
                               style: TextStyle(
                                 color: Colors.white70,
                                 fontSize: AppFontSize.body(context),
@@ -176,7 +179,7 @@ class DashboardScreen extends StatelessWidget {
 
                 const SizedBox(height: 22),
 
-                // ── BALANCE CARD — swipeable between accounts ──────
+                // ── BALANCE CARD ────────────────────────────────
                 BalanceCard(
                   accounts: userAccounts,
                   selectedAccountId: selectedAccount.id,
@@ -186,7 +189,6 @@ class DashboardScreen extends StatelessWidget {
                     if (accountId == null) return;
                     provider.selectAccount(accountId);
                   },
-                  // kept for signature compat, card now reads from accounts
                   balance: selectedAccount.availableBalance,
                   accountNumber: selectedAccount.accountNumber,
                   accountType: selectedAccount.accountType,
@@ -194,7 +196,7 @@ class DashboardScreen extends StatelessWidget {
 
                 const SizedBox(height: 22),
 
-                // ── QUICK ACTIONS ─────────────────────────────────
+                // ── QUICK ACTIONS ───────────────────────────────
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
@@ -207,10 +209,10 @@ class DashboardScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      // ✅ Your UPI navigation kept
                       QuickActionItem(
                         icon: Icons.send,
-                        title: "Pay to anyone",
+                        // ── CHANGED ── was: "Pay to anyone"
+                        title: t.dashboard_send,
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -226,7 +228,8 @@ class DashboardScreen extends StatelessWidget {
                       ),
                       QuickActionItem(
                         icon: Icons.add_circle_outline,
-                        title: "Receive",
+                        // ── CHANGED ── was: "Receive"
+                        title: t.dashboard_addMoney,
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -242,7 +245,8 @@ class DashboardScreen extends StatelessWidget {
                       ),
                       QuickActionItem(
                         icon: Icons.qr_code_scanner,
-                        title: "Scan",
+                        // ── CHANGED ── was: "Scan"
+                        title: t.dashboard_scan,
                         onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -258,7 +262,8 @@ class DashboardScreen extends StatelessWidget {
                       ),
                       QuickActionItem(
                         icon: Icons.account_balance_wallet,
-                        title: "Wallet",
+                        // ── CHANGED ── was: "Wallet"
+                        title: t.dashboard_wallet,
                         onTap: () =>
                             Navigator.pushNamed(context, AppRoutes.wallet),
                       ),
@@ -268,12 +273,13 @@ class DashboardScreen extends StatelessWidget {
 
                 const SizedBox(height: 26),
 
-                // ── QUICK ACCESS HEADER ───────────────────────────
+                // ── QUICK ACCESS HEADER ─────────────────────────
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Quick Access",
+                      // ── CHANGED ── was: "Quick Access"
+                      t.dashboard_quickAccess,
                       style: TextStyle(
                         fontSize: AppFontSize.large(context),
                         fontWeight: FontWeight.bold,
@@ -281,7 +287,8 @@ class DashboardScreen extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Edit",
+                      // ── CHANGED ── was: "Edit"
+                      t.dashboard_edit,
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: AppFontSize.body(context),
@@ -292,8 +299,7 @@ class DashboardScreen extends StatelessWidget {
 
                 const SizedBox(height: 16),
 
-                // ── QUICK ACCESS GRID ─────────────────────────────
-                // ✅ Use teammate's expanded grid (More/Less toggle + Term Deposits)
+                // ── QUICK ACCESS GRID ───────────────────────────
                 GridView.count(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -304,30 +310,30 @@ class DashboardScreen extends StatelessWidget {
                   children: [
                     FeatureItem(
                       icon: Icons.account_balance,
-                      title: "Accounts",
+                      // ── CHANGED ── was: "Accounts"
+                      title: t.qa_accounts,
                       onTap: () =>
                           Navigator.pushNamed(context, AppRoutes.accounts),
                     ),
-
                     FeatureItem(
                       icon: Icons.credit_card,
-                      title: "Cards",
+                      // ── CHANGED ── was: "Cards"
+                      title: t.qa_cards,
                       onTap: () =>
                           Navigator.pushNamed(context, AppRoutes.cards),
                     ),
-
                     FeatureItem(
                       icon: Icons.currency_rupee,
-                      title: "Loans",
-
+                      // ── CHANGED ── was: "Loans"
+                      title: t.qa_loans,
                       onTap: () =>
                           Navigator.pushNamed(context, AppRoutes.loans),
                     ),
-
                     FeatureItem(
                       icon: Icons.bar_chart,
-                      title: "Analytics",
-                      onTap: () {
+                      // ── CHANGED ── was: "Analytics"
+                      title: t.qa_analytics,
+                     onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -336,75 +342,66 @@ class DashboardScreen extends StatelessWidget {
                         );
                       },
                     ),
-
-                    // Always visible items
                     FeatureItem(
                       icon: Icons.calculate,
-                      title: "Calculator",
-                      onTap: () {
-                        Navigator.pushNamed(context, AppRoutes.calculators);
-                      },
+                      title:
+                          t.qa_calculators,
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.calculators),
                     ),
-
                     FeatureItem(
                       icon: Icons.receipt_long,
-                      title: "Bills",
+                      // ── CHANGED ── was: "Bills"
+                      title: t.qa_bills,
                       onTap: () =>
                           Navigator.pushNamed(context, AppRoutes.bills),
                     ),
-
                     FeatureItem(
                       icon: Icons.card_giftcard,
-                      title: "Rewards",
+                      // ── CHANGED ── was: "Rewards"
+                      title: t.qa_rewards,
                       onTap: () =>
                           Navigator.pushNamed(context, AppRoutes.rewards),
                     ),
-
-                    // Show More button initially
                     if (!provider.showMoreServices)
                       FeatureItem(
                         icon: Icons.more_horiz,
-                        title: "More",
+                        // ── CHANGED ── was: "More"
+                        title: t.qa_more,
                         onTap: () => provider.toggleMoreServices(),
                       ),
-
-                    // Additional items when expanded
                     if (provider.showMoreServices) ...[
                       FeatureItem(
                         icon: Icons.savings,
-                        title: "Term Dep.",
+                        title: t.qa_termDeposit,
                         onTap: () => Navigator.pushNamed(
                           context,
                           AppRoutes.termDeposits,
                         ),
                       ),
-
-                      const FeatureItem(
+                      FeatureItem(
                         icon: Icons.trending_up,
-                        title: "Invest.",
+                        title: t.qa_invest,
                       ),
-
                       FeatureItem(
                         icon: Icons.security,
-                        title: "Insurance",
-                        onTap: () { Navigator.pushNamed(
+                        title: t.qa_insurance,
+                        onTap: () => Navigator.pushNamed(
                           context,
                           AppRoutes.insurance,
-                        );
-                        },
+                        ),
                       ),
-
                       FeatureItem(
                         icon: Icons.people,
-                        title: "Benefic.",
-                        onTap: () {
-                          Navigator.pushNamed(context, AppRoutes.beneficiaries);
-                        },
+                        title: t.qa_beneficiary,
+                        onTap: () => Navigator.pushNamed(
+                          context,
+                          AppRoutes.beneficiaries,
+                        ),
                       ),
-
                       FeatureItem(
                         icon: Icons.expand_less,
-                        title: "Less",
+                        title: t.qa_Less,
                         onTap: () => provider.toggleMoreServices(),
                       ),
                     ],
@@ -413,12 +410,13 @@ class DashboardScreen extends StatelessWidget {
 
                 const SizedBox(height: 26),
 
-                // ── RECENT TRANSACTIONS HEADER ────────────────────
+                // ── RECENT TRANSACTIONS HEADER ──────────────────
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Recent Transactions",
+                      // ── CHANGED ── was: "Recent Transactions"
+                      t.dashboard_recentTx,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: AppFontSize.large(context),
@@ -433,7 +431,8 @@ class DashboardScreen extends StatelessWidget {
                         ),
                       ),
                       child: Text(
-                        "See All",
+                        // ── CHANGED ── was: "See All"
+                        t.dashboard_seeAll,
                         style: TextStyle(
                           color: Colors.white70,
                           fontSize: AppFontSize.body(context),
@@ -445,11 +444,6 @@ class DashboardScreen extends StatelessWidget {
 
                 const SizedBox(height: 14),
 
-                // ── RECENT TRANSACTION LIST (latest 2) ────────────
-                // Listens directly to the shared TransactionProvider so
-                // that any transaction recorded anywhere in the app
-                // (UPI, transfer, withdrawal, EMI, loan, term deposit...)
-                // appears here immediately, without a page reload.
                 AnimatedBuilder(
                   animation: TransactionProvider.instance,
                   builder: (context, _) {
