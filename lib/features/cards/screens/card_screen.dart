@@ -180,8 +180,8 @@ class _CardsScreenState extends State<CardsScreen>
             icon: Icons.contactless_outlined,
             title: 'Contactless Payments',
             subtitle: 'Enable tap & pay (NFC)',
-            value: true,
-            onChanged: (_) {},
+            value: card.isContactlessEnabled,
+            onChanged: (_) => provider.toggleContactless(card.id),
           ),
 
           const SizedBox(height: 8),
