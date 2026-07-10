@@ -1,12 +1,13 @@
 // ignore_for_file: unnecessary_underscores
 
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
 import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:profinch_mobile_application/features/auth/screens/login_screen.dart';
-
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,18 +17,20 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
-
+    with TickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
   late Animation<Offset> _slideAnimation;
 
+  late AnimationController _bgController;
+
+  late AnimationController _progressController;
+
   @override
   void initState() {
     super.initState();
 
-    // ── Animation setup ────────────────────────────────────────
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1500),
@@ -56,6 +59,18 @@ class _SplashScreenState extends State<SplashScreen>
         curve: const Interval(0.3, 0.8, curve: Curves.easeOut),
       ),
     );
+
+    // ── Background gradient drift ──────────────────────────────
+    _bgController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 12),
+    )..repeat();
+
+    // ── Progress bar fill ───────────────────────────────────────
+    _progressController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    )..forward();
 
     // Start animation then navigate
     _controller.forward();
@@ -86,30 +101,41 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void dispose() {
     _controller.dispose();
+    _bgController.dispose();
+    _progressController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              AppColors.primaryDark,
-              AppColors.primary,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
+      body: AnimatedBuilder(
+        animation: _bgController,
+        builder: (context, child) {
+          final angle = _bgController.value * 2 * math.pi;
+          final begin = Alignment(math.cos(angle), math.sin(angle));
+          final end = Alignment(-math.cos(angle), -math.sin(angle));
+
+          return Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: const [
+                  AppColors.primaryDark,
+                  AppColors.primary,
+                ],
+                begin: begin,
+                end: end,
+              ),
+            ),
+            child: child,
+          );
+        },
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               const Spacer(flex: 3),
 
               // ── Logo + Bank Name ──────────────────────────────
@@ -119,7 +145,6 @@ class _SplashScreenState extends State<SplashScreen>
                   scale: _scaleAnimation,
                   child: Column(
                     children: [
-
                       // Logo icon
                       Container(
                         width: 90,
@@ -183,12 +208,22 @@ class _SplashScreenState extends State<SplashScreen>
                   child: Column(
                     children: [
                       SizedBox(
-                        width: 36,
-                        height: 36,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2.5,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            AppColors.light.withValues(alpha: 0.7),
+                        width: 160,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: AnimatedBuilder(
+                            animation: _progressController,
+                            builder: (context, _) {
+                              return LinearProgressIndicator(
+                                value: _progressController.value,
+                                minHeight: 4,
+                                backgroundColor:
+                                    AppColors.light.withValues(alpha: 0.2),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  AppColors.light.withValues(alpha: 0.9),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),
@@ -197,7 +232,10 @@ class _SplashScreenState extends State<SplashScreen>
 
                       Text(
                         'v1.0.0',
-                        style: AppTextStyles.whiteCaption(context,color: AppColors.light.withValues(alpha: 0.5)),
+                        style: AppTextStyles.whiteCaption(
+                          context,
+                          color: AppColors.light.withValues(alpha: 0.5),
+                        ),
                       ),
                     ],
                   ),
