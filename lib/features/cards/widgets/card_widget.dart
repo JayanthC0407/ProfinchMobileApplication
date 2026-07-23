@@ -77,24 +77,24 @@ class CardWidget extends StatelessWidget {
           if (card.isFrozen)
             Container(
               decoration: BoxDecoration(
-                color: Colors.black.withValues(alpha: 0.5),
+                color: Colors.black.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: const Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.ac_unit_rounded, color: Colors.lightBlue, size: 36),
-                    SizedBox(height: 8),
-                    Text(
-                      'Card Frozen',
-                      style: TextStyle(
-                        color: Colors.lightBlue,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1,
-                      ),
-                    ),
+                    Icon(Icons.ac_unit_rounded, color: Colors.white, size: 42),
+                    SizedBox(height: 10),
+                    // Text(
+                    //   'Card Frozen',
+                    //   style: TextStyle(
+                    //     color: Colors.white,
+                    //     fontSize: 18,
+                    //     fontWeight: FontWeight.bold,
+                    //     letterSpacing: 2,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

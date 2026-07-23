@@ -34,6 +34,7 @@ class CardProvider extends ChangeNotifier {
       isOnlinePaymentEnabled: card.isOnlinePaymentEnabled,
       atmLimit: card.atmLimit,
       rewardPoints: card.rewardPoints,
+      isContactlessEnabled: card.isContactlessEnabled,
     );
     notifyListeners();
   }
@@ -59,6 +60,7 @@ class CardProvider extends ChangeNotifier {
       isOnlinePaymentEnabled: card.isOnlinePaymentEnabled,
       atmLimit: card.atmLimit,
       rewardPoints: card.rewardPoints,
+      isContactlessEnabled: card.isContactlessEnabled,
     );
     notifyListeners();
   }
@@ -84,9 +86,39 @@ class CardProvider extends ChangeNotifier {
       isOnlinePaymentEnabled: !card.isOnlinePaymentEnabled,
       atmLimit: card.atmLimit,
       rewardPoints: card.rewardPoints,
+      isContactlessEnabled: card.isContactlessEnabled,
     );
     notifyListeners();
   }
+
+  // ── Toggle Contactless Payment ───────────────────────────────────
+void toggleContactless(String cardId) {
+  final index = _cards.indexWhere((c) => c.id == cardId);
+  if (index == -1) return;
+
+  final card = _cards[index];
+
+  _cards[index] = CardModel(
+    id: card.id,
+    userId: card.userId,
+    cardNumber: card.cardNumber,
+    cardHolderName: card.cardHolderName,
+    expiryDate: card.expiryDate,
+    cardType: card.cardType,
+    network: card.network,
+    creditLimit: card.creditLimit,
+    usedAmount: card.usedAmount,
+    isActive: card.isActive,
+    isFrozen: card.isFrozen,
+    isInternationalEnabled: card.isInternationalEnabled,
+    isOnlinePaymentEnabled: card.isOnlinePaymentEnabled,
+    isContactlessEnabled: !card.isContactlessEnabled,
+    atmLimit: card.atmLimit,
+    rewardPoints: card.rewardPoints,
+  );
+
+  notifyListeners();
+}
 
   // ── Update ATM Limit ───────────────────────────────────────────
   void updateAtmLimit(String cardId, double newLimit) {
@@ -109,6 +141,7 @@ class CardProvider extends ChangeNotifier {
       isOnlinePaymentEnabled: card.isOnlinePaymentEnabled,
       atmLimit: newLimit,
       rewardPoints: card.rewardPoints,
+      isContactlessEnabled: card.isContactlessEnabled,
     );
     notifyListeners();
   }
@@ -135,6 +168,7 @@ class CardProvider extends ChangeNotifier {
       isOnlinePaymentEnabled: card.isOnlinePaymentEnabled,
       atmLimit: card.atmLimit,
       rewardPoints: card.rewardPoints - pointsToRedeem,
+      isContactlessEnabled: card.isContactlessEnabled,
     );
     notifyListeners();
   }

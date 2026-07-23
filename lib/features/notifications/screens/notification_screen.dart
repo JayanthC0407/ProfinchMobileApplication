@@ -33,17 +33,21 @@ class _NotificationScreenState extends State<NotificationScreen>
     super.dispose();
   }
 
-  List<NotificationModel> _filtered(
-      List<NotificationModel> all, int tabIndex) {
+  List<NotificationModel> _filtered(List<NotificationModel> all, int tabIndex) {
     switch (tabIndex) {
       case 1:
         return all.where((n) => !n.isRead).toList();
       case 2:
         return all
-            .where((n) =>
-                n.type == NotificationType.transaction ||
-                n.type == NotificationType.upi ||
-                n.type == NotificationType.wallet)
+            .where(
+              (n) =>
+                  n.type == NotificationType.transaction ||
+                  n.type == NotificationType.loan ||
+                  n.type == NotificationType.termDeposit ||
+                  n.type == NotificationType.insurance ||
+                  n.type == NotificationType.upi ||
+                  n.type == NotificationType.wallet,
+            )
             .toList();
       case 3:
         return all.where((n) => n.type == NotificationType.offer).toList();
@@ -54,8 +58,7 @@ class _NotificationScreenState extends State<NotificationScreen>
 
   @override
   Widget build(BuildContext context) {
-    final userId =
-        context.read<AuthProvider>().currentUser?.id ?? '';
+    final userId = context.read<AuthProvider>().currentUser?.id ?? '';
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F6FA),
@@ -94,10 +97,13 @@ class _NotificationScreenState extends State<NotificationScreen>
               final list = provider.getByUserId(userId);
               return list.isNotEmpty
                   ? IconButton(
-                      icon: const Icon(Icons.delete_sweep_outlined,
-                          color: Colors.white70),
+                      icon: const Icon(
+                        Icons.delete_sweep_outlined,
+                        color: Colors.white70,
+                      ),
                       tooltip: 'Clear all',
-                      onPressed: () => _confirmClearAll(context, provider, userId),
+                      onPressed: () =>
+                          _confirmClearAll(context, provider, userId),
                     )
                   : const SizedBox.shrink();
             },
@@ -166,27 +172,33 @@ class _NotificationScreenState extends State<NotificationScreen>
       children: [
         if (today.isNotEmpty) ...[
           _sectionHeader(context, 'Today'),
-          ...today.map((n) => NotificationTile(
-                notification: n,
-                onTap: () => provider.markAsRead(n.id),
-                onDismiss: () => provider.deleteNotification(n.id),
-              )),
+          ...today.map(
+            (n) => NotificationTile(
+              notification: n,
+              onTap: () => provider.markAsRead(n.id),
+              onDismiss: () => provider.deleteNotification(n.id),
+            ),
+          ),
         ],
         if (yesterday.isNotEmpty) ...[
           _sectionHeader(context, 'Yesterday'),
-          ...yesterday.map((n) => NotificationTile(
-                notification: n,
-                onTap: () => provider.markAsRead(n.id),
-                onDismiss: () => provider.deleteNotification(n.id),
-              )),
+          ...yesterday.map(
+            (n) => NotificationTile(
+              notification: n,
+              onTap: () => provider.markAsRead(n.id),
+              onDismiss: () => provider.deleteNotification(n.id),
+            ),
+          ),
         ],
         if (older.isNotEmpty) ...[
           _sectionHeader(context, 'Earlier'),
-          ...older.map((n) => NotificationTile(
-                notification: n,
-                onTap: () => provider.markAsRead(n.id),
-                onDismiss: () => provider.deleteNotification(n.id),
-              )),
+          ...older.map(
+            (n) => NotificationTile(
+              notification: n,
+              onTap: () => provider.markAsRead(n.id),
+              onDismiss: () => provider.deleteNotification(n.id),
+            ),
+          ),
         ],
         const SizedBox(height: 16),
       ],
@@ -213,8 +225,11 @@ class _NotificationScreenState extends State<NotificationScreen>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.notifications_off_outlined,
-              size: 64, color: Colors.grey.shade300),
+          Icon(
+            Icons.notifications_off_outlined,
+            size: 64,
+            color: Colors.grey.shade300,
+          ),
           const SizedBox(height: 16),
           Text(
             'No notifications',
@@ -238,12 +253,14 @@ class _NotificationScreenState extends State<NotificationScreen>
   }
 
   void _confirmClearAll(
-      BuildContext context, NotificationProvider provider, String userId) {
+    BuildContext context,
+    NotificationProvider provider,
+    String userId,
+  ) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(
           'Clear all notifications?',
           style: TextStyle(
@@ -261,8 +278,10 @@ class _NotificationScreenState extends State<NotificationScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel',
-                style: TextStyle(color: Colors.grey.shade600)),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: Colors.grey.shade600),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -273,7 +292,8 @@ class _NotificationScreenState extends State<NotificationScreen>
               backgroundColor: Colors.red.shade400,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)),
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
             child: const Text('Clear All'),
           ),

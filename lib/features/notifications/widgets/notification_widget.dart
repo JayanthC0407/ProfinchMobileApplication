@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
 import 'package:profinch_mobile_application/data/models/notification_model.dart';
+import 'package:intl/intl.dart';
 
 class NotificationTile extends StatelessWidget {
   final NotificationModel notification;
@@ -15,7 +17,6 @@ class NotificationTile extends StatelessWidget {
     required this.onDismiss,
   });
 
-  // ── Icon & color per type ─────────────────────────────────────
   static _NotificationStyle _style(NotificationType type) {
     switch (type) {
       case NotificationType.transaction:
@@ -35,6 +36,12 @@ class NotificationTile extends StatelessWidget {
           icon: Icons.savings_rounded,
           color: const Color(0xFF00695C),
           bg: const Color(0xFFE0F2F1),
+        );
+      case NotificationType.insurance:
+        return _NotificationStyle(
+          icon: Icons.health_and_safety_rounded,
+          color: const Color(0xFFC62828),
+          bg: const Color(0xFFFFEBEE),
         );
       case NotificationType.card:
         return _NotificationStyle(
@@ -75,7 +82,6 @@ class NotificationTile extends StatelessWidget {
     }
   }
 
-  // ── Time label ────────────────────────────────────────────────
   static String _timeAgo(DateTime dt) {
     final diff = DateTime.now().difference(dt);
     if (diff.inMinutes < 1) return 'Just now';
@@ -84,6 +90,164 @@ class NotificationTile extends StatelessWidget {
     if (diff.inDays == 1) return 'Yesterday';
     if (diff.inDays < 7) return '${diff.inDays}d ago';
     return '${dt.day}/${dt.month}/${dt.year}';
+  }
+
+  static String _typeLabel(NotificationType type) {
+    switch (type) {
+      case NotificationType.transaction: return 'Transaction';
+      case NotificationType.loan: return 'Loan';
+      case NotificationType.termDeposit: return 'Term Deposit';
+      case NotificationType.insurance: return 'Insurance';
+      case NotificationType.card: return 'Card';
+      case NotificationType.upi: return 'UPI Payment';
+      case NotificationType.wallet: return 'Wallet';
+      case NotificationType.offer: return 'Offer';
+      case NotificationType.security: return 'Security';
+      case NotificationType.system: return 'System';
+    }
+  }
+
+  void _showDetail(BuildContext context) {
+    // Mark as read first
+    onTap();
+
+    final style = _style(notification.type);
+    final fmt = DateFormat('dd MMM yyyy, hh:mm a');
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => Container(
+        padding: const EdgeInsets.all(24),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ── Handle ───────────────────────────────────
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // ── Icon + type + time ────────────────────────
+            Row(
+              children: [
+                Container(
+                  width: 52,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    color: style.bg,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Icon(style.icon, color: style.color, size: 26),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: style.bg,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          _typeLabel(notification.type),
+                          style: TextStyle(
+                            color: style.color,
+                            fontSize: AppFontSize.xs(context),
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        fmt.format(notification.createdAt),
+                        style: AppTextStyles.caption(context),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 20),
+            const Divider(height: 1, color: Color(0xFFF3F4F6)),
+            const SizedBox(height: 20),
+
+            // ── Title ─────────────────────────────────────
+            Text(
+              notification.title,
+              style: AppTextStyles.title(context),
+            ),
+
+            const SizedBox(height: 12),
+
+            // ── Body ──────────────────────────────────────
+            Text(
+              notification.body,
+              style: AppTextStyles.bodySecondary(context),
+            ),
+
+            const SizedBox(height: 24),
+
+            // ── Dismiss button ────────────────────────────
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      onDismiss();
+                    },
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.error,
+                      side: BorderSide(color: AppColors.error.withValues(alpha: 0.4)),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                    child: const Text('Delete'),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.pop(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryDark,
+                      foregroundColor: AppColors.light,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      elevation: 0,
+                    ),
+                    child: const Text('Done'),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 8),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -102,11 +266,14 @@ class NotificationTile extends StatelessWidget {
           color: Colors.red.shade400,
           borderRadius: BorderRadius.circular(14),
         ),
-        child: const Icon(Icons.delete_outline_rounded,
-            color: Colors.white, size: 24),
+        child: const Icon(
+          Icons.delete_outline_rounded,
+          color: Colors.white,
+          size: 24,
+        ),
       ),
       child: GestureDetector(
-        onTap: onTap,
+        onTap: () => _showDetail(context),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           margin: const EdgeInsets.only(bottom: 10),
@@ -161,7 +328,7 @@ class NotificationTile extends StatelessWidget {
                           Container(
                             width: 8,
                             height: 8,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: AppColors.primaryDark,
                               shape: BoxShape.circle,
                             ),
@@ -180,13 +347,27 @@ class NotificationTile extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 6),
-                    Text(
-                      _timeAgo(notification.createdAt),
-                      style: TextStyle(
-                        fontSize: AppFontSize.xs(context),
-                        color: Colors.grey.shade400,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    // Time + tap hint row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          _timeAgo(notification.createdAt),
+                          style: TextStyle(
+                            fontSize: AppFontSize.xs(context),
+                            color: Colors.grey.shade400,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Text(
+                          'Tap for details',
+                          style: TextStyle(
+                            fontSize: AppFontSize.xs(context),
+                            color: AppColors.primary.withValues(alpha: 0.7),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -203,6 +384,9 @@ class _NotificationStyle {
   final IconData icon;
   final Color color;
   final Color bg;
-  const _NotificationStyle(
-      {required this.icon, required this.color, required this.bg});
+  const _NotificationStyle({
+    required this.icon,
+    required this.color,
+    required this.bg,
+  });
 }

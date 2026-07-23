@@ -16,6 +16,7 @@ class CardModel {
   final bool isOnlinePaymentEnabled;
   final double atmLimit;
   final int rewardPoints;
+  final bool isContactlessEnabled;
 
   CardModel({
     required this.id,
@@ -33,6 +34,7 @@ class CardModel {
     required this.isOnlinePaymentEnabled,
     required this.atmLimit,
     required this.rewardPoints,
+    required this.isContactlessEnabled,
   });
 
   double get availableLimit => creditLimit - usedAmount;

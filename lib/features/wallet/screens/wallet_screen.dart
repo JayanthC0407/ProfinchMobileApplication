@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/features/accounts/provider/account_provider.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
+import 'package:profinch_mobile_application/features/notifications/provider/notification_provider.dart';
+import 'package:profinch_mobile_application/data/models/notification_model.dart';
 import '../provider/wallet_provider.dart';
 import '../widgets/wallet_balance_card.dart';
 import '../widgets/wallet_transaction_tile.dart';
@@ -28,6 +30,24 @@ class WalletScreen extends StatelessWidget {
 class _WalletView extends StatelessWidget {
   const _WalletView();
 
+  void _addWalletNotification(
+    BuildContext context, {
+    required String title,
+    required String body,
+  }) {
+    final userId = context.read<AuthProvider>().currentUser?.id ?? '';
+    context.read<NotificationProvider>().addNotification(
+      NotificationModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        userId: userId,
+        title: title,
+        body: body,
+        type: NotificationType.wallet,
+        createdAt: DateTime.now(),
+      ),
+    );
+  }
+
   void _showTopUp(
     BuildContext context,
     WalletProvider provider,
@@ -43,8 +63,20 @@ class _WalletView extends StatelessWidget {
       builder: (_) => TopUpSheet(
         accounts: accounts,
         walletBalance: provider.walletBalance,
-        onTopUp: ({required accountId, required amount}) =>
-            provider.topUpWallet(accountId: accountId, amount: amount),
+        onTopUp: ({required accountId, required amount}) async {
+          final success = await provider.topUpWallet(
+            accountId: accountId,
+            amount: amount,
+          );
+          if (success && context.mounted) {
+            _addWalletNotification(
+              context,
+              title: 'Wallet Top-up Successful',
+              body: '₹${amount.toStringAsFixed(2)} added to your wallet.',
+            );
+          }
+          return success;
+        },
       ),
     );
   }
@@ -64,8 +96,21 @@ class _WalletView extends StatelessWidget {
       builder: (_) => TransferToBankSheet(
         accounts: accounts,
         walletBalance: provider.walletBalance,
-        onTransfer: ({required accountId, required amount}) =>
-            provider.transferToBank(accountId: accountId, amount: amount),
+        onTransfer: ({required accountId, required amount}) async {
+          final success = await provider.transferToBank(
+            accountId: accountId,
+            amount: amount,
+          );
+          if (success && context.mounted) {
+            _addWalletNotification(
+              context,
+              title: 'Wallet Transfer Successful',
+              body:
+                  '₹${amount.toStringAsFixed(2)} transferred from wallet to bank.',
+            );
+          }
+          return success;
+        },
       ),
     );
   }
@@ -83,12 +128,23 @@ class _WalletView extends StatelessWidget {
               required receiverUpiId,
               required amount,
               required note,
-            }) => provider.sendFromWallet(
-              receiverName: receiverName,
-              receiverUpiId: receiverUpiId,
-              amount: amount,
-              note: note,
-            ),
+            }) async {
+              final success = await provider.sendFromWallet(
+                receiverName: receiverName,
+                receiverUpiId: receiverUpiId,
+                amount: amount,
+                note: note,
+              );
+              if (success && context.mounted) {
+                _addWalletNotification(
+                  context,
+                  title: 'Wallet Payment Sent',
+                  body:
+                      '₹${amount.toStringAsFixed(2)} paid to $receiverName from wallet.',
+                );
+              }
+              return success;
+            },
       ),
     );
   }
@@ -115,12 +171,23 @@ class _WalletView extends StatelessWidget {
                       required receiverUpiId,
                       required amount,
                       required note,
-                    }) => provider.sendFromWallet(
-                      receiverName: receiverName,
-                      receiverUpiId: receiverUpiId,
-                      amount: amount,
-                      note: note,
-                    ),
+                    }) async {
+                      final success = await provider.sendFromWallet(
+                        receiverName: receiverName,
+                        receiverUpiId: receiverUpiId,
+                        amount: amount,
+                        note: note,
+                      );
+                      if (success && context.mounted) {
+                        _addWalletNotification(
+                          context,
+                          title: 'Wallet QR Payment Sent',
+                          body:
+                              '₹${amount.toStringAsFixed(2)} paid to $receiverName from wallet.',
+                        );
+                      }
+                      return success;
+                    },
               ),
             );
           },

@@ -8,6 +8,8 @@ import '../../accounts/provider/account_provider.dart';
 import '../../auth/provider/auth_provider.dart';
 import '../provider/term_deposit_provider.dart';
 import '../../Transactions/provider/transaction_provider.dart';
+import '../../notifications/provider/notification_provider.dart';
+import '../../../data/models/notification_model.dart';
 
 class OpenTermDepositScreen extends StatefulWidget {
   const OpenTermDepositScreen({super.key});
@@ -111,8 +113,20 @@ class _OpenTermDepositScreenState extends State<OpenTermDepositScreen> {
       accountId: selectedAccountId!,
       amount: amount,
       depositId: depositId,
-      balanceAfter:
-          accountProvider.getAccountById(selectedAccountId!).availableBalance,
+      balanceAfter: accountProvider
+          .getAccountById(selectedAccountId!)
+          .availableBalance,
+    );
+    context.read<NotificationProvider>().addNotification(
+      NotificationModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        userId: user.id,
+        title: 'Term Deposit Created',
+        body:
+            '₹${amount.toStringAsFixed(2)} opened for $tenureMonths months at ${interestRate.toStringAsFixed(1)}%.',
+        type: NotificationType.termDeposit,
+        createdAt: DateTime.now(),
+      ),
     );
 
     showDialog(

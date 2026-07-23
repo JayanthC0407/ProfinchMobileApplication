@@ -2,6 +2,7 @@ enum NotificationType {
   transaction,
   loan,
   termDeposit,
+  insurance,
   card,
   upi,
   wallet,

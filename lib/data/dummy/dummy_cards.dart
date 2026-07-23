@@ -19,6 +19,7 @@ class DummyCards {
     isOnlinePaymentEnabled: true,
     atmLimit: 25000,
     rewardPoints: 0,
+    isContactlessEnabled: true,
   );
 
   static final CardModel creditCard = CardModel(
@@ -37,6 +38,7 @@ class DummyCards {
     isOnlinePaymentEnabled: true,
     atmLimit: 50000,
     rewardPoints: 3420,
+    isContactlessEnabled: true,
   );
 
   static final List<CardModel> allCards = [debitCard, creditCard];

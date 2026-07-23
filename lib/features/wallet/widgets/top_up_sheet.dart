@@ -141,22 +141,28 @@ class _TopUpSheetState extends State<TopUpSheet> {
                     return DropdownMenuItem(
                       value: acc,
                       child: Row(
-                        mainAxisAlignment:
-                            MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '${acc.accountType} ••${acc.accountNumber.replaceAll(' ', '').substring(acc.accountNumber.replaceAll(' ', '').length - 4)}',
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                          Text(
-                            '₹${formatter.format(acc.availableBalance)}',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey.shade600,
-                            ),
-                          ),
-                        ],
-                      ),
+  children: [
+    Expanded(
+      child: Text(
+        '${acc.accountType} ••${acc.accountNumber.replaceAll(' ', '').substring(acc.accountNumber.replaceAll(' ', '').length - 4)}',
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        style: const TextStyle(fontSize: 14),
+      ),
+    ),
+
+    const SizedBox(width: 12),
+
+    Text(
+      '₹${formatter.format(acc.availableBalance)}',
+      style: TextStyle(
+        fontSize: 12,
+        color: Colors.grey.shade600,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  ],
+),
                     );
                   }).toList(),
                 ),

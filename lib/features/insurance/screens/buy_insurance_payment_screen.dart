@@ -6,6 +6,8 @@ import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/features/accounts/provider/account_provider.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
 import 'package:profinch_mobile_application/features/Transactions/provider/transaction_provider.dart';
+import 'package:profinch_mobile_application/features/notifications/provider/notification_provider.dart';
+import 'package:profinch_mobile_application/data/models/notification_model.dart';
 import '../provider/insurance_provider.dart';
 import '../../../data/models/insurance_model.dart';
 import '../widgets/insurance_step_indicator.dart';
@@ -41,15 +43,22 @@ class BuyInsurancePaymentScreen extends StatelessWidget {
     final gst = planConfig.premiumAmount * 0.18;
     final total = planConfig.premiumAmount + gst;
 
-    final account = context.read<AccountProvider>().getAccountById(debitAccountId);
+    final account = context.read<AccountProvider>().getAccountById(
+      debitAccountId,
+    );
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F6FA),
       appBar: AppBar(
         backgroundColor: AppColors.primaryDark,
         iconTheme: const IconThemeData(color: Colors.white),
-        title: Text('Buy ${typeConfig.name}',
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600)),
+        title: Text(
+          'Buy ${typeConfig.name}',
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4),
           child: InsuranceStepIndicator(current: 3),
@@ -60,8 +69,14 @@ class BuyInsurancePaymentScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Payment Summary',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: Color(0xFF1A1A2E))),
+            const Text(
+              'Payment Summary',
+              style: TextStyle(
+                fontSize: 17,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF1A1A2E),
+              ),
+            ),
             const SizedBox(height: 16),
 
             // ── Summary card ─────────────────────────────────
@@ -69,27 +84,50 @@ class BuyInsurancePaymentScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(14),
-                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 8)],
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 8,
+                  ),
+                ],
               ),
               child: Column(
                 children: [
-                  _summaryRow('Plan',              planConfig.name,                          false),
+                  _summaryRow('Plan', planConfig.name, false),
                   _divider(),
-                  _summaryRow('Coverage Amount',   '₹${moneyFmt.format(planConfig.coverageAmount)}', false),
+                  _summaryRow(
+                    'Coverage Amount',
+                    '₹${moneyFmt.format(planConfig.coverageAmount)}',
+                    false,
+                  ),
                   _divider(),
-                  _summaryRow('Premium (Monthly)', '₹${moneyFmt.format(planConfig.premiumAmount)}',   false),
+                  _summaryRow(
+                    'Premium (Monthly)',
+                    '₹${moneyFmt.format(planConfig.premiumAmount)}',
+                    false,
+                  ),
                   _divider(),
-                  _summaryRow('GST (18%)',         '₹${moneyFmt.format(gst)}',               false),
+                  _summaryRow('GST (18%)', '₹${moneyFmt.format(gst)}', false),
                   _divider(),
-                  _summaryRow('Total Amount',      '₹${moneyFmt.format(total)}',             true),
+                  _summaryRow(
+                    'Total Amount',
+                    '₹${moneyFmt.format(total)}',
+                    true,
+                  ),
                 ],
               ),
             ),
 
             const SizedBox(height: 20),
 
-            const Text('Debit Account',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xFF1A1A2E))),
+            const Text(
+              'Debit Account',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF1A1A2E),
+              ),
+            ),
             const SizedBox(height: 10),
 
             // ── Debit account card ────────────────────────────
@@ -98,23 +136,39 @@ class BuyInsurancePaymentScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.primaryDark.withValues(alpha: 0.2)),
-                boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 6)],
+                border: Border.all(
+                  color: AppColors.primaryDark.withValues(alpha: 0.2),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.04),
+                    blurRadius: 6,
+                  ),
+                ],
               ),
               child: Row(
                 children: [
                   Container(
-                    width: 38, height: 38,
+                    width: 38,
+                    height: 38,
                     decoration: BoxDecoration(
                       color: AppColors.primaryDark.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Icon(Icons.account_balance_outlined, color: AppColors.primaryDark, size: 18),
+                    child: Icon(
+                      Icons.account_balance_outlined,
+                      color: AppColors.primaryDark,
+                      size: 18,
+                    ),
                   ),
                   const SizedBox(width: 10),
                   Text(
                     '${account.accountType}  XXXX ${account.accountNumber.substring(account.accountNumber.length - 4)}',
-                    style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Color(0xFF1A1A2E)),
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1A1A2E),
+                    ),
                   ),
                 ],
               ),
@@ -128,10 +182,17 @@ class BuyInsurancePaymentScreen extends StatelessWidget {
                 backgroundColor: AppColors.primaryDark,
                 foregroundColor: Colors.white,
                 minimumSize: const Size.fromHeight(52),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
               ),
-              child: Text('Pay ₹${moneyFmt.format(total)}',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+              child: Text(
+                'Pay ₹${moneyFmt.format(total)}',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
 
             const SizedBox(height: 24),
@@ -142,35 +203,46 @@ class BuyInsurancePaymentScreen extends StatelessWidget {
   }
 
   void _processPayment(BuildContext context, double total) {
-    final user      = context.read<AuthProvider>().currentUser!;
-    final acctProv  = context.read<AccountProvider>();
-    final insProv   = context.read<InsuranceProvider>();
+    final user = context.read<AuthProvider>().currentUser!;
+    final acctProv = context.read<AccountProvider>();
+    final insProv = context.read<InsuranceProvider>();
 
     acctProv.debitAccount(debitAccountId, total);
 
     final policy = insProv.addPolicy(
-      userId:               user.id,
-      type:                 typeConfig.type,
-      planConfig:           planConfig,
-      policyHolderName:     holderName,
-      policyHolderDob:      holderDob,
-      nomineeName:          nomineeName,
-      nomineeRelationship:  nomineeRelationship,
-      nomineeDoB:           nomineeDoB,
-      nomineeMobile:        nomineeMobile,
-      debitAccountId:       debitAccountId,
-      typeConfig_name:      typeConfig.name,
-      benefits:             typeConfig.benefits,
+      userId: user.id,
+      type: typeConfig.type,
+      planConfig: planConfig,
+      policyHolderName: holderName,
+      policyHolderDob: holderDob,
+      nomineeName: nomineeName,
+      nomineeRelationship: nomineeRelationship,
+      nomineeDoB: nomineeDoB,
+      nomineeMobile: nomineeMobile,
+      debitAccountId: debitAccountId,
+      typeConfig_name: typeConfig.name,
+      benefits: typeConfig.benefits,
     );
 
     TransactionProvider.instance.addTransaction(
-      accountId:    debitAccountId,
-      title:        'Insurance Premium',
-      description:  '${typeConfig.name} - ${planConfig.name}',
-      amount:       total,
-      type:         TransactionType.debit,
-      category:     TransactionCategory.insurance,
+      accountId: debitAccountId,
+      title: 'Insurance Premium',
+      description: '${typeConfig.name} - ${planConfig.name}',
+      amount: total,
+      type: TransactionType.debit,
+      category: TransactionCategory.insurance,
       balanceAfter: acctProv.getAccountById(debitAccountId).availableBalance,
+    );
+    context.read<NotificationProvider>().addNotification(
+      NotificationModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        userId: user.id,
+        title: 'Insurance Policy Purchased',
+        body:
+            '${typeConfig.name} ${planConfig.name} purchased successfully for ₹${total.toStringAsFixed(2)}.',
+        type: NotificationType.insurance,
+        createdAt: DateTime.now(),
+      ),
     );
 
     Navigator.pushAndRemoveUntil(
@@ -182,16 +254,27 @@ class BuyInsurancePaymentScreen extends StatelessWidget {
 
   Widget _summaryRow(String label, String value, bool isBold) => Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Text(label, style: TextStyle(
-          fontSize: 13,
-          color: isBold ? const Color(0xFF1A1A2E) : Colors.grey.shade500,
-          fontWeight: isBold ? FontWeight.w700 : FontWeight.w400)),
-      Text(value, style: TextStyle(
-          fontSize: 13,
-          color: const Color(0xFF1A1A2E),
-          fontWeight: isBold ? FontWeight.w700 : FontWeight.w600)),
-    ]),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 13,
+            color: isBold ? const Color(0xFF1A1A2E) : Colors.grey.shade500,
+            fontWeight: isBold ? FontWeight.w700 : FontWeight.w400,
+          ),
+        ),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 13,
+            color: const Color(0xFF1A1A2E),
+            fontWeight: isBold ? FontWeight.w700 : FontWeight.w600,
+          ),
+        ),
+      ],
+    ),
   );
 
   Widget _divider() => Divider(height: 1, color: Colors.grey.shade100);

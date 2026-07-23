@@ -16,47 +16,57 @@ class AccountCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        margin: const EdgeInsets.only(bottom: 16),
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          color: AppColors.light, // light blue background
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-
-            Text(
-              account.accountType,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: AppFontSize.large(context),
+// ... inside your AccountCard class build method
+return InkWell(
+  onTap: onTap,
+  child: Container(
+    margin: const EdgeInsets.only(bottom: 16),
+    padding: const EdgeInsets.all(18),
+    decoration: BoxDecoration(
+      color: AppColors.light, 
+      borderRadius: BorderRadius.circular(20),
+    ),
+    // Use a Row layout to position things side-by-side
+    child: Row(
+      children: [
+        // Wrap everything on the left inside an Expanded block
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                account.accountType,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: AppFontSize.large(context),
+                ),
               ),
-            ),
-
-            const SizedBox(height: 10),
-
-            Text(
-              account.accountNumber,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              "₹ ${account.availableBalance.toStringAsFixed(2)}",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-                color: account.availableBalance < 0
-                    ? Colors.red
-                    : Colors.green,
+              const SizedBox(height: 10),
+              Text(
+                account.accountNumber,
               ),
-            ),
-          ],
+              const SizedBox(height: 10),
+              Text(
+                "₹ ${account.availableBalance.toStringAsFixed(2)}",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                  color: account.availableBalance < 0 ? Colors.red : Colors.green,
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+        // The arrow icon remains perfectly centered on the right edge
+        Icon(
+          Icons.chevron_right,
+          color: Colors.grey.shade400,
+          size: 24,
+        ),
+      ],
+    ),
+  ),
+);
+
   }
 }

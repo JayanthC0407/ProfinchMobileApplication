@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:profinch_mobile_application/core/constants/fonts_size.dart';
+import 'package:profinch_mobile_application/core/constants/text_styles.dart';
+import 'package:profinch_mobile_application/core/utils/responsive_text.dart';
 import 'package:provider/provider.dart';
 import 'package:profinch_mobile_application/core/constants/colors.dart';
 import 'package:profinch_mobile_application/features/auth/provider/auth_provider.dart';
@@ -17,164 +20,196 @@ class InsuranceScreen extends StatelessWidget {
   const InsuranceScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final user = context.read<AuthProvider>().currentUser!;
-    return Consumer<InsuranceProvider>(
-      builder: (context, provider, _) {
-        final active = provider.getActivePolicies(user.id);
-        final totalCoverage = provider.getTotalCoverage(user.id);
-        final fmt = NumberFormat('#,##,##0', 'en_IN');
+@override
+Widget build(BuildContext context) {
+  final user = context.read<AuthProvider>().currentUser!;
+  return Consumer<InsuranceProvider>(
+    builder: (context, provider, _) {
+      final active = provider.getActivePolicies(user.id);
+      final totalCoverage = provider.getTotalCoverage(user.id);
+      final fmt = NumberFormat('#,##,##0', 'en_IN');
 
-        return Scaffold(
-          backgroundColor: const Color(0xFFF5F6FA),
-          body: CustomScrollView(
-            slivers: [
-              // ── AppBar ────────────────────────────────────────
-              SliverAppBar(
-                expandedHeight: 200,
-                pinned: true,
-                backgroundColor: AppColors.primaryDark,
-                iconTheme: const IconThemeData(color: Colors.white),
-                flexibleSpace: FlexibleSpaceBar(
-                  background: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [AppColors.primaryDark, const Color(0xFF2A1F8F)],
-                      ),
-                    ),
-                    child: Stack(
-                      children: [
-                        // decorative circles
-                        Positioned(
-                          right: -30,
-                          top: -20,
-                          child: Container(
-                            width: 160,
-                            height: 160,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white.withValues(alpha: 0.06),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          right: 60,
-                          top: 40,
-                          child: Container(
-                            width: 90,
-                            height: 90,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.white.withValues(alpha: 0.06),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 70, 20, 20),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Insurance',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      'Protect what matters',
-                                      style: TextStyle(
-                                        color: Colors.white.withValues(alpha: 0.7),
-                                        fontSize: 13,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 14),
-                                    Row(
-                                      children: [
-                                        _statChip('Active Policies', '${active.length}  >'),
-                                        const SizedBox(width: 24),
-                                        _statChip('Total Coverage', '₹${fmt.format(totalCoverage)}'),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              // umbrella illustration placeholder
-                              Container(
-                                width: 90,
-                                height: 90,
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withValues(alpha: 0.1),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.umbrella_rounded,
-                                  size: 48,
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+      return Scaffold(
+        backgroundColor: AppColors.background,
+        body: Column(
+          children: [
+            // ── Gradient header ──────────────────────────
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [AppColors.navy, AppColors.blueButton],
                 ),
-                title: const Text(
-                  'Insurance',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(28),
+                  bottomRight: Radius.circular(28),
                 ),
               ),
-
-              // ── Body ──────────────────────────────────────────
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                      // ── Manage Insurance section ──────────────
-                      _sectionTitle('Manage Insurance'),
-                      const SizedBox(height: 12),
-                      _manageCard(context),
-                      const SizedBox(height: 24),
-
-                      // ── Featured Plans ────────────────────────
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: SafeArea(
+                bottom: false,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(4, 4, 8, 0),
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back,
+                            color: AppColors.light),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 4),
+                      child: Text(
+                        'Insurance',
+                        style: TextStyle(
+                          color: AppColors.light,
+                          fontSize: RT.fs(context, 26),
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+                      child: Text(
+                        'Protect what matters',
+                        style: AppTextStyles.whiteBody(context,
+                            color: AppColors.light.withValues(alpha: 0.65)),
+                      ),
+                    ),
+                    // Stats row inside header
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+                      child: Row(
                         children: [
-                          _sectionTitle('Featured Plans'),
-                          TextButton(
-                            onPressed: () => Navigator.push(context,
-                              MaterialPageRoute(builder: (_) => const BuyInsuranceScreen())),
-                            child: Text('View All', style: TextStyle(color: AppColors.primary, fontSize: 13)),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                color: AppColors.light.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                    color: AppColors.light
+                                        .withValues(alpha: 0.2)),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.policy_outlined,
+                                      color: AppColors.light, size: 20),
+                                  const SizedBox(width: 10),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Active Policies',
+                                          style: AppTextStyles.whiteCaption(
+                                              context)),
+                                      Text('${active.length}',
+                                          style: TextStyle(
+                                            color: AppColors.light,
+                                            fontSize:
+                                                AppFontSize.large(context),
+                                            fontWeight: FontWeight.bold,
+                                          )),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                color: AppColors.light.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                    color: AppColors.light
+                                        .withValues(alpha: 0.2)),
+                              ),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.shield_outlined,
+                                      color: AppColors.light, size: 20),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text('Total Coverage',
+                                            style:
+                                                AppTextStyles.whiteCaption(
+                                                    context)),
+                                        Text(
+                                          '₹${fmt.format(totalCoverage)}',
+                                          style: TextStyle(
+                                            color: AppColors.light,
+                                            fontSize:
+                                                AppFontSize.body(context),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 12),
-                      _featuredPlansRow(context),
-                      const SizedBox(height: 24),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+            ),
 
+            // ── Scrollable body ───────────────────────────
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 4),
+                    _sectionTitle('Manage Insurance'),
+                    const SizedBox(height: 12),
+                    _manageCard(context),
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _sectionTitle('Featured Plans'),
+                        TextButton(
+                          onPressed: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) =>
+                                      const BuyInsuranceScreen())),
+                          child: Text('View All',
+                              style: TextStyle(
+                                  color: AppColors.primary, fontSize: 13)),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    _featuredPlansRow(context),
+                    const SizedBox(height: 24),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
   Widget _statChip(String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
